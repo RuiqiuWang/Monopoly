@@ -2,6 +2,8 @@
 *.obj
 *.exe
 test_movement
+movement_cli
+game_engine
 tests/json_runner
 tests/output/
 tests/__pycache__/

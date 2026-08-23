@@ -1,0 +1,205 @@
+#!/usr/bin/env bash
+
+set -u
+set -o pipefail
+
+ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+PYTHON_BIN="${PYTHON:-python3}"
+MAKE_BIN="${MAKE:-make}"
+CC_BIN="${CC:-cc}"
+CC_CHECK="${CC_BIN%% *}"
+LOG_FILE="$(mktemp)"
+
+cleanup() {
+    rm -f "$LOG_FILE"
+}
+trap cleanup EXIT
+
+print_header() {
+    printf '%s\n' "MONOPOLY automated environment/build/test runner"
+    printf '%s\n' "Project: $ROOT"
+    printf '%s\n\n' "Mode: dependency check -> build -> test"
+}
+
+pass_line() {
+    printf '[PASS]\n'
+}
+
+fail_line() {
+    printf '[FAIL]\n'
+    if [ -s "$LOG_FILE" ]; then
+        printf '%s\n' "---- command output ----"
+        sed -n '1,220p' "$LOG_FILE"
+        printf '%s\n' "------------------------"
+    fi
+}
+
+run_check() {
+    local current="$1"
+    local total="$2"
+    local label="$3"
+    local command_name="$4"
+
+    : > "$LOG_FILE"
+    printf '[%d/%d] Checking %s using command -v ... ' "$current" "$total" "$label"
+    if command -v "$command_name" >"$LOG_FILE" 2>&1; then
+        pass_line
+    else
+        fail_line
+        printf 'Missing dependency: %s\n' "$command_name"
+        exit 1
+    fi
+}
+
+run_project_check() {
+    local current="$1"
+    local total="$2"
+
+    : > "$LOG_FILE"
+    printf '[%d/%d] Checking project layout using filesystem ... ' "$current" "$total"
+    if [ -f "$ROOT/Makefile" ] &&
+       [ -f "$ROOT/movement.c" ] &&
+       [ -f "$ROOT/tests/run_json_tests.py" ] &&
+       [ -d "$ROOT/tests/input" ]; then
+        pass_line
+    else
+        {
+            printf 'Required project files were not found under %s\n' "$ROOT"
+            printf 'Expected Makefile, movement.c, tests/run_json_tests.py, tests/input\n'
+        } > "$LOG_FILE"
+        fail_line
+        exit 1
+    fi
+}
+
+run_build() {
+    local current="$1"
+    local total="$2"
+    local target="$3"
+
+    : > "$LOG_FILE"
+    printf '[%d/%d] Building %s using %s ... ' "$current" "$total" "$target" "$MAKE_BIN"
+    if "$MAKE_BIN" -C "$ROOT" "$target" >"$LOG_FILE" 2>&1; then
+        pass_line
+    else
+        fail_line
+        exit 1
+    fi
+}
+
+run_test_command() {
+    local current="$1"
+    local total="$2"
+    local label="$3"
+    shift 3
+
+    : > "$LOG_FILE"
+    printf '[%d/%d] Running Test %s ... ' "$current" "$total" "$label"
+    if "$@" >"$LOG_FILE" 2>&1; then
+        pass_line
+    else
+        fail_line
+        exit 1
+    fi
+}
+
+json_case_id() {
+    local case_file="$1"
+
+    "$PYTHON_BIN" - "$case_file" <<'PY'
+import json
+import sys
+from pathlib import Path
+
+case_file = Path(sys.argv[1])
+try:
+    with case_file.open(encoding="utf-8") as fp:
+        print(json.load(fp).get("case_id", case_file.stem))
+except Exception:
+    print(case_file.stem)
+PY
+}
+
+run_json_case() {
+    local current="$1"
+    local total="$2"
+    local case_file="$3"
+    local relative_path
+    local output_file
+    local case_id
+
+    relative_path="${case_file#"$ROOT/tests/input/"}"
+    output_file="$ROOT/tests/output/$relative_path"
+    case_id="$(json_case_id "$case_file")"
+    mkdir -p "$(dirname "$output_file")"
+
+    : > "$LOG_FILE"
+    printf '[%d/%d] Running Test %s using json_runner ... ' "$current" "$total" "$case_id"
+    if "$PYTHON_BIN" - "$ROOT" "$case_file" "$output_file" >"$LOG_FILE" 2>&1 <<'PY'; then
+import json
+import sys
+from pathlib import Path
+
+root = Path(sys.argv[1])
+case_file = Path(sys.argv[2])
+output_file = Path(sys.argv[3])
+sys.path.insert(0, str(root / "tests"))
+
+from run_json_tests import run_case_file
+
+report = run_case_file(case_file, output_file)
+if report.get("result") != "PASS":
+    print(json.dumps(report.get("errors", []), ensure_ascii=False))
+    raise SystemExit(1)
+PY
+        pass_line
+    else
+        fail_line
+        exit 1
+    fi
+}
+
+collect_json_cases() {
+    find "$ROOT/tests/input" -type f -name '*.json' | sort
+}
+
+main() {
+    local env_total=4
+    local build_total=5
+    local test_total
+    local step=1
+    local cases=()
+    local case_file
+
+    print_header
+
+    run_project_check 1 "$env_total"
+    run_check 2 "$env_total" "C compiler" "$CC_CHECK"
+    run_check 3 "$env_total" "make" "$MAKE_BIN"
+    run_check 4 "$env_total" "python3" "$PYTHON_BIN"
+    printf '\n'
+
+    run_build 1 "$build_total" "clean"
+    run_build 2 "$build_total" "test_movement"
+    run_build 3 "$build_total" "movement_cli"
+    run_build 4 "$build_total" "game_engine"
+    run_build 5 "$build_total" "tests/json_runner"
+    printf '\n'
+
+    while IFS= read -r case_file; do
+        cases+=("$case_file")
+    done < <(collect_json_cases)
+
+    test_total=$((1 + ${#cases[@]}))
+    run_test_command "$step" "$test_total" "movement unit" "$ROOT/test_movement"
+    step=$((step + 1))
+
+    for case_file in "${cases[@]}"; do
+        run_json_case "$step" "$test_total" "$case_file"
+        step=$((step + 1))
+    done
+
+    printf '\nAll checks passed: %d build steps, %d tests.\n' "$build_total" "$test_total"
+}
+
+main "$@"
