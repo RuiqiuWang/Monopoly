@@ -8,15 +8,15 @@ gcc -std=c11 -Wall -Wextra -Wpedantic -I $root `
 
 $cases = @(
     @{ Input = "5"; Expected = "OK position=5" },
-    @{ Input = "-1"; Expected = "ERROR invalid input" },
-    @{ Input = "1.5"; Expected = "ERROR invalid input" },
-    @{ Input = "125abd"; Expected = "ERROR invalid input" },
-    @{ Input = "wada"; Expected = "ERROR invalid input" },
-    @{ Input = "90|"; Expected = "ERROR invalid input" },
-    @{ Input = "0"; Expected = "ERROR invalid input" },
+    @{ Input = "-1"; Expected = "ERROR invalid character: digits only" },
+    @{ Input = "1.5"; Expected = "ERROR invalid character: digits only" },
+    @{ Input = "125abd"; Expected = "ERROR invalid character: digits only" },
+    @{ Input = "wada"; Expected = "ERROR invalid character: digits only" },
+    @{ Input = "90|"; Expected = "ERROR invalid character: digits only" },
+    @{ Input = "0"; Expected = "ERROR invalid step: must be greater than 0" },
     @{ Input = "69"; Expected = "OK position=69" },
     @{ Input = "70"; Expected = "OK position=0" },
-    @{ Input = "2147483648"; Expected = "ERROR invalid input" }
+    @{ Input = "2147483648"; Expected = "ERROR step out of range" }
 )
 
 $actual = $cases | ForEach-Object {

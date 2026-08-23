@@ -45,8 +45,11 @@ int main(void)
         for (i = 0; i < sizeof(invalid) / sizeof(invalid[0]); ++i) {
             assert(Parse_Step(invalid[i], &step) != STEP_PARSE_OK);
         }
-        assert(Parse_Step(NULL, &step) == STEP_PARSE_INVALID);
-        assert(Parse_Step("1", NULL) == STEP_PARSE_INVALID);
+        assert(Parse_Step("125abd", &step) == STEP_PARSE_INVALID_CHARACTER);
+        assert(Parse_Step("0", &step) == STEP_PARSE_INVALID_STEP);
+        assert(Parse_Step("2147483648", &step) == STEP_PARSE_OVERFLOW);
+        assert(Parse_Step(NULL, &step) == STEP_PARSE_INVALID_ARGUMENT);
+        assert(Parse_Step("1", NULL) == STEP_PARSE_INVALID_ARGUMENT);
     }
 
     return 0;

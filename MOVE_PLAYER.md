@@ -70,6 +70,16 @@ position = (position + step % MAP_BLOCK_COUNT) % MAP_BLOCK_COUNT;
 StepParseResult Parse_Step(const char *input, int *step);
 ```
 
+`StepParseResult` 的分类如下：
+
+| 返回值 | 含义 |
+| --- | --- |
+| `STEP_PARSE_OK` | 输入是合法的正整数 |
+| `STEP_PARSE_INVALID_ARGUMENT` | 输入指针或输出指针为空 |
+| `STEP_PARSE_INVALID_CHARACTER` | 包含字母、负号、小数点、管道符或其他非数字字符 |
+| `STEP_PARSE_INVALID_STEP` | 空字符串或数值 0 |
+| `STEP_PARSE_OVERFLOW` | 数值超出 `int` 的可表示范围 |
+
 该函数只接受由十进制数字组成的正整数，例如：
 
 ```text
@@ -77,7 +87,7 @@ StepParseResult Parse_Step(const char *input, int *step);
 非法：0、-1、1.5、125abd、wada、90|、2147483648
 ```
 
-函数拒绝空字符串、空格、正负号、小数点、字母、管道符和超出 `int` 范围的数字。
+函数拒绝空字符串、空格、正负号、小数点、字母、管道符和超出 `int` 范围的数字。CLI 会将非法字符明确提示为 `ERROR invalid character: digits only`，不再只显示笼统的错误信息。
 
 解析成功后，再把得到的 `step` 传给 `Move_Player`。
 

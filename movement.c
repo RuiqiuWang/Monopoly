@@ -31,14 +31,17 @@ StepParseResult Parse_Step(const char *input, int *step)
     uint64_t digit;
     const unsigned char *cursor;
 
-    if (input == NULL || step == NULL || *input == '\0') {
-        return STEP_PARSE_INVALID;
+    if (input == NULL || step == NULL) {
+        return STEP_PARSE_INVALID_ARGUMENT;
+    }
+    if (*input == '\0') {
+        return STEP_PARSE_INVALID_STEP;
     }
 
     /* Deliberately do not accept whitespace, signs, decimal points, or suffixes. */
     for (cursor = (const unsigned char *)input; *cursor != '\0'; ++cursor) {
         if (*cursor < (unsigned char)'0' || *cursor > (unsigned char)'9') {
-            return STEP_PARSE_INVALID;
+            return STEP_PARSE_INVALID_CHARACTER;
         }
         digit = (uint64_t)(*cursor - (unsigned char)'0');
         if (value > ((uint64_t)INT_MAX - digit) / 10U) {
@@ -48,7 +51,7 @@ StepParseResult Parse_Step(const char *input, int *step)
     }
 
     if (value == 0) {
-        return STEP_PARSE_INVALID;
+        return STEP_PARSE_INVALID_STEP;
     }
 
     *step = (int)value;
