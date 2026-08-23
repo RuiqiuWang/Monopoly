@@ -125,6 +125,7 @@ def _check_absent(
 
 
 def run_case_file(case_file: Path, output_file: Path) -> dict[str, Any]:
+    output_file.parent.mkdir(parents=True, exist_ok=True)
     try:
         case = json.loads(case_file.read_text(encoding="utf-8"))
     except (OSError, json.JSONDecodeError) as exc:

@@ -1,4 +1,6 @@
 #include <ctype.h>
+#include <errno.h>
+#include <limits.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -53,12 +55,13 @@ static int parse_json_string(const char **p, char *out, size_t out_size)
 static int parse_json_int(const char **p, int *out)
 {
     char *end = NULL;
-    long value;
+    long long value;
     if (!(**p == '-' || isdigit((unsigned char)**p))) {
         return 0;
     }
-    value = strtol(*p, &end, 10);
-    if (end == *p || value < -2147483648L || value > 2147483647L) {
+    errno = 0;
+    value = strtoll(*p, &end, 10);
+    if (end == *p || errno == ERANGE || value < INT_MIN || value > INT_MAX) {
         return 0;
     }
     *out = (int)value;

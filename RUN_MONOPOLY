@@ -183,6 +183,7 @@ run_json_case() {
 
     output_file="$ROOT/tests/output/$(basename "$case_file")"
     case_id="$(json_case_id "$case_file")"
+    mkdir -p "$ROOT/tests/output"
 
     : > "$LOG_FILE"
     printf '[%d/%d] Running Test %s using json_runner ... ' "$current" "$total" "$case_id"

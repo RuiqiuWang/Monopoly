@@ -174,6 +174,10 @@ function Run-JsonCase {
     )
 
     $outputFile = Join-Path $root ("tests\output\" + [IO.Path]::GetFileName($CaseFile))
+    $outputDir = Split-Path -Parent $outputFile
+    if (-not (Test-Path $outputDir)) {
+        New-Item -ItemType Directory -Path $outputDir | Out-Null
+    }
     $caseId = Get-CaseId -CaseFile $CaseFile
     Write-Step -Index $Index -Total $Total -Label $caseId -Verb "Running Test"
 
