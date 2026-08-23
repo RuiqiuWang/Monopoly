@@ -1,7 +1,7 @@
 #ifndef MONOPOLY_PLAYER_H
 #define MONOPOLY_PLAYER_H
 
-#define NAME_LEN 32
+#define NAME_LEN 5
 #define ITEM_COUNT 8
 
 // 颜色
