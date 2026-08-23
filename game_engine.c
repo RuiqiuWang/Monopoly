@@ -6,6 +6,7 @@
 #include "map.h"
 #include "movement.h"
 #include "tui.h"
+#include "tutorial.h"
 
 #define MAX_PLAYERS 4
 #define INITIAL_PLAYER_MONEY 1000
@@ -101,12 +102,20 @@ int main(void)
     int round = 1;
     unsigned long arrival_order[MAX_PLAYERS] = {1, 2, 3, 4};
     unsigned long arrival_counter = 4;
+    TutorialState tutorial_state;
 
     srand((unsigned int)time(NULL));
+    map_init(&map);
+    tutorial_state_load(&tutorial_state, MONOPOLY_STATE_FILE);
+    if (!tutorial_state.has_run) {
+        tutorial_state.has_run = true;
+        tutorial_state_save(&tutorial_state, MONOPOLY_STATE_FILE);
+        if (tutorial_prompt_first_run()) {
+            tutorial_run(&map);
+        }
+    }
     player_count = read_player_count();
     initialize_players(players, player_count);
-    map_init(&map);
-
     render_game_state(&map, players, player_count, arrival_order, round, "游戏初始化完成。");
 
     for (int outer_round = 0; outer_round < MAX_ROUNDS; ++outer_round) {
