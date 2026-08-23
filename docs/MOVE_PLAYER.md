@@ -146,7 +146,7 @@ typedef struct {
 编译并运行：
 
 ```powershell
-gcc -std=c11 -Wall -Wextra -Wpedantic -I. movement.c test_movement.c -o test_movement.exe
+gcc -std=c11 -Wall -Wextra -Wpedantic -Iinclude movement.c tests/test_movement.c -o test_movement.exe
 .\test_movement.exe
 ```
 
@@ -154,7 +154,7 @@ gcc -std=c11 -Wall -Wextra -Wpedantic -I. movement.c test_movement.c -o test_mov
 
 ### 脚本测试
 
-`run_movement_tests.ps1` 会自动编译 `movement_cli.c`，逐条输入测试数据，并比较实际输出和预期输出。脚本覆盖 10 条输入：
+`run_movement_tests.ps1` 会自动编译 `tests/movement_cli.c`，逐条输入测试数据，并比较实际输出和预期输出。脚本覆盖 10 条输入：
 
 ```text
 5
@@ -184,15 +184,15 @@ PASS: 10 movement input cases
 也可以直接运行交互式测试程序。它从标准输入逐行读取步数，成功时输出新位置，失败时输出 `ERROR invalid input`：
 
 ```powershell
-gcc -std=c11 -Wall -Wextra -Wpedantic -I. movement.c movement_cli.c -o movement_cli.exe
+gcc -std=c11 -Wall -Wextra -Wpedantic -Iinclude movement.c tests/movement_cli.c -o movement_cli.exe
 @("5", "-1", "70") | .\movement_cli.exe
 ```
 
 ## 6. 相关文件
 
-- `player.h`：玩家结构体和状态常量
-- `movement.h`：地图大小、返回码和函数声明
+- `include/player.h`：玩家结构体和状态常量
+- `include/movement.h`：地图大小、返回码和函数声明
 - `movement.c`：移动和输入解析实现
-- `movement_cli.c`：标准输入测试程序
-- `test_movement.c`：C 单元测试
+- `tests/movement_cli.c`：标准输入测试程序
+- `tests/test_movement.c`：C 单元测试
 - `run_movement_tests.ps1`：自动化输入测试脚本

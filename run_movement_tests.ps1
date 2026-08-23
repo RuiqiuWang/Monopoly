@@ -2,9 +2,12 @@ $ErrorActionPreference = "Stop"
 
 $root = Split-Path -Parent $MyInvocation.MyCommand.Path
 $exe = Join-Path $root "movement_cli.exe"
+$include = Join-Path $root "include"
+$source = Join-Path $root "movement.c"
+$cli_source = Join-Path $root "tests\movement_cli.c"
 
-gcc -std=c11 -Wall -Wextra -Wpedantic -I $root `
-    (Join-Path $root "movement.c") (Join-Path $root "movement_cli.c") -o $exe
+gcc -std=c11 -Wall -Wextra -Wpedantic -I $include `
+    $source $cli_source -o $exe
 
 $cases = @(
     @{ Input = "5"; Expected = "OK position=5" },

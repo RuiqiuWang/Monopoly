@@ -1,18 +1,19 @@
 CC ?= cc
 CFLAGS ?= -std=c11 -Wall -Wextra -Wpedantic
+CPPFLAGS ?= -Iinclude
 
 .PHONY: all test cli engine clean
 
 all: test_movement movement_cli game_engine
 
-test_movement: movement.c movement.h player.h test_movement.c
-	$(CC) $(CFLAGS) -I. movement.c test_movement.c -o $@
+test_movement: movement.c include/movement.h include/player.h tests/test_movement.c
+	$(CC) $(CPPFLAGS) $(CFLAGS) movement.c tests/test_movement.c -o $@
 
-movement_cli: movement.c movement.h player.h movement_cli.c
-	$(CC) $(CFLAGS) -I. movement.c movement_cli.c -o $@
+movement_cli: movement.c include/movement.h include/player.h tests/movement_cli.c
+	$(CC) $(CPPFLAGS) $(CFLAGS) movement.c tests/movement_cli.c -o $@
 
-game_engine: game_engine.c map.c map.h tui.c tui.h movement.c movement.h player.h block_bit_utils.h
-	$(CC) $(CFLAGS) -I. game_engine.c map.c tui.c movement.c -o $@
+game_engine: game_engine.c map.c include/map.h include/tui.h include/movement.h include/player.h include/block_bit_utils.h
+	$(CC) $(CPPFLAGS) $(CFLAGS) game_engine.c map.c tui.c movement.c -o $@
 
 cli: movement_cli
 	./movement_cli
