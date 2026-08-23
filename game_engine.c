@@ -59,12 +59,15 @@ static void initialize_players(Player players[], int player_count)
 static void build_tui_players(
     const Player players[],
     int player_count,
+    const unsigned long arrival_order[MAX_PLAYERS],
     TuiPlayerView views[MAX_PLAYERS])
 {
     for (int i = 0; i < player_count; ++i) {
         views[i].name = players[i].name;
+        views[i].color = players[i].color;
         views[i].money = players[i].money;
         views[i].position = players[i].position;
+        views[i].arrival_order = arrival_order[i];
         views[i].active = players[i].active != 0;
     }
 }
@@ -73,12 +76,13 @@ static void render_game_state(
     const Map *map,
     const Player players[],
     int player_count,
+    const unsigned long arrival_order[MAX_PLAYERS],
     int round,
     const char *message)
 {
     TuiPlayerView views[MAX_PLAYERS];
 
-    build_tui_players(players, player_count, views);
+    build_tui_players(players, player_count, arrival_order, views);
     tui_clear_screen();
     printf("MONOPOLY GAME ENGINE 1.0    Round: %d\n", round);
     if (message != NULL) {
@@ -95,13 +99,15 @@ int main(void)
     Player players[MAX_PLAYERS];
     int player_count;
     int round = 1;
+    unsigned long arrival_order[MAX_PLAYERS] = {1, 2, 3, 4};
+    unsigned long arrival_counter = 4;
 
     srand((unsigned int)time(NULL));
     player_count = read_player_count();
     initialize_players(players, player_count);
     map_init(&map);
 
-    render_game_state(&map, players, player_count, round, "游戏初始化完成。");
+    render_game_state(&map, players, player_count, arrival_order, round, "游戏初始化完成。");
 
     for (int outer_round = 0; outer_round < MAX_ROUNDS; ++outer_round) {
         for (int i = 0; i < player_count; ++i) {
@@ -115,6 +121,7 @@ int main(void)
 
             step = Get_Random_Step();
             move_result = Move_Player(&players[i], step);
+            arrival_order[i] = ++arrival_counter;
             if (move_result != PLAYER_MOVE_OK) {
                 snprintf(message,
                          sizeof(message),
@@ -131,7 +138,7 @@ int main(void)
                          players[i].position);
             }
 
-            render_game_state(&map, players, player_count, round, message);
+            render_game_state(&map, players, player_count, arrival_order, round, message);
         }
         ++round;
     }

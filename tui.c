@@ -3,8 +3,9 @@
 #include <stdio.h>
 #include <string.h>
 
-#define TUI_ROWS 18
-#define TUI_COLS 19
+#define TUI_ROWS 8
+#define TUI_COLS 29
+#define ANSI_RESET "\033[0m"
 
 typedef struct {
     int row;
@@ -15,19 +16,18 @@ static const TuiCoord kMapCoords[MAP_BLOCK_COUNT] = {
     {0, 0},
     {0, 1}, {0, 2}, {0, 3}, {0, 4}, {0, 5}, {0, 6}, {0, 7}, {0, 8},
     {0, 9}, {0, 10}, {0, 11}, {0, 12}, {0, 13}, {0, 14}, {0, 15},
-    {0, 16}, {0, 17}, {0, 18},
+    {0, 16}, {0, 17}, {0, 18}, {0, 19}, {0, 20}, {0, 21}, {0, 22},
+    {0, 23}, {0, 24}, {0, 25}, {0, 26}, {0, 27}, {0, 28},
 
-    {1, 18}, {2, 18}, {3, 18}, {4, 18}, {5, 18}, {6, 18}, {7, 18},
-    {8, 18}, {9, 18}, {10, 18}, {11, 18}, {12, 18}, {13, 18},
-    {14, 18}, {15, 18}, {16, 18}, {17, 18},
+    {1, 28}, {2, 28}, {3, 28}, {4, 28}, {5, 28}, {6, 28},
 
-    {17, 17}, {17, 16}, {17, 15}, {17, 14}, {17, 13}, {17, 12},
-    {17, 11}, {17, 10}, {17, 9}, {17, 8}, {17, 7}, {17, 6}, {17, 5},
-    {17, 4}, {17, 3}, {17, 2}, {17, 1}, {17, 0},
+    {7, 28},
+    {7, 27}, {7, 26}, {7, 25}, {7, 24}, {7, 23}, {7, 22}, {7, 21},
+    {7, 20}, {7, 19}, {7, 18}, {7, 17}, {7, 16}, {7, 15}, {7, 14},
+    {7, 13}, {7, 12}, {7, 11}, {7, 10}, {7, 9}, {7, 8}, {7, 7},
+    {7, 6}, {7, 5}, {7, 4}, {7, 3}, {7, 2}, {7, 1}, {7, 0},
 
-    {16, 0}, {15, 0}, {14, 0}, {13, 0}, {12, 0}, {11, 0}, {10, 0},
-    {9, 0}, {8, 0}, {7, 0}, {6, 0}, {5, 0}, {4, 0}, {3, 0}, {2, 0},
-    {1, 0}
+    {6, 0}, {5, 0}, {4, 0}, {3, 0}, {2, 0}, {1, 0}
 };
 
 static const char *tui_block_symbol(BlockBits block)
@@ -48,22 +48,13 @@ static const char *tui_block_symbol(BlockBits block)
         return "H";
     }
     if (map_block_is_jail(block)) {
-        return "J";
+        return "P";
     }
     if (map_block_is_mine(block)) {
         return "$";
     }
     if (map_block_is_purchasable(block)) {
-        if (map_block_is_plot(block, IS_PLOT_ONE)) {
-            return "1";
-        }
-        if (map_block_is_plot(block, IS_PLOT_TWO)) {
-            return "2";
-        }
-        if (map_block_is_plot(block, IS_PLOT_THREE)) {
-            return "3";
-        }
-        return "P";
+        return "0";
     }
     return " ";
 }
@@ -99,10 +90,11 @@ static size_t tui_index_at_coord(int row, int col)
 static const char *tui_player_mark(
     const TuiPlayerView *players,
     size_t player_count,
-    size_t index)
+    size_t index,
+    PlayerColor *player_color)
 {
     const TuiPlayerView *first_player = NULL;
-    int occupied = 0;
+    unsigned long latest_arrival = 0;
 
     if (players == NULL || index >= MAP_BLOCK_COUNT) {
         return NULL;
@@ -112,17 +104,18 @@ static const char *tui_player_mark(
         if (!players[i].active || players[i].position != (int)index) {
             continue;
         }
-        if (first_player == NULL) {
+        if (first_player == NULL || players[i].arrival_order >= latest_arrival) {
             first_player = &players[i];
+            latest_arrival = players[i].arrival_order;
         }
-        ++occupied;
     }
 
-    if (occupied == 0) {
+    if (first_player == NULL) {
         return NULL;
     }
-    if (occupied > 1) {
-        return "*";
+
+    if (player_color != NULL) {
+        *player_color = first_player->color;
     }
     if (first_player->name != NULL && first_player->name[0] != '\0') {
         static char player_mark[2];
@@ -135,16 +128,19 @@ static const char *tui_player_mark(
 
 static void tui_print_board(
     char board[TUI_ROWS][TUI_COLS][4],
+    PlayerColor board_colors[TUI_ROWS][TUI_COLS],
     const TuiPlayerView *players,
     size_t player_count)
 {
     for (int r = 0; r < TUI_ROWS; ++r) {
         for (int c = 0; c < TUI_COLS; ++c) {
             size_t index = tui_index_at_coord(r, c);
-            const char *mark = tui_player_mark(players, player_count, index);
+            PlayerColor player_color = COLOR_GREEN;
+            const char *mark = tui_player_mark(players, player_count, index, &player_color);
 
             if (mark != NULL) {
                 snprintf(board[r][c], sizeof(board[r][c]), "%s", mark);
+                board_colors[r][c] = player_color;
             }
         }
     }
@@ -153,7 +149,19 @@ static void tui_print_board(
     for (int r = 0; r < TUI_ROWS; ++r) {
         fputs("|", stdout);
         for (int c = 0; c < TUI_COLS; ++c) {
+            if (board_colors[r][c] == COLOR_GREEN) {
+                fputs("\033[32m", stdout);
+            } else if (board_colors[r][c] == COLOR_RED) {
+                fputs("\033[31m", stdout);
+            } else if (board_colors[r][c] == COLOR_BLUE) {
+                fputs("\033[34m", stdout);
+            } else if (board_colors[r][c] == COLOR_YELLOW) {
+                fputs("\033[33m", stdout);
+            }
             printf(" %-2s", board[r][c]);
+            if (board_colors[r][c] >= COLOR_GREEN && board_colors[r][c] <= COLOR_YELLOW) {
+                fputs(ANSI_RESET, stdout);
+            }
         }
         puts(" |");
     }
@@ -168,20 +176,32 @@ void tui_clear_screen(void)
 void tui_render_map(const Map *map)
 {
     char board[TUI_ROWS][TUI_COLS][4];
+    PlayerColor board_colors[TUI_ROWS][TUI_COLS];
 
     tui_build_board(board, map);
-    tui_print_board(board, NULL, 0);
+    for (int r = 0; r < TUI_ROWS; ++r) {
+        for (int c = 0; c < TUI_COLS; ++c) {
+            board_colors[r][c] = (PlayerColor)-1;
+        }
+    }
+    tui_print_board(board, board_colors, NULL, 0);
 }
 
 void tui_render_game(const Map *map, const TuiPlayerView *players, size_t player_count)
 {
     char board[TUI_ROWS][TUI_COLS][4];
+    PlayerColor board_colors[TUI_ROWS][TUI_COLS];
 
     tui_build_board(board, map);
-    tui_print_board(board, players, player_count);
+    for (int r = 0; r < TUI_ROWS; ++r) {
+        for (int c = 0; c < TUI_COLS; ++c) {
+            board_colors[r][c] = (PlayerColor)-1;
+        }
+    }
+    tui_print_board(board, board_colors, players, player_count);
 
     puts("");
-    puts("Legend: S=Start T=Tool G=Gift M=Magic H=Hospital J=Jail $=Mine 1/2/3=Land");
+    puts("Legend: S=Start/Player T=Tool G=Gift M=Magic H=Hospital P=Prison $=Mine 0=Land");
 
     if (players == NULL || player_count == 0) {
         return;

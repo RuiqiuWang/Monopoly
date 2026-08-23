@@ -5,11 +5,14 @@
 #include <stddef.h>
 
 #include "map.h"
+#include "player.h"
 
 typedef struct {
     const char *name;
+    PlayerColor color;
     int money;
     int position;
+    unsigned long arrival_order;
     bool active;
 } TuiPlayerView;
 
