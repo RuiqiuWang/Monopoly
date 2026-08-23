@@ -32,4 +32,4 @@ test: test_movement
 	./test_movement
 
 clean:
-	rm -f test_movement movement_cli game_engine tests/json_runner
+	rm -f test_movement test_movement.exe movement_cli movement_cli.exe game_engine game_engine.exe tests/json_runner tests/json_runner.exe

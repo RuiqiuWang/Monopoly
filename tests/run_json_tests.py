@@ -8,7 +8,8 @@ from pathlib import Path
 from typing import Any
 
 ROOT = Path(__file__).resolve().parents[1]
-RUNNER = ROOT / "tests" / "json_runner"
+RUNNER_BASE = ROOT / "tests" / "json_runner"
+RUNNER = RUNNER_BASE if RUNNER_BASE.exists() else RUNNER_BASE.with_suffix(".exe")
 
 ARRAY_KEYS = {
     "players": "id",
