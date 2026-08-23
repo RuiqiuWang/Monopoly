@@ -1,4 +1,6 @@
 $ErrorActionPreference = "Stop"
+$OutputEncoding = [System.Text.UTF8Encoding]::new($false)
+[Console]::OutputEncoding = [System.Text.UTF8Encoding]::new($false)
 
 $root = Split-Path -Parent $MyInvocation.MyCommand.Path
 $cc = $env:CC
@@ -199,7 +201,7 @@ if report.get("result") != "PASS":
     print(json.dumps(report.get("errors", []), ensure_ascii=False))
     raise SystemExit(1)
 '@
-        & $python -c $runnerScript $root $CaseFile $outputFile
+        & $python (Join-Path $root "tests\run_json_case.py") $root $CaseFile $outputFile
         if ($LASTEXITCODE -ne 0) {
             throw "json test failed"
         }

@@ -142,6 +142,8 @@ def run_case_file(case_file: Path, output_file: Path) -> dict[str, Any]:
             check=False,
             capture_output=True,
             text=True,
+            encoding="utf-8",
+            errors="replace",
             timeout=10,
         )
     except (OSError, subprocess.TimeoutExpired) as exc:
