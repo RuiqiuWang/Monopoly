@@ -1,0 +1,25 @@
+#ifndef MONOPOLY_COMMAND_H
+#define MONOPOLY_COMMAND_H
+
+typedef enum {
+    COMMAND_OK = 0,
+    COMMAND_INVALID_ARGUMENT = -1,
+    COMMAND_UNKNOWN = -2,
+    COMMAND_MISSING_ARGUMENT = -3,
+    COMMAND_INVALID_NUMBER = -4,
+    COMMAND_OUT_OF_RANGE = -5,
+    COMMAND_EXTRA_ARGUMENT = -6
+} CommandResult;
+
+typedef enum { COMMAND_STEP, COMMAND_QUIT } CommandType;
+
+typedef struct {
+    CommandType type;
+    int player_id;
+    int steps;
+} Command;
+
+CommandResult Parse_Command(const char *input, Command *command);
+const char *Command_Result_Message(CommandResult result);
+
+#endif
