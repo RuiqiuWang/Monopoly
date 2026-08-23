@@ -154,7 +154,7 @@ gcc -std=c11 -Wall -Wextra -Wpedantic -Iinclude movement.c tests/test_movement.c
 
 ### 脚本测试
 
-`run_movement_tests.ps1` 会自动编译 `tests/movement_cli.c`，逐条输入测试数据，并比较实际输出和预期输出。脚本覆盖 10 条输入：
+`scripts/run_movement_tests.ps1` 会自动编译 `tests/movement_cli.c`，逐条输入测试数据，并比较实际输出和预期输出。脚本覆盖 10 条输入：
 
 ```text
 5
@@ -172,7 +172,7 @@ wada
 运行脚本：
 
 ```powershell
-powershell -ExecutionPolicy Bypass -File .\run_movement_tests.ps1
+powershell -ExecutionPolicy Bypass -File .\scripts\run_movement_tests.ps1
 ```
 
 成功时输出：
@@ -195,4 +195,4 @@ gcc -std=c11 -Wall -Wextra -Wpedantic -Iinclude movement.c tests/movement_cli.c 
 - `movement.c`：移动和输入解析实现
 - `tests/movement_cli.c`：标准输入测试程序
 - `tests/test_movement.c`：C 单元测试
-- `run_movement_tests.ps1`：自动化输入测试脚本
+- `scripts/run_movement_tests.ps1`：自动化输入测试脚本
