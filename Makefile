@@ -1,5 +1,5 @@
 CC ?= cc
-CFLAGS ?= -std=c11 -Wall -Wextra -Wpedantic
+CFLAGS ?= -std=c11 -Wall -Wextra -Wpedantic -finput-charset=UTF-8 -fexec-charset=UTF-8
 CPPFLAGS ?= -Iinclude
 
 .PHONY: all test cli engine json_test clean

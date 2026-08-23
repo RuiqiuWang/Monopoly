@@ -1,6 +1,8 @@
 $ErrorActionPreference = "Stop"
 $OutputEncoding = [System.Text.UTF8Encoding]::new($false)
 [Console]::OutputEncoding = [System.Text.UTF8Encoding]::new($false)
+[Console]::InputEncoding = [System.Text.UTF8Encoding]::new($false)
+chcp 65001 > $null
 
 $root = Split-Path -Parent $MyInvocation.MyCommand.Path
 $cc = $env:CC

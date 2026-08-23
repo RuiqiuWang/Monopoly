@@ -2,6 +2,12 @@
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
+#ifdef _WIN32
+#include <fcntl.h>
+#include <io.h>
+#include <windows.h>
+#endif
+
 
 #include "map.h"
 #include "movement.h"
@@ -10,6 +16,16 @@
 #define MAX_PLAYERS 4
 #define INITIAL_PLAYER_MONEY 1000
 #define MAX_ROUNDS 12
+
+static void configure_console_encoding(void)
+{
+#ifdef _WIN32
+    SetConsoleOutputCP(CP_UTF8);
+    SetConsoleCP(CP_UTF8);
+    _setmode(_fileno(stdout), _O_BINARY);
+    _setmode(_fileno(stdin), _O_BINARY);
+#endif
+}
 
 void Check_Player_in_Mine(Player *someone)
 {
@@ -102,6 +118,7 @@ int main(void)
     unsigned long arrival_order[MAX_PLAYERS] = {1, 2, 3, 4};
     unsigned long arrival_counter = 4;
 
+    configure_console_encoding();
     srand((unsigned int)time(NULL));
     player_count = read_player_count();
     initialize_players(players, player_count);
