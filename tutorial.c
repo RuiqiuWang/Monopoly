@@ -81,6 +81,14 @@ bool tutorial_state_save(const TutorialState *state, const char *path)
     return true;
 }
 
+TutorialChoice tutorial_parse_choice(const char *input)
+{
+    if (input == NULL) return TUTORIAL_CHOICE_INVALID;
+    if (toupper((unsigned char)input[0]) == 'Y' && (input[1] == '\0' || input[1] == '\r' || input[1] == '\n')) return TUTORIAL_CHOICE_YES;
+    if (toupper((unsigned char)input[0]) == 'N' && (input[1] == '\0' || input[1] == '\r' || input[1] == '\n')) return TUTORIAL_CHOICE_NO;
+    return TUTORIAL_CHOICE_INVALID;
+}
+
 bool tutorial_prompt_first_run(void)
 {
     char input[32];
@@ -90,10 +98,10 @@ bool tutorial_prompt_first_run(void)
         if (fgets(input, sizeof(input), stdin) == NULL) {
             return false;
         }
-        if (toupper((unsigned char)input[0]) == 'Y') {
+        if (tutorial_parse_choice(input) == TUTORIAL_CHOICE_YES) {
             return true;
         }
-        if (toupper((unsigned char)input[0]) == 'N') {
+        if (tutorial_parse_choice(input) == TUTORIAL_CHOICE_NO) {
             return false;
         }
         discard_line();

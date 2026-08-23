@@ -148,6 +148,10 @@ function Build-Target {
                 "movement_cli.exe",
                 "game_engine",
                 "game_engine.exe",
+                "tutorial_test",
+                "tutorial_test.exe",
+                "command_test",
+                "command_test.exe",
                 "tests\json_runner",
                 "tests\json_runner.exe"
             )
@@ -159,7 +163,13 @@ function Build-Target {
             Invoke-Compiler ($commonFlags + @("movement.c", "tests\movement_cli.c", "-o", "movement_cli.exe"))
         }
         "game_engine" {
-            Invoke-Compiler ($commonFlags + @("game_engine.c", "map.c", "tui.c", "movement.c", "-o", "game_engine.exe"))
+            Invoke-Compiler ($commonFlags + @("game_engine.c", "command.c", "tutorial.c", "map.c", "tui.c", "movement.c", "-o", "game_engine.exe"))
+        }
+        "tutorial_test" {
+            Invoke-Compiler ($commonFlags + @("tutorial.c", "tui.c", "map.c", "movement.c", "tests\test_tutorial.c", "-o", "tutorial_test.exe"))
+        }
+        "command_test" {
+            Invoke-Compiler ($commonFlags + @("command.c", "tests\test_command.c", "-o", "command_test.exe"))
         }
         "tests/json_runner" {
             Invoke-Compiler ($commonFlags + @("movement.c", "tests\json_engine.c", "tests\json_runner.c", "-o", "tests\json_runner.exe"))
@@ -246,6 +256,8 @@ $buildSteps = @(
     "clean",
     "test_movement",
     "movement_cli",
+    "tutorial_test",
+    "command_test",
     "game_engine",
     "tests/json_runner"
 )
@@ -265,20 +277,22 @@ Write-Host ""
 
 $cases = Get-ChildItem (Join-Path $root "tests\input") -Filter *.json | Sort-Object Name | ForEach-Object { $_.FullName }
 
-$movementExe = Resolve-Executable (Join-Path $root "test_movement")
-Write-Step -Index 1 -Total 1 -Label "movement unit" -Verb "Running Test"
-try {
-    & $movementExe | Out-Null
-    if ($LASTEXITCODE -ne 0) {
-        throw "movement unit failed"
-    }
-    Write-Pass
-} catch {
-    Write-Fail $_.Exception.Message
+$unitTests = @(
+    @{ Name = "movement unit"; Path = "test_movement" },
+    @{ Name = "tutorial choice unit"; Path = "tutorial_test" },
+    @{ Name = "command unit"; Path = "command_test" }
+)
+for ($i = 0; $i -lt $unitTests.Count; $i++) {
+    $unitExe = Resolve-Executable (Join-Path $root $unitTests[$i].Path)
+    Write-Step -Index ($i + 1) -Total ($unitTests.Count + $cases.Count) -Label $unitTests[$i].Name -Verb "Running Test"
+    try {
+        & $unitExe | Out-Null
+        if ($LASTEXITCODE -ne 0) { throw "$($unitTests[$i].Name) failed" }
+        Write-Pass
+    } catch { Write-Fail $_.Exception.Message }
 }
-
-$testIndex = 2
-$testTotal = 1 + $cases.Count
+$testIndex = $unitTests.Count + 1
+$testTotal = $unitTests.Count + $cases.Count
 foreach ($case in $cases) {
     Run-JsonCase -Index $testIndex -Total $testTotal -CaseFile $case
     $testIndex++

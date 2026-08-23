@@ -9,6 +9,15 @@ int main(void)
     TutorialState state = {false};
     TutorialState loaded = {false};
 
+    assert(tutorial_parse_choice("Y") == TUTORIAL_CHOICE_YES);
+    assert(tutorial_parse_choice("y\n") == TUTORIAL_CHOICE_YES);
+    assert(tutorial_parse_choice("N") == TUTORIAL_CHOICE_NO);
+    assert(tutorial_parse_choice("n\r\n") == TUTORIAL_CHOICE_NO);
+    assert(tutorial_parse_choice("X") == TUTORIAL_CHOICE_INVALID);
+    assert(tutorial_parse_choice("YES") == TUTORIAL_CHOICE_INVALID);
+    assert(tutorial_parse_choice("") == TUTORIAL_CHOICE_INVALID);
+    assert(tutorial_parse_choice(NULL) == TUTORIAL_CHOICE_INVALID);
+
     assert(tutorial_state_save(&state, path));
     assert(tutorial_state_load(&loaded, path));
     assert(!loaded.has_run);
