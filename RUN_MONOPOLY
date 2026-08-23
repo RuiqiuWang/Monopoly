@@ -178,14 +178,11 @@ run_json_case() {
     local current="$1"
     local total="$2"
     local case_file="$3"
-    local relative_path
     local output_file
     local case_id
 
-    relative_path="${case_file#"$ROOT/tests/input/"}"
-    output_file="$ROOT/tests/output/$relative_path"
+    output_file="$ROOT/tests/output/$(basename "$case_file")"
     case_id="$(json_case_id "$case_file")"
-    mkdir -p "$(dirname "$output_file")"
 
     : > "$LOG_FILE"
     printf '[%d/%d] Running Test %s using json_runner ... ' "$current" "$total" "$case_id"
@@ -214,7 +211,7 @@ PY
 }
 
 collect_json_cases() {
-    find "$ROOT/tests/input" -type f -name '*.json' | sort
+    find "$ROOT/tests/input" -maxdepth 1 -type f -name '*.json' | sort
 }
 
 main() {

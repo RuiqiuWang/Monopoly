@@ -173,12 +173,7 @@ function Run-JsonCase {
         [string]$CaseFile
     )
 
-    $relative = $CaseFile.Substring(($root + "\tests\input\").Length)
-    $outputFile = Join-Path $root ("tests\output\" + $relative)
-    $outputDir = Split-Path -Parent $outputFile
-    if (-not (Test-Path $outputDir)) {
-        New-Item -ItemType Directory -Path $outputDir | Out-Null
-    }
+    $outputFile = Join-Path $root ("tests\output\" + [IO.Path]::GetFileName($CaseFile))
     $caseId = Get-CaseId -CaseFile $CaseFile
     Write-Step -Index $Index -Total $Total -Label $caseId -Verb "Running Test"
 
@@ -260,14 +255,7 @@ for ($i = 0; $i -lt $buildSteps.Count; $i++) {
 
 Write-Host ""
 
-$cases = @()
-$cases += Join-Path $root "tests\input\TC-CTRL-001.json"
-$cases += Join-Path $root "tests\input\TC-DISPLAY-001.json"
-$cases += Join-Path $root "tests\input\TC-ROLL-001.json"
-$cases += Join-Path $root "tests\input\TC-STEP-001.json"
-$cases += Join-Path $root "tests\input\TC-STEP-002.json"
-$cases += Join-Path $root "tests\input\TC-TURN-001.json"
-$cases += Get-ChildItem (Join-Path $root "tests\input\from_test") -Recurse -Filter *.json | ForEach-Object { $_.FullName } | Sort-Object
+$cases = Get-ChildItem (Join-Path $root "tests\input") -Filter *.json | Sort-Object Name | ForEach-Object { $_.FullName }
 
 $movementExe = Resolve-Executable (Join-Path $root "test_movement")
 Write-Step -Index 1 -Total 1 -Label "movement unit" -Verb "Running Test"

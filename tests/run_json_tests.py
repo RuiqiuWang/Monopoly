@@ -185,13 +185,12 @@ def main() -> int:
     output_dir = ROOT / "tests" / "output"
     output_dir.mkdir(parents=True, exist_ok=True)
 
-    case_files = sorted(input_dir.rglob("*.json"))
+    case_files = sorted(input_dir.glob("*.json"))
     total = 0
     passed = 0
     for case_file in case_files:
         total += 1
-        output_file = output_dir / case_file.relative_to(input_dir)
-        output_file.parent.mkdir(parents=True, exist_ok=True)
+        output_file = output_dir / case_file.name
         report = run_case_file(case_file, output_file)
         result = report.get("result", "ERROR")
         case_id = report.get("case_id", case_file.stem)
