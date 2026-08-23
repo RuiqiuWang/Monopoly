@@ -9,40 +9,28 @@
 
 #define MAX_PLAYERS 4
 #define INITIAL_PLAYER_MONEY 1000
+#define MAX_ROUNDS 12
 
 void Check_Player_in_Mine(Player *someone)
 {
-    (void)someone;
+    if (someone == NULL || !someone->active) {
+        return;
+    }
+
+    if (someone->position >= 64 && someone->position < MAP_BLOCK_COUNT) {
+        int bonus = 100 + (someone->position - 64) * 50;
+        someone->money += bonus;
+    }
 }
 
 int Get_Random_Step(void)
 {
-    return rand() % 7;
+    return (rand() % 6) + 1;
 }
 
 static int read_player_count(void)
 {
-    int player_count = 0;
-
-    while (player_count < 1 || player_count > MAX_PLAYERS) {
-        printf("请输入玩家数量（1-%d）：", MAX_PLAYERS);
-        fflush(stdout);
-
-        if (scanf("%d", &player_count) != 1) {
-            int input;
-
-            while ((input = getchar()) != '\n' && input != EOF) {
-                /* discard invalid input */
-            }
-            player_count = 0;
-            puts("请输入 1 到 4 之间的数字。");
-        }
-    }
-
-    while (getchar() != '\n') {
-        /* discard the rest of the input line */
-    }
-    return player_count;
+    return MAX_PLAYERS;
 }
 
 static void initialize_players(Player players[], int player_count)
@@ -101,19 +89,6 @@ static void render_game_state(
     tui_render_game(map, views, (size_t)player_count);
 }
 
-static int wait_for_turn(void)
-{
-    char input[16];
-
-    printf("\n按回车开始下一步，输入 q 退出：");
-    fflush(stdout);
-
-    if (fgets(input, sizeof(input), stdin) == NULL) {
-        return 0;
-    }
-    return input[0] != 'q' && input[0] != 'Q';
-}
-
 int main(void)
 {
     Map map;
@@ -128,7 +103,7 @@ int main(void)
 
     render_game_state(&map, players, player_count, round, "游戏初始化完成。");
 
-    for (;;) {
+    for (int outer_round = 0; outer_round < MAX_ROUNDS; ++outer_round) {
         for (int i = 0; i < player_count; ++i) {
             char message[160];
             PlayerMoveResult move_result;
@@ -138,14 +113,9 @@ int main(void)
                 continue;
             }
 
-            if (!wait_for_turn()) {
-                puts("\n游戏结束。");
-                return 0;
-            }
-
             step = Get_Random_Step();
             move_result = Move_Player(&players[i], step);
-            if (move_result != PLAYER_MOVE_OK && step != 0) {
+            if (move_result != PLAYER_MOVE_OK) {
                 snprintf(message,
                          sizeof(message),
                          "玩家 %s 掷出 %d，但移动失败。",
@@ -165,4 +135,7 @@ int main(void)
         }
         ++round;
     }
+
+    puts("\n演示结束。");
+    return 0;
 }
