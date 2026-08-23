@@ -1,6 +1,7 @@
 *.o
 *.obj
 *.exe
+.monopoly_state.json
 test_movement
 movement_cli
 game_engine

@@ -12,6 +12,8 @@
 #include "map.h"
 #include "movement.h"
 #include "tui.h"
+#include "command.h"
+#include "tutorial.h"
 
 #define MAX_PLAYERS 4
 #define INITIAL_PLAYER_MONEY 1000
@@ -109,6 +111,14 @@ static void render_game_state(
     tui_render_game(map, views, (size_t)player_count);
 }
 
+static int find_player_index(const Player players[], int player_count, int player_id)
+{
+    for (int i = 0; i < player_count; ++i) {
+        if (players[i].id == player_id) return i;
+    }
+    return -1;
+}
+
 int main(void)
 {
     Map map;
@@ -117,49 +127,58 @@ int main(void)
     int round = 1;
     unsigned long arrival_order[MAX_PLAYERS] = {1, 2, 3, 4};
     unsigned long arrival_counter = 4;
+    TutorialState tutorial_state;
 
     configure_console_encoding();
     srand((unsigned int)time(NULL));
+    map_init(&map);
+    tutorial_state_load(&tutorial_state, MONOPOLY_STATE_FILE);
+    if (!tutorial_state.has_run) {
+        tutorial_state.has_run = true;
+        tutorial_state_save(&tutorial_state, MONOPOLY_STATE_FILE);
+        if (tutorial_prompt_first_run()) {
+            tutorial_run(&map);
+        }
+    }
     player_count = read_player_count();
     initialize_players(players, player_count);
-    map_init(&map);
+    render_game_state(&map, players, player_count, arrival_order, round, "游戏初始化完成。输入 step [id] [number] 移动玩家，输入 quit 退出。");
 
-    render_game_state(&map, players, player_count, arrival_order, round, "游戏初始化完成。");
+    for (;;) {
+        char input[128];
+        char message[160];
+        Command command;
+        CommandResult command_result;
 
-    for (int outer_round = 0; outer_round < MAX_ROUNDS; ++outer_round) {
-        for (int i = 0; i < player_count; ++i) {
-            char message[160];
+        printf("\n输入命令：");
+        if (fgets(input, sizeof(input), stdin) == NULL) break;
+        command_result = Parse_Command(input, &command);
+        if (command_result != COMMAND_OK) {
+            render_game_state(&map, players, player_count, arrival_order, round, Command_Result_Message(command_result));
+            continue;
+        }
+        if (command.type == COMMAND_QUIT) break;
+
+        {
+            int index = find_player_index(players, player_count, command.player_id);
             PlayerMoveResult move_result;
-            int step;
-
-            if (!players[i].active) {
+            if (index < 0 || !players[index].active) {
+                render_game_state(&map, players, player_count, arrival_order, round, "错误：玩家 id 不存在或玩家已退出。");
                 continue;
             }
-
-            step = Get_Random_Step();
-            move_result = Move_Player(&players[i], step);
-            arrival_order[i] = ++arrival_counter;
+            move_result = Move_Player(&players[index], command.steps);
             if (move_result != PLAYER_MOVE_OK) {
-                snprintf(message,
-                         sizeof(message),
-                         "玩家 %s 掷出 %d，但移动失败。",
-                         players[i].name,
-                         step);
-            } else {
-                Check_Player_in_Mine(&players[i]);
-                snprintf(message,
-                         sizeof(message),
-                         "玩家 %s 掷出 %d，当前位置 %d。",
-                         players[i].name,
-                         step,
-                         players[i].position);
+                render_game_state(&map, players, player_count, arrival_order, round, "错误：玩家移动失败。");
+                continue;
             }
-
+            arrival_order[index] = ++arrival_counter;
+            Check_Player_in_Mine(&players[index]);
+            snprintf(message, sizeof(message), "玩家 %s 移动 %d 步，当前位置 %d。", players[index].name, command.steps, players[index].position);
             render_game_state(&map, players, player_count, arrival_order, round, message);
         }
         ++round;
     }
 
-    puts("\n演示结束。");
+    puts("\n游戏结束。");
     return 0;
 }
