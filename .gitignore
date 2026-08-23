@@ -2,3 +2,6 @@
 *.obj
 *.exe
 test_movement
+tests/json_runner
+tests/output/
+tests/__pycache__/

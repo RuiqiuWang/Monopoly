@@ -1,0 +1,55 @@
+{
+  "schema_version": "1.0",
+  "case_id": "TC-CTRL-001",
+  "case_name": "query help and quit",
+  "map_file": "map.json",
+  "preset": {
+    "users": ["A", "Q"],
+    "current_user": "A",
+    "phase": "COMMAND",
+    "game_status": "RUNNING",
+    "players": [
+      {
+        "id": "A",
+        "fund": 1000,
+        "credit": 0,
+        "position": 0,
+        "status": "NORMAL",
+        "remaining_rounds": 0,
+        "items": {"BLOCK": 0, "BOMB": 0, "ROBOT": 0},
+        "god_of_wealth_rounds": 0
+      },
+      {
+        "id": "Q",
+        "fund": 1000,
+        "credit": 0,
+        "position": 7,
+        "status": "NORMAL",
+        "remaining_rounds": 0,
+        "items": {"BLOCK": 0, "BOMB": 0, "ROBOT": 0},
+        "god_of_wealth_rounds": 0
+      }
+    ],
+    "properties": [],
+    "map_items": [],
+    "dice_sequence": []
+  },
+  "actions": [
+    {
+      "command": "QUERY",
+      "params": {}
+    },
+    {
+      "command": "HELP",
+      "params": {}
+    },
+    {
+      "command": "QUIT",
+      "params": {}
+    }
+  ],
+  "expected": {
+    "phase": "ENDED",
+    "game_status": "FINISHED"
+  }
+}

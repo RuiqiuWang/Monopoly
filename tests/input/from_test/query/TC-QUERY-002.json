@@ -1,0 +1,21 @@
+{
+  "schema_version": "1.0",
+  "case_id": "TC-QUERY-002",
+  "case_name": "资产查询-购地后查询-资金减少地产增加",
+  "map_file": "map.json",
+  "preset": {
+    "users": ["A", "Q"],
+    "current_user": "A",
+    "phase": "COMMAND",
+    "game_status": "RUNNING",
+    "players": [
+      {"id": "A", "fund": 800, "credit": 0, "position": 1, "status": "NORMAL", "remaining_rounds": 0, "items": {"BLOCK": 0, "BOMB": 0, "ROBOT": 0}, "god_of_wealth_rounds": 0},
+      {"id": "Q", "fund": 1000, "credit": 0, "position": 20, "status": "NORMAL", "remaining_rounds": 0, "items": {"BLOCK": 0, "BOMB": 0, "ROBOT": 0}, "god_of_wealth_rounds": 0}
+    ],
+    "properties": [{"position": 1, "owner": "A", "level": 0}],
+    "map_items": [],
+    "dice_sequence": []
+  },
+  "actions": [{"command": "QUERY", "params": {}}],
+  "expected": {"players": [{"id": "A", "fund": 800, "position": 1}], "properties": [{"position": 1, "owner": "A", "level": 0}]}
+}

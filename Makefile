@@ -2,7 +2,7 @@ CC ?= cc
 CFLAGS ?= -std=c11 -Wall -Wextra -Wpedantic
 CPPFLAGS ?= -Iinclude
 
-.PHONY: all test cli engine clean
+.PHONY: all test cli engine json_test clean
 
 all: test_movement movement_cli game_engine
 
@@ -21,8 +21,15 @@ cli: movement_cli
 engine: game_engine
 	./game_engine
 
+json_test:
+	$(MAKE) tests/json_runner
+	python3 tests/run_json_tests.py
+
+tests/json_runner: tests/json_runner.c movement.c include/movement.h include/player.h
+	$(CC) $(CPPFLAGS) $(CFLAGS) movement.c tests/json_engine.c tests/json_runner.c -o $@
+
 test: test_movement
 	./test_movement
 
 clean:
-	rm -f test_movement movement_cli game_engine
+	rm -f test_movement movement_cli game_engine tests/json_runner
