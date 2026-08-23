@@ -8,6 +8,8 @@ PYTHON_BIN="${PYTHON:-python3}"
 MAKE_BIN="${MAKE:-make}"
 CC_BIN="${CC:-cc}"
 CC_CHECK="${CC_BIN%% *}"
+CPPFLAGS_VALUE="${CPPFLAGS:--Iinclude}"
+CFLAGS_VALUE="${CFLAGS:--std=c11 -Wall -Wextra -Wpedantic}"
 LOG_FILE="$(mktemp)"
 
 cleanup() {
@@ -51,6 +53,20 @@ run_check() {
     fi
 }
 
+run_optional_make_check() {
+    local current="$1"
+    local total="$2"
+
+    : > "$LOG_FILE"
+    printf '[%d/%d] Checking make using command -v ... ' "$current" "$total"
+    if command -v "$MAKE_BIN" >"$LOG_FILE" 2>&1; then
+        pass_line
+    else
+        printf '[SKIP]\n'
+        printf '%s\n' "make not found; direct compiler fallback will be used."
+    fi
+}
+
 run_project_check() {
     local current="$1"
     local total="$2"
@@ -78,8 +94,46 @@ run_build() {
     local target="$3"
 
     : > "$LOG_FILE"
-    printf '[%d/%d] Building %s using %s ... ' "$current" "$total" "$target" "$MAKE_BIN"
-    if "$MAKE_BIN" -C "$ROOT" "$target" >"$LOG_FILE" 2>&1; then
+    if command -v "$MAKE_BIN" > /dev/null 2>&1; then
+        printf '[%d/%d] Building %s using %s ... ' "$current" "$total" "$target" "$MAKE_BIN"
+        if "$MAKE_BIN" -C "$ROOT" "$target" >"$LOG_FILE" 2>&1; then
+            pass_line
+        else
+            fail_line
+            exit 1
+        fi
+        return
+    fi
+
+    printf '[%d/%d] Building %s using %s fallback ... ' "$current" "$total" "$target" "$CC_CHECK"
+    (
+        cd "$ROOT" || exit 1
+        case "$target" in
+            clean)
+                rm -f test_movement test_movement.exe \
+                      movement_cli movement_cli.exe \
+                      game_engine game_engine.exe \
+                      tests/json_runner tests/json_runner.exe
+                ;;
+            test_movement)
+                $CC_BIN $CPPFLAGS_VALUE $CFLAGS_VALUE movement.c tests/test_movement.c -o test_movement
+                ;;
+            movement_cli)
+                $CC_BIN $CPPFLAGS_VALUE $CFLAGS_VALUE movement.c tests/movement_cli.c -o movement_cli
+                ;;
+            game_engine)
+                $CC_BIN $CPPFLAGS_VALUE $CFLAGS_VALUE game_engine.c map.c tui.c movement.c -o game_engine
+                ;;
+            tests/json_runner)
+                $CC_BIN $CPPFLAGS_VALUE $CFLAGS_VALUE movement.c tests/json_engine.c tests/json_runner.c -o tests/json_runner
+                ;;
+            *)
+                printf 'No fallback build rule for %s\n' "$target"
+                exit 1
+                ;;
+        esac
+    ) >"$LOG_FILE" 2>&1
+    if [ "$?" -eq 0 ]; then
         pass_line
     else
         fail_line
@@ -175,7 +229,7 @@ main() {
 
     run_project_check 1 "$env_total"
     run_check 2 "$env_total" "C compiler" "$CC_CHECK"
-    run_check 3 "$env_total" "make" "$MAKE_BIN"
+    run_optional_make_check 3 "$env_total"
     run_check 4 "$env_total" "python3" "$PYTHON_BIN"
     printf '\n'
 

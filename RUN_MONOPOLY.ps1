@@ -9,6 +9,14 @@ $python = $env:PYTHON
 if ([string]::IsNullOrWhiteSpace($python)) {
     $python = "python"
 }
+$cflags = $env:CFLAGS
+if ([string]::IsNullOrWhiteSpace($cflags)) {
+    $cflags = "-std=c11 -Wall -Wextra -Wpedantic"
+}
+$cppflags = $env:CPPFLAGS
+if ([string]::IsNullOrWhiteSpace($cppflags)) {
+    $cppflags = "-Iinclude"
+}
 
 function Write-Step {
     param(
@@ -86,6 +94,78 @@ function Resolve-Executable {
     return $BasePath
 }
 
+function Invoke-Compiler {
+    param([string[]]$Arguments)
+
+    Push-Location $root
+    try {
+        & $cc @Arguments | Out-Null
+        if ($LASTEXITCODE -ne 0) {
+            throw "compiler failed"
+        }
+    } finally {
+        Pop-Location
+    }
+}
+
+function Remove-IfExists {
+    param([string[]]$Paths)
+
+    foreach ($path in $Paths) {
+        $fullPath = Join-Path $root $path
+        if (Test-Path $fullPath) {
+            Remove-Item -Force $fullPath
+        }
+    }
+}
+
+function Build-Target {
+    param([string]$Target)
+
+    $makeCommand = Get-Command make -ErrorAction SilentlyContinue
+    if ($makeCommand) {
+        & make -C $root $Target | Out-Null
+        if ($LASTEXITCODE -ne 0) {
+            throw "build failed"
+        }
+        return
+    }
+
+    $commonFlags = @()
+    $commonFlags += $cppflags.Split(" ", [System.StringSplitOptions]::RemoveEmptyEntries)
+    $commonFlags += $cflags.Split(" ", [System.StringSplitOptions]::RemoveEmptyEntries)
+
+    switch ($Target) {
+        "clean" {
+            Remove-IfExists @(
+                "test_movement",
+                "test_movement.exe",
+                "movement_cli",
+                "movement_cli.exe",
+                "game_engine",
+                "game_engine.exe",
+                "tests\json_runner",
+                "tests\json_runner.exe"
+            )
+        }
+        "test_movement" {
+            Invoke-Compiler ($commonFlags + @("movement.c", "tests\test_movement.c", "-o", "test_movement.exe"))
+        }
+        "movement_cli" {
+            Invoke-Compiler ($commonFlags + @("movement.c", "tests\movement_cli.c", "-o", "movement_cli.exe"))
+        }
+        "game_engine" {
+            Invoke-Compiler ($commonFlags + @("game_engine.c", "map.c", "tui.c", "movement.c", "-o", "game_engine.exe"))
+        }
+        "tests/json_runner" {
+            Invoke-Compiler ($commonFlags + @("movement.c", "tests\json_engine.c", "tests\json_runner.c", "-o", "tests\json_runner.exe"))
+        }
+        default {
+            throw "No fallback build rule for $Target"
+        }
+    }
+}
+
 function Run-JsonCase {
     param(
         [int]$Index,
@@ -139,7 +219,6 @@ Assert-Exists 1 4 (Join-Path $root "Makefile") "project layout"
 
 $envChecks = @(
     @{ Name = $cc; Label = "C compiler" },
-    @{ Name = "make"; Label = "make" },
     @{ Name = $python; Label = "python" }
 )
 for ($i = 0; $i -lt $envChecks.Count; $i++) {
@@ -149,6 +228,13 @@ for ($i = 0; $i -lt $envChecks.Count; $i++) {
     } else {
         Write-Fail "Missing $($envChecks[$i].Label)"
     }
+}
+Write-Step -Index 4 -Total 4 -Label "make" -Verb "Checking"
+if (Get-Command make -ErrorAction SilentlyContinue) {
+    Write-Pass
+} else {
+    Write-Host "[SKIP]"
+    Write-Host "make not found; direct compiler fallback will be used."
 }
 
 Write-Host ""
@@ -162,12 +248,10 @@ $buildSteps = @(
 )
 for ($i = 0; $i -lt $buildSteps.Count; $i++) {
     $target = $buildSteps[$i]
-    Write-Step -Index ($i + 1) -Total $buildSteps.Count -Label $target -Verb "Building"
+    $driver = if (Get-Command make -ErrorAction SilentlyContinue) { "make" } else { "$cc fallback" }
+    Write-Step -Index ($i + 1) -Total $buildSteps.Count -Label "$target using $driver" -Verb "Building"
     try {
-        & make -C $root $target | Out-Null
-        if ($LASTEXITCODE -ne 0) {
-            throw "build failed"
-        }
+        Build-Target $target
         Write-Pass
     } catch {
         Write-Fail $_.Exception.Message
