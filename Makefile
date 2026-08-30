@@ -2,6 +2,14 @@ CC = gcc
 CFLAGS ?= -std=c11 -Wall -Wextra -Wpedantic -finput-charset=UTF-8 -fexec-charset=UTF-8
 CPPFLAGS ?= -Iinclude
 
+# Python is named differently on common platforms.  Windows installations
+# normally provide the Python Launcher (`py -3`) instead of `python3`.
+ifeq ($(OS),Windows_NT)
+PYTHON ?= py -3
+else
+PYTHON ?= python3
+endif
+
 .PHONY: all test cli engine tutorial_test command_test mine_test tool_room_test assets_test character_select_test map_test item_usage_test item_effect_test gift_house_test help_query_test jail_test jail_item_effect_test property_test e2e_test json_test clean
 
 all: test_movement movement_cli character_select_cli tutorial_test command_test mine_test tool_room_test assets_test character_select_test map_test item_usage_test item_effect_test gift_house_test help_query_test jail_test jail_item_effect_test property_test game_engine
@@ -61,7 +69,7 @@ property_test: property.c map.c tests/test_property.c include/property.h
 	$(CC) $(CPPFLAGS) $(CFLAGS) property.c map.c tests/test_property.c -o $@
 
 e2e_test: game_engine
-	python tests/e2e_game.py
+	$(PYTHON) tests/e2e_game.py
 
 cli: movement_cli
 	./movement_cli
@@ -71,7 +79,7 @@ engine: game_engine
 
 json_test:
 	$(MAKE) tests/json_runner
-	python3 tests/run_json_tests.py
+	$(PYTHON) tests/run_json_tests.py
 
 tests/json_runner: tests/json_runner.c movement.c include/movement.h include/player.h
 	$(CC) $(CPPFLAGS) $(CFLAGS) movement.c tests/json_engine.c tests/json_runner.c -o $@
