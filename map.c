@@ -118,6 +118,8 @@ void map_init(Map *map)
     for (size_t i = 0; i < MAP_BLOCK_COUNT; ++i) {
         map->blocks[i] = kDefaultBlocks[i];
         map->cost[i] = kDefaultCosts[i];
+        map->property_owner[i] = MAP_PROPERTY_UNOWNED;
+        map->property_level[i] = 0;
     }
 }
 
@@ -152,6 +154,48 @@ void map_set_item(Map *map, size_t index, Item_Type item)
 
     map->blocks[index] &= (BlockBits)~item_mask;
     map->blocks[index] |= (BlockBits)item;
+}
+
+int map_get_property_owner(const Map *map, size_t index)
+{
+    if (map == NULL || !map_valid_index(index)) {
+        return MAP_PROPERTY_UNOWNED;
+    }
+    return map->property_owner[index];
+}
+
+unsigned int map_get_property_level(const Map *map, size_t index)
+{
+    if (map == NULL || !map_valid_index(index)) {
+        return 0;
+    }
+    return map->property_level[index];
+}
+
+bool map_set_property(Map *map, size_t index, int owner_id, unsigned int level)
+{
+    if (map == NULL || !map_valid_index(index) ||
+        !map_block_is_purchasable(map->blocks[index]) ||
+        owner_id <= MAP_PROPERTY_UNOWNED || level == 0 ||
+        level > MAP_MAX_PROPERTY_LEVEL) {
+        return false;
+    }
+
+    map->property_owner[index] = owner_id;
+    map->property_level[index] = (unsigned char)level;
+    return true;
+}
+
+bool map_clear_property(Map *map, size_t index)
+{
+    if (map == NULL || !map_valid_index(index) ||
+        !map_block_is_purchasable(map->blocks[index])) {
+        return false;
+    }
+
+    map->property_owner[index] = MAP_PROPERTY_UNOWNED;
+    map->property_level[index] = 0;
+    return true;
 }
 
 bool map_block_is_start(BlockBits block)

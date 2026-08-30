@@ -170,7 +170,138 @@ static void tui_print_board(
 
 void tui_clear_screen(void)
 {
-    fputs("\033[2J\033[H", stdout);
+    fputs("\033[H\033[2J", stdout);
+    fflush(stdout);
+}
+
+static const char *tui_block_name(BlockBits block)
+{
+    if (map_block_is_start(block)) {
+        return "起点";
+    }
+    if (map_block_is_tool_room(block)) {
+        return "道具屋";
+    }
+    if (map_block_is_gift_room(block)) {
+        return "礼品屋";
+    }
+    if (map_block_is_magic_room(block)) {
+        return "魔法屋";
+    }
+    if (map_block_is_hospital(block)) {
+        return "医院";
+    }
+    if (map_block_is_jail(block)) {
+        return "监狱";
+    }
+    if (map_block_is_mine(block)) {
+        return "矿地";
+    }
+    if (map_block_is_purchasable(block)) {
+        return "地产";
+    }
+    return "普通地块";
+}
+
+static const char *tui_plot_name(BlockBits block)
+{
+    if (map_block_is_plot(block, IS_PLOT_ONE)) {
+        return "一区（贫瘠）";
+    }
+    if (map_block_is_plot(block, IS_PLOT_TWO)) {
+        return "二区（中等）";
+    }
+    if (map_block_is_plot(block, IS_PLOT_THREE)) {
+        return "三区（富裕）";
+    }
+    return "特殊地块";
+}
+
+static const TuiPlayerView *tui_current_player(
+    const TuiPlayerView *players,
+    size_t player_count)
+{
+    if (players == NULL) {
+        return NULL;
+    }
+    for (size_t i = 0; i < player_count; ++i) {
+        if (players[i].active && players[i].current) {
+            return &players[i];
+        }
+    }
+    return NULL;
+}
+
+static const TuiPlayerView *tui_property_focus_player(
+    const TuiPlayerView *players,
+    size_t player_count)
+{
+    if (players != NULL) {
+        for (size_t i = 0; i < player_count; ++i) {
+            if (players[i].active && players[i].property_focus) {
+                return &players[i];
+            }
+        }
+    }
+    return tui_current_player(players, player_count);
+}
+
+static const TuiPlayerView *tui_find_player_by_id(
+    const TuiPlayerView *players,
+    size_t player_count,
+    int id)
+{
+    if (players == NULL) {
+        return NULL;
+    }
+    for (size_t i = 0; i < player_count; ++i) {
+        if (players[i].id == id) {
+            return &players[i];
+        }
+    }
+    return NULL;
+}
+
+static void tui_render_current_property(
+    const Map *map,
+    const TuiPlayerView *players,
+    size_t player_count)
+{
+    const TuiPlayerView *current = tui_property_focus_player(players, player_count);
+    BlockBits block;
+
+    puts("");
+    puts("+-------------------------- 当前地产 --------------------------+");
+    if (map == NULL || current == NULL || current->position < 0 ||
+        current->position >= MAP_BLOCK_COUNT) {
+        puts("| 暂无可显示的地产信息。                                     |");
+        puts("+--------------------------------------------------------------+");
+        return;
+    }
+
+    block = map_get_block(map, (size_t)current->position);
+    printf("| 所在玩家: %-4s  位置: %-2d  类型: %-10s                 |\n",
+           current->name != NULL ? current->name : "?",
+           current->position,
+           tui_block_name(block));
+
+    if (map_block_is_purchasable(block)) {
+        int owner_id = map_get_property_owner(map, (size_t)current->position);
+        unsigned int level = map_get_property_level(map, (size_t)current->position);
+        const TuiPlayerView *owner = tui_find_player_by_id(players, player_count, owner_id);
+
+        printf("| 价格: %-6.0f  地产分区: %-12s                    |\n",
+               map_get_cost(map, (size_t)current->position),
+               tui_plot_name(block));
+        printf("| 归属: %-8s  等级: %u/%d  所有人ID: %d              |\n",
+               owner != NULL && owner->name != NULL ? owner->name : "无主",
+               level,
+               MAP_MAX_PROPERTY_LEVEL,
+               owner_id);
+    } else {
+        puts("| 此地块不可购买；归属和地产等级不适用。                     |");
+    }
+    puts("+--------------------------------------------------------------+");
 }
 
 void tui_render_map(const Map *map)
@@ -201,18 +332,22 @@ void tui_render_game(const Map *map, const TuiPlayerView *players, size_t player
     tui_print_board(board, board_colors, players, player_count);
 
     puts("");
-    puts("Legend: S=Start/Player T=Tool G=Gift M=Magic H=Hospital P=Prison $=Mine 0=Land");
+    puts("Legend: S=Start T=Tool G=Gift M=Magic H=Hospital P=Prison $=Mine 0=Land; colored letters=players");
 
     if (players == NULL || player_count == 0) {
         return;
     }
 
-    puts("Players:");
+    tui_render_current_property(map, players, player_count);
+
+    puts("");
+    puts("Players (> 表示当前行动者):");
     for (size_t i = 0; i < player_count; ++i) {
         if (!players[i].active) {
             continue;
         }
-        printf("  %s  money=%d  pos=%d\n",
+        printf("%c %s  money=%d  pos=%d\n",
+               players[i].current ? '>' : ' ',
                players[i].name != NULL ? players[i].name : "(null)",
                players[i].money,
                players[i].position);
