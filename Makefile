@@ -3,9 +3,10 @@ CFLAGS ?= -std=c11 -Wall -Wextra -Wpedantic -finput-charset=UTF-8 -fexec-charset
 CPPFLAGS ?= -Iinclude
 
 # Python is named differently on common platforms.  Windows installations
-# normally provide the Python Launcher (`py -3`) instead of `python3`.
+# commonly expose `python` (or the Python Launcher); the variable can be
+# overridden, for example with `PYTHON=py -3`.
 ifeq ($(OS),Windows_NT)
-PYTHON ?= py -3
+PYTHON ?= python
 else
 PYTHON ?= python3
 endif
