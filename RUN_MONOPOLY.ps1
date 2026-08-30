@@ -182,24 +182,7 @@ function Run-JsonCase {
     Write-Step -Index $Index -Total $Total -Label $caseId -Verb "Running Test"
 
     try {
-        $runnerScript = @'
-import json
-import sys
-from pathlib import Path
-
-root = Path(sys.argv[1])
-case_file = Path(sys.argv[2])
-output_file = Path(sys.argv[3])
-sys.path.insert(0, str(root / "tests"))
-
-from run_json_tests import run_case_file
-
-report = run_case_file(case_file, output_file)
-if report.get("result") != "PASS":
-    print(json.dumps(report.get("errors", []), ensure_ascii=False))
-    raise SystemExit(1)
-'@
-        & $python -c $runnerScript $root $CaseFile $outputFile
+        & $python (Join-Path $root "tests\run_one_case.py") $root $CaseFile $outputFile
         if ($LASTEXITCODE -ne 0) {
             throw "json test failed"
         }
