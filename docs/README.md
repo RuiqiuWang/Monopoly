@@ -22,3 +22,11 @@ the current match.
 All interactive runtime modules use the shared interface declared in
 `include/input.h`. The TUI remains responsible for rendering the board,
 current player, focused property, bankruptcy, and winner state.
+
+## Gameplay module references
+
+- [Item usage](ITEM_USAGE.md)
+- [Item movement effects and hospital turns](ITEM_EFFECT.md)
+- [Movement](MOVE_PLAYER.md)
+- [Step command](COMMAND_STEP.md)
+- [Tutorial](TUTORIAL.md)

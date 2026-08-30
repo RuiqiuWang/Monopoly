@@ -58,7 +58,8 @@ try:
             "quit\n"
     )
     assert "Choose 2-4 characters" in output
-    assert "Commands:" in output
+    assert "MONOPOLY command help" in output
+    assert "The board has 70 blocks (0-69)." in output
     assert "Player Q (id=1)" in output
     assert "Property purchased at level 1." in output
     assert "Paid rent 20 to Q." in output
@@ -138,6 +139,22 @@ try:
     )
     assert "Gift house:" in gift_effect
     assert "god_of_wealth_rounds=5" in gift_effect
+
+    state.write_text('{"has_run": 1}\n', encoding="utf-8")
+    invalid_gift = run_game(
+        "1000\n"
+        "12\n"
+        "step 35\n"
+        "0\n"
+        "query 1\n"
+        "quit\n"
+    )
+    assert "Invalid gift. This opportunity was skipped." in invalid_gift
+    assert "god_of_wealth_rounds=0" in invalid_gift
+
+    state.write_text('{"has_run": 1}\n', encoding="utf-8")
+    interrupted_gift = run_game("1000\n12\nstep 35\n")
+    assert "Gift house:" in interrupted_gift
     print("PASS: game engine end-to-end workflow")
 finally:
     if backup is None:
