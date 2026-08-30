@@ -20,6 +20,14 @@ int main(void)
     player.points = 0;
     Check_Player_in_Mine(&player, &map);
     assert(player.points == 0);
+
+    /* Bankrupt/inactive players earn no mine points. */
+    player.active = 0;
+    player.points = 0;
+    player.position = 64;
+    Check_Player_in_Mine(&player, &map);
+    assert(player.points == 0);
+
     Check_Player_in_Mine(NULL, &map);
     return 0;
 }
