@@ -11,15 +11,28 @@ typedef enum {
     COMMAND_EXTRA_ARGUMENT = -6
 } CommandResult;
 
-typedef enum { COMMAND_STEP, COMMAND_QUIT } CommandType;
+typedef enum {
+    COMMAND_STEP,
+    COMMAND_ROLL,
+    COMMAND_QUERY,
+    COMMAND_SELL,
+    COMMAND_BLOCK,
+    COMMAND_BOMB,
+    COMMAND_ROBOT,
+    COMMAND_HELP,
+    COMMAND_QUIT,
+    COMMAND_INVALID
+} CommandType;
 
 typedef struct {
     CommandType type;
     int player_id;
     int steps;
+    int argument;
 } Command;
 
 CommandResult Parse_Command(const char *input, Command *command);
 const char *Command_Result_Message(CommandResult result);
+const char *Command_Type_Name(CommandType type);
 
 #endif
