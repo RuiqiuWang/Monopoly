@@ -30,7 +30,12 @@ bool Gift_House_Prompt_With_Refresh(
 {
     char input[32];
     if (player == NULL) return false;
-    puts("礼品屋：1=奖金（2000），2=点数（200），3=财神（5回合）\n"
+    puts("你已到达礼品屋，只能选择一件礼品。输入编号后按回车领取：");
+    puts("  1：奖金——立即获得2000资金");
+    puts("  2：点数——立即获得200点数");
+    puts("  3：财神——接下来5回合免交租金");
+    puts("输入 1、2 或 3 领取礼品；输入错误会放弃本次机会。\n"
+         "礼品屋：1=奖金（2000），2=点数（200），3=财神（5回合）\n"
          "(Gift house: 1=money(2000), 2=points(200), 3=God of Wealth(5 turns))");
     if (!input_read_line("礼品屋> ", input, sizeof(input))) return false;
     if (input[1] != '\0' || input[0] < '1' || input[0] > '3') {
