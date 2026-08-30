@@ -7,6 +7,12 @@ movement_cli
 game_engine
 command_test
 tutorial_test
+mine_test
+tool_room_test
+assets_test
+character_select_test
+map_test
 tests/json_runner
+player_assets.json
 tests/output/
 tests/__pycache__/

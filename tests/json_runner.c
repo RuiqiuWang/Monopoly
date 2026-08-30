@@ -504,6 +504,7 @@ static int parse_actions_array(const char **p, JsonCase *tc)
         }
         JsonAction action;
         memset(&action, 0, sizeof(action));
+        action.item_type = -1;
         for (;;) {
             char key[64];
             skip_ws(p);
@@ -534,6 +535,8 @@ static int parse_actions_array(const char **p, JsonCase *tc)
                         if (!parse_json_int(p, &action.offset)) return 0;
                     } else if (strcmp(pkey, "position") == 0) {
                         if (!parse_json_int(p, &action.position)) return 0;
+                    } else if (strcmp(pkey, "item_type") == 0) {
+                        if (!parse_json_int(p, &action.item_type)) return 0;
                     } else if (strcmp(pkey, "value") == 0) {
                         if (!parse_json_string(p, action.value, sizeof(action.value))) return 0;
                     } else {

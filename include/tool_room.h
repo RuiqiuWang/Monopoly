@@ -5,8 +5,8 @@
 
 typedef enum {
     TOOL_ROOM_BLOCK = ITEM_BARRIER,
-    TOOL_ROOM_ROBOT = ITEM_ROBOT,
-    TOOL_ROOM_BOMB = ITEM_BOMB
+    TOOL_ROOM_BOMB = ITEM_BOMB,
+    TOOL_ROOM_ROBOT = ITEM_ROBOT
 } ToolRoomItem;
 
 typedef enum {

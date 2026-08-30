@@ -89,6 +89,10 @@ CommandResult Parse_Command(const char *input, Command *command)
         command->type = COMMAND_HELP;
         return *skip_spaces(cursor) == '\0' ? COMMAND_OK : COMMAND_EXTRA_ARGUMENT;
     }
+    if (word_equals(word_start, word_length, "reset")) {
+        command->type = COMMAND_RESET;
+        return *skip_spaces(cursor) == '\0' ? COMMAND_OK : COMMAND_EXTRA_ARGUMENT;
+    }
     if (word_equals(word_start, word_length, "roll")) {
         command->type = COMMAND_ROLL;
         return *skip_spaces(cursor) == '\0' ? COMMAND_OK : COMMAND_EXTRA_ARGUMENT;
@@ -107,9 +111,6 @@ CommandResult Parse_Command(const char *input, Command *command)
     }
     if (word_equals(word_start, word_length, "step")) {
         command->type = COMMAND_STEP;
-        cursor = skip_spaces(cursor);
-        result = parse_integer(&cursor, &command->player_id, 1);
-        if (result != COMMAND_OK) return result;
         cursor = skip_spaces(cursor);
         result = parse_integer(&cursor, &command->steps, 1);
         if (result != COMMAND_OK) return result;
@@ -146,6 +147,7 @@ const char *Command_Type_Name(CommandType type)
     case COMMAND_BLOCK: return "block";
     case COMMAND_BOMB: return "bomb";
     case COMMAND_ROBOT: return "robot";
+    case COMMAND_RESET: return "reset";
     case COMMAND_HELP: return "help";
     case COMMAND_QUIT: return "quit";
     default: return "invalid";

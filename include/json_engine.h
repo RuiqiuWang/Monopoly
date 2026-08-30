@@ -36,6 +36,7 @@ typedef struct {
     int steps;
     int offset;
     int position;
+    int item_type;
     char value[16];
 } JsonAction;
 

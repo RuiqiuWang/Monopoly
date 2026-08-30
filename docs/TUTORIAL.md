@@ -2,7 +2,7 @@
 
 ## 启动状态
 
-游戏根目录使用 `.monopoly_state.json` 保存是否运行过游戏：
+游戏根目录使用 `.monopoly_state.json` 保存是否已经处理过新手教程：
 
 ```json
 {
@@ -37,7 +37,10 @@ mingw32-make CC=gcc tutorial_test game_engine
 .\tutorial_test.exe
 ```
 
-`tutorial_test.c` 验证状态文件中 `has_run` 的 0/1 写入和读取。手动验证首次教程时可以删除 `.monopoly_state.json`，然后运行：
+只有明确跳过或完整完成教程后才会写入该状态。输入 `reset` 可清理记录，
+下次启动时会再次询问是否进入教程；该命令不会重置当前对局。
+
+`tutorial_test.c` 验证状态文件中 `has_run` 的读写和清理。手动验证首次教程时也可以删除 `.monopoly_state.json`，然后运行：
 
 ```powershell
 .\game_engine.exe

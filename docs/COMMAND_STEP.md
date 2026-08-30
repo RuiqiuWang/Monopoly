@@ -3,7 +3,7 @@
 ## 格式
 
 ```text
-step [id] [number]
+step [number]
 ```
 
 - `id`：玩家编号，当前游戏为 1 到 4。
@@ -14,7 +14,7 @@ step [id] [number]
 示例：
 
 ```text
-step 1 5
+step 5
 玩家 A 移动 5 步，当前位置 5。
 ```
 
@@ -30,5 +30,5 @@ mingw32-make CC=gcc command_test game_engine
 端到端测试：
 
 ```powershell
-@("N", "step 1 5", "quit") | .\game_engine.exe
+@("1000", "12", "N", "step 5", "quit") | .\game_engine.exe
 ```

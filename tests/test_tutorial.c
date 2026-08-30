@@ -28,6 +28,9 @@ int main(void)
     assert(tutorial_state_load(&loaded, path));
     assert(loaded.has_run);
 
-    remove(path);
+    assert(tutorial_state_reset(path));
+    assert(tutorial_state_load(&loaded, path));
+    assert(!loaded.has_run);
+    assert(tutorial_state_reset(path));
     return 0;
 }

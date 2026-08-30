@@ -1,6 +1,6 @@
 {
   "schema_version": "1.0",
-  "case_id": "TC-STEP-002",
+  "case_id": "TC-TEST-STEP-002",
   "case_name": "指定步数-跨地图循环-从69走到0",
   "map_file": "map.json",
   "preset": {

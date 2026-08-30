@@ -10,8 +10,8 @@ static int item_price(ToolRoomItem item)
 {
     switch (item) {
     case TOOL_ROOM_BLOCK: return 50;
-    case TOOL_ROOM_ROBOT: return 30;
-    case TOOL_ROOM_BOMB: return 50;
+    case TOOL_ROOM_BOMB: return 30;
+    case TOOL_ROOM_ROBOT: return 50;
     default: return -1;
     }
 }
@@ -41,12 +41,24 @@ void Enter_Tool_Room(Player *player)
 {
     char input[32];
     if (player == NULL) return;
-    puts("Tool room: 1=barrier(50), 2=robot(30), 3=bomb(50), F=exit");
+    if (item_count(player) >= TOOL_ROOM_ITEM_LIMIT) {
+        puts("Tool room closed: inventory limit reached.");
+        return;
+    }
+    if (player->points < 30) {
+        puts("Tool room closed: not enough points for any item.");
+        return;
+    }
+    puts("Tool room: 1=barrier(50), 2=bomb(30), 3=robot(50), F=exit");
     for (;;) {
         ToolRoomItem item;
         ToolRoomBuyResult result;
-        if (item_count(player) >= TOOL_ROOM_ITEM_LIMIT || player->points < 30) {
-            puts("Tool room closed.");
+        if (item_count(player) >= TOOL_ROOM_ITEM_LIMIT) {
+            puts("Tool room closed: inventory limit reached.");
+            return;
+        }
+        if (player->points < 30) {
+            puts("Tool room closed: not enough points for any item.");
             return;
         }
         if (!input_read_line("Tool room> ", input, sizeof(input))) return;

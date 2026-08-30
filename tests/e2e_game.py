@@ -26,23 +26,34 @@ def run_game(input_text: str) -> str:
     return completed.stdout
 
 try:
+    state.unlink(missing_ok=True)
+    interrupted = run_game("1000\n12\n")
+    assert "是否进行新手教程" in interrupted
+    assert not state.exists()
+
     state.write_text('{"has_run": 0}\n', encoding="utf-8")
-    first_run = run_game("12\nN\nquit\n")
+    first_run = run_game("\n12\nN\nquit\n")
     assert "Choose 2-4 characters" in first_run
     assert "是否进行新手教程" in first_run
+    assert json.loads(state.read_text(encoding="utf-8"))["has_run"] == 1
+
+    invalid_money = run_game("999\n50001\n10000\n12\nquit\n")
+    assert invalid_money.count("Initial money must be an integer") == 2
+    assert "Choose 2-4 characters" in invalid_money
 
     state.write_text('{"has_run": 1}\n', encoding="utf-8")
     output = run_game(
+            "1000\n"
             "12\n"
             "help\n"
-            "step 1 1\n"
-            "step 2 1\n"
+            "step 1\n"
+            "step 1\n"
             "query 1\n"
-            "step 1 63\n"
+            "step 63\n"
             "query 1\n"
-            "step 1 34\n"
-            "2\n"
-            "F\n"
+            "step 69\n"
+            "step 34\n"
+            "3\n"
             "query 1\n"
             "quit\n"
     )
@@ -62,11 +73,16 @@ try:
     assert payload["items"]["robot"] == 1
     assert payload["properties"] == [{"position": 1, "level": 1}]
 
-    bankruptcy_input = "12\nstep 1 36\nstep 2 36\n" + "step 2 70\n" * 11
+    bankruptcy_input = "1000\n12\nstep 36\nstep 36\n" + "step 70\n" * 24
     bankruptcy = run_game(bankruptcy_input)
     assert "Player A is bankrupt" in bankruptcy
     assert "Winner: Q" in bankruptcy
     assert "WINNER" in bankruptcy
+
+    state.write_text('{"has_run": 1}\n', encoding="utf-8")
+    reset_output = run_game("1000\n12\nreset\nquit\n")
+    assert "Play record cleared" in reset_output
+    assert not state.exists()
     print("PASS: game engine end-to-end workflow")
 finally:
     if backup is None:

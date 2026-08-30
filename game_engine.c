@@ -22,7 +22,9 @@
 #include "tutorial.h"
 
 #define MAX_PLAYERS CHARACTER_SELECT_MAX_PLAYERS
-#define INITIAL_PLAYER_MONEY 1000
+#define DEFAULT_PLAYER_MONEY 10000
+#define MIN_PLAYER_MONEY 1000
+#define MAX_PLAYER_MONEY 50000
 
 static void configure_console_encoding(void)
 {
@@ -39,7 +41,25 @@ int Get_Random_Step(void)
     return (rand() % 6) + 1;
 }
 
-static int initialize_players(Player players[], const CharacterSelection *selection)
+static int prompt_initial_money(void)
+{
+    char input[64];
+    for (;;) {
+        char *end;
+        long value;
+        if (!input_read_line("Initial money [1000-50000, Enter=10000]: ",
+                             input, sizeof(input))) return DEFAULT_PLAYER_MONEY;
+        if (input[0] == '\0') return DEFAULT_PLAYER_MONEY;
+        value = strtol(input, &end, 10);
+        if (*end == '\0' && value >= MIN_PLAYER_MONEY && value <= MAX_PLAYER_MONEY) {
+            return (int)value;
+        }
+        puts("Initial money must be an integer from 1000 to 50000.");
+    }
+}
+
+static int initialize_players(Player players[], const CharacterSelection *selection,
+                              int initial_money)
 {
     if (players == NULL || selection == NULL) return 0;
     for (int i = 0; i < selection->chosen_count; ++i) {
@@ -49,7 +69,7 @@ static int initialize_players(Player players[], const CharacterSelection *select
         players[i].name[0] = role;
         players[i].name[1] = '\0';
         players[i].color = CharacterSelect_RoleColor(role);
-        players[i].money = INITIAL_PLAYER_MONEY;
+        players[i].money = initial_money;
         players[i].status = PLAYER_NORMAL;
         players[i].active = 1;
     }
@@ -214,6 +234,11 @@ static void apply_map_item(Map *map, Player *player, CommandType type, int offse
     }
     target = (player->position + offset) % MAP_BLOCK_COUNT;
     if (target < 0) target += MAP_BLOCK_COUNT;
+    if (block_has_any_flag(map_get_block(map, (size_t)target),
+                           (BlockBits)(HAS_OBSTACLE | HAS_BOMB))) {
+        snprintf(message, size, "Target already contains an item.");
+        return;
+    }
     map_set_item(map, (size_t)target,
                  type == COMMAND_BLOCK ? HAS_OBSTACLE : HAS_BOMB);
     --player->items[inventory];
@@ -236,8 +261,8 @@ static void apply_robot(Map *map, Player *player, char *message, size_t size)
 
 static void print_help(void)
 {
-    puts("Commands: Enter/roll, step <id> <steps>, query [id], sell <position>,");
-    puts("          block <offset>, bomb <offset>, robot, help, quit");
+    puts("Commands: Enter/roll, step <steps>, query [id], sell <position>,");
+    puts("          block <offset>, bomb <offset>, robot, reset, help, quit");
 }
 
 int main(void)
@@ -249,6 +274,7 @@ int main(void)
     unsigned long arrivals[MAX_PLAYERS] = {1, 2, 3, 4};
     unsigned long arrival_counter = 4;
     int player_count;
+    int initial_money;
     int current_index = 0;
     int focus_index = 0;
     int round = 1;
@@ -256,14 +282,19 @@ int main(void)
     configure_console_encoding();
     srand((unsigned int)time(NULL));
     map_init(&map);
+    initial_money = prompt_initial_money();
     if (!CharacterSelect_Prompt(&selection)) return 1;
-    player_count = initialize_players(players, &selection);
+    player_count = initialize_players(players, &selection, initial_money);
 
     tutorial_state_load(&tutorial_state, MONOPOLY_STATE_FILE);
     if (!tutorial_state.has_run) {
-        tutorial_state.has_run = true;
-        tutorial_state_save(&tutorial_state, MONOPOLY_STATE_FILE);
-        if (tutorial_prompt_first_run()) tutorial_run(&map);
+        TutorialChoice choice = tutorial_prompt_first_run();
+        bool completed = choice == TUTORIAL_CHOICE_NO;
+        if (choice == TUTORIAL_CHOICE_YES) completed = tutorial_run(&map);
+        if (completed) {
+            tutorial_state.has_run = true;
+            tutorial_state_save(&tutorial_state, MONOPOLY_STATE_FILE);
+        }
     }
     render_game_state(&map, players, player_count, arrivals, current_index,
                       focus_index, round, "Game initialized. Use help for commands.");
@@ -291,6 +322,14 @@ int main(void)
         if (command.type == COMMAND_QUIT) break;
         if (command.type == COMMAND_HELP) {
             print_help();
+            continue;
+        }
+        if (command.type == COMMAND_RESET) {
+            const char *reset_message = tutorial_state_reset(MONOPOLY_STATE_FILE)
+                ? "Play record cleared. The tutorial will be offered on next launch."
+                : "Error: could not clear the play record.";
+            render_game_state(&map, players, player_count, arrivals, current_index,
+                              focus_index, round, reset_message);
             continue;
         }
         if (command.type == COMMAND_QUERY) {
@@ -325,9 +364,7 @@ int main(void)
             continue;
         }
 
-        action_index = command.type == COMMAND_ROLL
-            ? current_index
-            : find_player_index(players, player_count, command.player_id);
+        action_index = current_index;
         steps = command.type == COMMAND_ROLL ? Get_Random_Step() : command.steps;
         if (action_index < 0 || !players[action_index].active) {
             render_game_state(&map, players, player_count, arrivals, current_index,

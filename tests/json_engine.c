@@ -161,8 +161,15 @@ static void execute_action(JsonCase *tc, const JsonAction *action)
         return;
     }
     if (strcmp(action->command, "BLOCK") == 0 ||
-        strcmp(action->command, "BOMB") == 0) {
-        int inventory = strcmp(action->command, "BLOCK") == 0 ? 0 : 1;
+        strcmp(action->command, "BOMB") == 0 ||
+        (strcmp(action->command, "ITEM_USE") == 0 && action->item_type != 2)) {
+        int inventory = strcmp(action->command, "ITEM_USE") == 0
+            ? action->item_type
+            : (strcmp(action->command, "BLOCK") == 0 ? 0 : 1);
+        const char *item_name = inventory == 0 ? "BLOCK" : "BOMB";
+        if (inventory < 0 || inventory > 1) {
+            return;
+        }
         if (action->offset < -10 || action->offset > 10 ||
             player->items[inventory] <= 0) {
             return;
@@ -176,12 +183,13 @@ static void execute_action(JsonCase *tc, const JsonAction *action)
         snprintf(tc->map_items[tc->map_item_count].type,
                  sizeof(tc->map_items[tc->map_item_count].type),
                  "%s",
-                 action->command);
+                 item_name);
         ++tc->map_item_count;
         --player->items[inventory];
         return;
     }
-    if (strcmp(action->command, "ROBOT") == 0) {
+    if (strcmp(action->command, "ROBOT") == 0 ||
+        (strcmp(action->command, "ITEM_USE") == 0 && action->item_type == 2)) {
         if (player->items[2] <= 0) {
             return;
         }

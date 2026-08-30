@@ -6,13 +6,18 @@
 
 The main executable now uses this sequence:
 
-1. Select 2-4 characters (`1=Q`, `2=A`, `3=S`, `4=J`).
-2. On the first run, optionally open the tutorial.
-3. Enter the game TUI and command loop.
+1. Set initial money from 1000 to 50000 (press Enter for 10000).
+2. Select 2-4 characters (`1=Q`, `2=A`, `3=S`, `4=J`).
+3. On the first run, optionally open the tutorial.
+4. Enter the game TUI and command loop.
 
 An empty command line rolls for the current player. Existing commands such as
-`step`, `query`, `sell`, `block`, `bomb`, `robot`, `help`, and `quit` remain
+`step`, `query`, `sell`, `block`, `bomb`, `robot`, `reset`, `help`, and `quit` remain
 available.
+
+`step <steps>` moves only the current player. `reset` clears the persisted play
+record so the tutorial is offered again on the next launch; it does not reset
+the current match.
 
 All interactive runtime modules use the shared interface declared in
 `include/input.h`. The TUI remains responsible for rendering the board,

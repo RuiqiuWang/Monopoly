@@ -3,6 +3,7 @@
 #include "tui.h"
 
 #include <ctype.h>
+#include <errno.h>
 #include <stdio.h>
 #include <string.h>
 
@@ -42,6 +43,7 @@ bool tutorial_state_load(TutorialState *state, const char *path)
     if (file == NULL) {
         return true;
     }
+    buffer[0] = '\0';
 
     while (used + 1 < sizeof(buffer) &&
            fgets(buffer + used, (int)(sizeof(buffer) - used), file) != NULL) {
@@ -75,6 +77,13 @@ bool tutorial_state_save(const TutorialState *state, const char *path)
     return true;
 }
 
+bool tutorial_state_reset(const char *path)
+{
+    if (path == NULL) return false;
+    if (remove(path) == 0) return true;
+    return errno == ENOENT;
+}
+
 TutorialChoice tutorial_parse_choice(const char *input)
 {
     if (input == NULL) return TUTORIAL_CHOICE_INVALID;
@@ -83,25 +92,25 @@ TutorialChoice tutorial_parse_choice(const char *input)
     return TUTORIAL_CHOICE_INVALID;
 }
 
-bool tutorial_prompt_first_run(void)
+TutorialChoice tutorial_prompt_first_run(void)
 {
     char input[32];
 
     for (;;) {
         if (!input_read_line("是否进行新手教程？[Y/N]: ", input, sizeof(input))) {
-            return false;
+            return TUTORIAL_CHOICE_INVALID;
         }
         if (tutorial_parse_choice(input) == TUTORIAL_CHOICE_YES) {
-            return true;
+            return TUTORIAL_CHOICE_YES;
         }
         if (tutorial_parse_choice(input) == TUTORIAL_CHOICE_NO) {
-            return false;
+            return TUTORIAL_CHOICE_NO;
         }
         puts("请输入 Y 或 N。");
     }
 }
 
-void tutorial_run(const Map *map)
+bool tutorial_run(const Map *map)
 {
     char input[32];
 
@@ -121,10 +130,11 @@ void tutorial_run(const Map *map)
         }
 
         if (!input_read_line(NULL, input, sizeof(input))) {
-            return;
+            return false;
         }
         if (input[0] != ' ') {
             --page;
         }
     }
+    return true;
 }

@@ -6,8 +6,8 @@
 
 enum {
     ITEM_BARRIER = 0,
-    ITEM_ROBOT = 1,
-    ITEM_BOMB = 2
+    ITEM_BOMB = 1,
+    ITEM_ROBOT = 2
 };
 
 // 颜色

@@ -19,8 +19,9 @@ typedef struct {
 
 bool tutorial_state_load(TutorialState *state, const char *path);
 bool tutorial_state_save(const TutorialState *state, const char *path);
+bool tutorial_state_reset(const char *path);
 TutorialChoice tutorial_parse_choice(const char *input);
-bool tutorial_prompt_first_run(void);
-void tutorial_run(const Map *map);
+TutorialChoice tutorial_prompt_first_run(void);
+bool tutorial_run(const Map *map);
 
 #endif
