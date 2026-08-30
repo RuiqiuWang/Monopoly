@@ -47,6 +47,7 @@ try:
             "12\n"
             "help\n"
             "step 1\n"
+            "Y\n"
             "step 1\n"
             "query 1\n"
             "step 63\n"
@@ -61,20 +62,49 @@ try:
     assert "MONOPOLY command help" in output
     assert "The board has 70 blocks (0-69)." in output
     assert "Player Q (id=1)" in output
-    assert "Property purchased at level 1." in output
-    assert "Paid rent 20 to Q." in output
-    assert "owner=Q level=1/3" in output
+    assert "Property purchased at level 0." in output
+    assert "Paid rent 100 to Q." in output
+    assert "owner=Q level=0/3" in output
     assert "points=60 position=64" in output
     assert "Item purchased." in output
     assert "items: barrier=0 robot=1 bomb=0" in output
     payload = json.loads(assets.read_text(encoding="utf-8"))
     assert payload["id"] == 1
     assert payload["name"] == "Q"
-    assert payload["money"] == 820
+    assert payload["money"] == 900
     assert payload["items"]["robot"] == 1
-    assert payload["properties"] == [{"position": 1, "level": 1}]
+    assert payload["properties"] == [{"position": 1, "level": 0}]
 
-    bankruptcy_input = "1000\n12\nstep 36\nstep 36\n" + "step 70\n" * 24
+    property_flow = run_game(
+        "1000\n"
+        "12\n"
+        "step 1\n"
+        "Y\n"
+        "step 2\n"
+        "N\n"
+        "step 70\n"
+        "Y\n"
+        "step 69\n"
+        "sell 1\n"
+        "query 1\n"
+        "quit\n"
+    )
+    assert "Property upgraded to level 1." in property_flow
+    assert "Paid rent 200 to Q." in property_flow
+    assert "Player Q sold property 1 for 800." in property_flow
+    assert "properties: none" in property_flow
+
+    bankruptcy_input = (
+        "1000\n12\n"
+        "step 36\nY\n"
+        "step 36\n"
+        "step 70\nY\n"
+        "step 70\n"
+        "step 70\nY\n"
+        "step 70\n"
+        "step 70\nY\n"
+        "step 70\n"
+    )
     bankruptcy = run_game(bankruptcy_input)
     assert "Player A is bankrupt" in bankruptcy
     assert "Winner: Q" in bankruptcy
@@ -90,15 +120,20 @@ try:
         "1000\n"
         "12\n"
         "step 2\n"
+        "N\n"
         "step 1\n"
+        "N\n"
         "step 62\n"
         "step 69\n"
         "step 34\n"
         "1\n"
         "step 1\n"
+        "N\n"
         "block 2\n"
         "step 1\n"
+        "N\n"
         "step 29\n"
+        "N\n"
         "quit\n"
     )
     assert "Barrier placed at 30." in item_effect
@@ -109,18 +144,24 @@ try:
         "1000\n"
         "12\n"
         "step 2\n"
+        "N\n"
         "step 1\n"
+        "N\n"
         "step 62\n"
         "step 69\n"
         "step 34\n"
         "2\n"
         "F\n"
         "step 1\n"
+        "N\n"
         "bomb 2\n"
         "step 29\n"
         "step 1\n"
+        "N\n"
         "step 1\n"
+        "N\n"
         "step 1\n"
+        "N\n"
         "quit\n"
     )
     assert "Bomb placed at 30." in bomb_effect
@@ -134,6 +175,7 @@ try:
         "step 35\n"
         "3\n"
         "step 1\n"
+        "N\n"
         "query 1\n"
         "quit\n"
     )
@@ -151,6 +193,22 @@ try:
     )
     assert "Invalid gift. This opportunity was skipped." in invalid_gift
     assert "god_of_wealth_rounds=0" in invalid_gift
+
+    state.write_text('{"has_run": 1}\n', encoding="utf-8")
+    jail_flow = run_game(
+        "1000\n"
+        "12\n"
+        "step 49\n"
+        "step 1\n"
+        "N\n"
+        "step 1\n"
+        "N\n"
+        "step 1\n"
+        "N\n"
+        "quit\n"
+    )
+    assert "Sent to jail for the next two turns." in jail_flow
+    assert jail_flow.count("skips this turn in jail") == 2
 
     state.write_text('{"has_run": 1}\n', encoding="utf-8")
     interrupted_gift = run_game("1000\n12\nstep 35\n")

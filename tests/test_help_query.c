@@ -11,6 +11,7 @@ int main(void)
     assert(strstr(text, "gift house") != NULL);
     assert(strstr(text, "hospital for three turns") != NULL);
     assert(strstr(text, "70 blocks (0-69)") != NULL);
-    assert(strstr(text, "Rent is base price") != NULL);
+    assert(strstr(text, "rent is half the total investment") != NULL);
+    assert(strstr(text, "prison skips the player's next two turns") != NULL);
     return 0;
 }

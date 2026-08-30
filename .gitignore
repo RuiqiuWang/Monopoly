@@ -16,6 +16,9 @@ item_usage_test
 item_effect_test
 gift_house_test
 help_query_test
+jail_test
+jail_item_effect_test
+property_test
 tests/json_runner
 player_assets.json
 tests/output/

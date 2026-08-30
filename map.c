@@ -172,7 +172,7 @@ bool map_set_property(Map *map, size_t index, int owner_id, unsigned int level)
 {
     if (map == NULL || !map_valid_index(index) ||
         !map_block_is_purchasable(map->blocks[index]) ||
-        owner_id <= MAP_PROPERTY_UNOWNED || level == 0 ||
+        owner_id <= MAP_PROPERTY_UNOWNED ||
         level > MAP_MAX_PROPERTY_LEVEL) {
         return false;
     }

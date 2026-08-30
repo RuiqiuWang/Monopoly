@@ -18,9 +18,11 @@
 #include "input.h"
 #include "item_effect.h"
 #include "item_usage.h"
+#include "jail.h"
 #include "map.h"
 #include "mine.h"
 #include "movement.h"
+#include "property.h"
 #include "tool_room.h"
 #include "tui.h"
 #include "tutorial.h"
@@ -105,6 +107,14 @@ static void append_message(char *message, size_t size, const char *text)
     if (used < size - 1) snprintf(message + used, size - used, "%s", text);
 }
 
+static bool prompt_confirmation(const char *prompt)
+{
+    char input[16];
+
+    if (!input_read_line(prompt, input, sizeof(input))) return false;
+    return (input[0] == 'y' || input[0] == 'Y') && input[1] == '\0';
+}
+
 static void render_game_state(
     const Map *map, const Player players[], int player_count,
     const unsigned long arrivals[], int current_index, int focus_index,
@@ -171,7 +181,7 @@ static void resolve_property(
     size_t position;
     int owner_id;
     unsigned int level;
-    int price;
+    char prompt[96];
 
     if (map == NULL || player == NULL || player->position < 0) return;
     position = (size_t)player->position;
@@ -179,25 +189,28 @@ static void resolve_property(
         !map_block_is_purchasable(map_get_block(map, position))) return;
     owner_id = map_get_property_owner(map, position);
     level = map_get_property_level(map, position);
-    price = (int)map_get_cost(map, position);
 
-    if (owner_id == MAP_PROPERTY_UNOWNED && player->money >= price) {
-        if (map_set_property(map, position, player->id, 1)) {
-            player->money -= price;
-            append_message(message, size, " Property purchased at level 1.");
+    if (owner_id == MAP_PROPERTY_UNOWNED && try_buy_land(map, player)) {
+        snprintf(prompt, sizeof(prompt), "Buy property %u for %.0f? [Y/N]: ",
+                 (unsigned)position, map_get_cost(map, position));
+        if (prompt_confirmation(prompt) && buy_land(map, player)) {
+            append_message(message, size, " Property purchased at level 0.");
+        } else {
+            append_message(message, size, " Property purchase declined.");
         }
-    } else if (owner_id == player->id && level < MAP_MAX_PROPERTY_LEVEL) {
-        int upgrade_price = price / 2;
-        if (player->money >= upgrade_price &&
-            map_set_property(map, position, player->id, level + 1)) {
+    } else if (owner_id == player->id && try_upgrade_property(map, player)) {
+        snprintf(prompt, sizeof(prompt),
+                 "Upgrade property %u to level %u for %.0f? [Y/N]: ",
+                 (unsigned)position, level + 1, map_get_cost(map, position));
+        if (prompt_confirmation(prompt) && upgrade_property(map, player)) {
             char detail[80];
-            player->money -= upgrade_price;
             snprintf(detail, sizeof(detail), " Property upgraded to level %u.", level + 1);
             append_message(message, size, detail);
+        } else {
+            append_message(message, size, " Property upgrade declined.");
         }
     } else if (owner_id != MAP_PROPERTY_UNOWNED && owner_id != player->id) {
         int owner = find_player_index(players, player_count, owner_id);
-        int rent = price * (int)level / 10;
         if (owner >= 0 && players[owner].active) {
             char detail[96];
             if (player->god_of_wealth_rounds > 0) {
@@ -207,31 +220,28 @@ static void resolve_property(
                        players[owner].status == PLAYER_JAIL) {
                 snprintf(detail, sizeof(detail),
                          " Rent waived because %s is unavailable.", players[owner].name);
-            } else {
-                player->money -= rent;
-                players[owner].money += rent;
+            } else if (collect_toll(map, player, &players[owner])) {
+                int rent = property_toll(map, player->position);
                 snprintf(detail, sizeof(detail),
                          " Paid rent %d to %s.", rent, players[owner].name);
+            } else {
+                return;
             }
             append_message(message, size, detail);
         }
     }
 }
 
-static bool sell_property(Map *map, Player *player, int position, char *message, size_t size)
+static bool sell_property_with_message(
+    Map *map, Player *player, int position, char *message, size_t size)
 {
-    unsigned int level;
     int value;
-    if (map == NULL || player == NULL || position < 0 ||
-        !map_valid_index((size_t)position) ||
-        map_get_property_owner(map, (size_t)position) != player->id) {
+    if (!try_sell_property(map, player, position)) {
         snprintf(message, size, "Player %s does not own property %d.", player->name, position);
         return false;
     }
-    level = map_get_property_level(map, (size_t)position);
-    value = 2 * (int)map_get_cost(map, (size_t)position) * (int)(level + 1);
-    player->money += value;
-    map_clear_property(map, (size_t)position);
+    value = property_sale_price(map, position);
+    if (!sell_property(map, player, position)) return false;
     snprintf(message, size, "Player %s sold property %d for %d.",
              player->name, position, value);
     return true;
@@ -314,6 +324,21 @@ int main(void)
                               focus_index, round, message);
             continue;
         }
+        if (Process_Jail_Turn(&players[current_index]) == JAIL_TURN_SKIPPED) {
+            int skipped = current_index;
+            int next;
+            snprintf(message, sizeof(message),
+                     "Player %s skips this turn in jail (%d remaining).",
+                     players[skipped].name, players[skipped].status_rounds);
+            focus_index = skipped;
+            next = next_active_player(players, player_count, skipped);
+            if (next < 0) break;
+            if (next <= skipped) ++round;
+            current_index = next;
+            render_game_state(&map, players, player_count, arrivals, current_index,
+                              focus_index, round, message);
+            continue;
+        }
 
         if (!input_read_line("Command (Enter=roll): ", input, sizeof(input))) break;
         if ((input[0] == 'q' || input[0] == 'Q') && input[1] == '\0') break;
@@ -376,8 +401,8 @@ int main(void)
             continue;
         }
         if (command.type == COMMAND_SELL) {
-            sell_property(&map, &players[current_index], command.argument,
-                          message, sizeof(message));
+            sell_property_with_message(&map, &players[current_index], command.argument,
+                                       message, sizeof(message));
             render_game_state(&map, players, player_count, arrivals, current_index,
                               current_index, round, message);
             continue;
@@ -410,6 +435,10 @@ int main(void)
         if (!movement_report.skip_landing_event) {
             BlockBits landing = map_get_block(
                 &map, (size_t)players[action_index].position);
+            if (Check_Player_in_Jail(&players[action_index], &map) == JAIL_CHECK_ENTERED) {
+                append_message(message, sizeof(message),
+                               " Sent to jail for the next two turns.");
+            }
             Check_Player_in_Mine(&players[action_index], &map);
             if (map_block_is_tool_room(landing)) Enter_Tool_Room(&players[action_index]);
             if (map_block_is_gift_room(landing)) Gift_House_Prompt(&players[action_index]);

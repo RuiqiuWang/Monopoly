@@ -168,6 +168,9 @@ function Build-Target {
                 "item_effect_test.exe",
                 "gift_house_test.exe",
                 "help_query_test.exe",
+                "jail_test.exe",
+                "jail_item_effect_test.exe",
+                "property_test.exe",
                 "tests\json_runner",
                 "tests\json_runner.exe"
             )
@@ -182,7 +185,7 @@ function Build-Target {
             Invoke-Compiler ($commonFlags + @("character_select.c", "input.c", "character_select_cli.c", "-o", "character_select_cli.exe"))
         }
         "game_engine" {
-            Invoke-Compiler ($commonFlags + @("game_engine.c", "command.c", "tutorial.c", "map.c", "tui.c", "movement.c", "mine.c", "tool_room.c", "assets.c", "player.c", "character_select.c", "input.c", "item_usage.c", "item_effect.c", "gift_house.c", "help_query.c", "-o", "game_engine.exe"))
+            Invoke-Compiler ($commonFlags + @("game_engine.c", "command.c", "tutorial.c", "map.c", "tui.c", "movement.c", "mine.c", "tool_room.c", "assets.c", "player.c", "character_select.c", "input.c", "item_usage.c", "item_effect.c", "gift_house.c", "help_query.c", "jail.c", "property.c", "-o", "game_engine.exe"))
         }
         "tutorial_test" {
             Invoke-Compiler ($commonFlags + @("tutorial.c", "input.c", "tui.c", "map.c", "movement.c", "tests\test_tutorial.c", "-o", "tutorial_test.exe"))
@@ -216,6 +219,15 @@ function Build-Target {
         }
         "help_query_test" {
             Invoke-Compiler ($commonFlags + @("help_query.c", "tests\test_help_query.c", "-o", "help_query_test.exe"))
+        }
+        "jail_test" {
+            Invoke-Compiler ($commonFlags + @("jail.c", "movement.c", "map.c", "tests\test_jail.c", "-o", "jail_test.exe"))
+        }
+        "jail_item_effect_test" {
+            Invoke-Compiler ($commonFlags + @("jail.c", "item_effect.c", "movement.c", "map.c", "tests\test_jail_item_effect_integration.c", "-o", "jail_item_effect_test.exe"))
+        }
+        "property_test" {
+            Invoke-Compiler ($commonFlags + @("property.c", "map.c", "tests\test_property.c", "-o", "property_test.exe"))
         }
         "tests/json_runner" {
             Invoke-Compiler ($commonFlags + @("movement.c", "tests\json_engine.c", "tests\json_runner.c", "-o", "tests\json_runner.exe"))
@@ -297,6 +309,9 @@ $buildSteps = @(
     "item_effect_test",
     "gift_house_test",
     "help_query_test",
+    "jail_test",
+    "jail_item_effect_test",
+    "property_test",
     "game_engine",
     "tests/json_runner"
 )
@@ -324,11 +339,14 @@ $unitTests = @(
     @{ Name = "tool room unit"; Path = "tool_room_test" },
     @{ Name = "assets unit"; Path = "assets_test" },
     @{ Name = "character select unit"; Path = "character_select_test" },
-    @{ Name = "map property unit"; Path = "map_test" }
+    @{ Name = "map property unit"; Path = "map_test" },
     @{ Name = "item usage unit"; Path = "item_usage_test" },
     @{ Name = "item effect unit"; Path = "item_effect_test" },
     @{ Name = "gift house unit"; Path = "gift_house_test" },
-    @{ Name = "help query unit"; Path = "help_query_test" }
+    @{ Name = "help query unit"; Path = "help_query_test" },
+    @{ Name = "jail unit"; Path = "jail_test" },
+    @{ Name = "jail item integration"; Path = "jail_item_effect_test" },
+    @{ Name = "property unit"; Path = "property_test" }
 )
 for ($i = 0; $i -lt $unitTests.Count; $i++) {
     $unitExe = Resolve-Executable (Join-Path $root $unitTests[$i].Path)
