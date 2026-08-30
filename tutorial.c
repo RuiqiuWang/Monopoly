@@ -97,7 +97,7 @@ TutorialChoice tutorial_prompt_first_run(void)
     char input[32];
 
     for (;;) {
-        if (!input_read_line("是否进行新手教程？[Y/N]: ", input, sizeof(input))) {
+        if (!input_read_line("是否进行新手教程？【Y/N】：", input, sizeof(input))) {
             return TUTORIAL_CHOICE_INVALID;
         }
         if (tutorial_parse_choice(input) == TUTORIAL_CHOICE_YES) {
@@ -107,7 +107,7 @@ TutorialChoice tutorial_prompt_first_run(void)
             return TUTORIAL_CHOICE_NO;
         }
         input_clear_screen();
-        puts("Invalid Input");
+        puts("输入无效：请输入Y或N。");
     }
 }
 

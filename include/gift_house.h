@@ -2,6 +2,7 @@
 #define MONOPOLY_GIFT_HOUSE_H
 
 #include <stdbool.h>
+#include "input.h"
 #include "player.h"
 
 typedef enum {
@@ -18,5 +19,7 @@ typedef enum {
 
 GiftHouseResult Gift_House_Apply(Player *player, GiftHouseChoice choice);
 bool Gift_House_Prompt(Player *player);
+bool Gift_House_Prompt_With_Refresh(
+    Player *player, InputRefreshCallback refresh, void *context);
 
 #endif

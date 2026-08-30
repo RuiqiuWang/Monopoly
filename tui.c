@@ -176,23 +176,23 @@ void tui_clear_screen(void)
 
 static const char *tui_block_name(BlockBits block)
 {
-    if (map_block_is_start(block)) return "Start";
-    if (map_block_is_tool_room(block)) return "Tool room";
-    if (map_block_is_gift_room(block)) return "Gift room";
-    if (map_block_is_magic_room(block)) return "Magic room";
-    if (map_block_is_hospital(block)) return "Hospital";
-    if (map_block_is_jail(block)) return "Jail";
-    if (map_block_is_mine(block)) return "Mine";
-    if (map_block_is_purchasable(block)) return "Property";
-    return "Block";
+    if (map_block_is_start(block)) return "起点";
+    if (map_block_is_tool_room(block)) return "道具屋";
+    if (map_block_is_gift_room(block)) return "礼品屋";
+    if (map_block_is_magic_room(block)) return "魔法屋";
+    if (map_block_is_hospital(block)) return "医院";
+    if (map_block_is_jail(block)) return "监狱";
+    if (map_block_is_mine(block)) return "矿地";
+    if (map_block_is_purchasable(block)) return "地产";
+    return "空地";
 }
 
 static const char *tui_plot_name(BlockBits block)
 {
-    if (map_block_is_plot(block, IS_PLOT_ONE)) return "Zone 1";
-    if (map_block_is_plot(block, IS_PLOT_TWO)) return "Zone 2";
-    if (map_block_is_plot(block, IS_PLOT_THREE)) return "Zone 3";
-    return "Special";
+    if (map_block_is_plot(block, IS_PLOT_ONE)) return "一区";
+    if (map_block_is_plot(block, IS_PLOT_TWO)) return "二区";
+    if (map_block_is_plot(block, IS_PLOT_THREE)) return "三区";
+    return "特殊区域";
 }
 
 static const TuiPlayerView *tui_focus_player(
@@ -224,21 +224,25 @@ static void tui_render_property(
     BlockBits block;
 
     puts("");
-    puts("Current block:");
+    puts("当前地产信息：");
     if (map == NULL || focus == NULL || focus->position < 0 ||
         focus->position >= MAP_BLOCK_COUNT) {
-        puts("  No block information.");
+        puts("  暂无地产信息。");
         return;
     }
     block = map_get_block(map, (size_t)focus->position);
-    printf("  player=%s position=%d type=%s\n",
+    printf("  玩家=%s 位置=%d 类型=%s\n",
            focus->name != NULL ? focus->name : "?", focus->position,
            tui_block_name(block));
     if (map_block_is_purchasable(block)) {
         int owner_id = map_get_property_owner(map, (size_t)focus->position);
         const TuiPlayerView *owner = tui_find_player(players, player_count, owner_id);
-        printf("  price=%.0f zone=%s owner=%s level=%u/%d\n",
+        printf("  价格=%.0f 区域=%s 归属=%s 等级=%u/%d\n",
                map_get_cost(map, (size_t)focus->position), tui_plot_name(block),
+               owner != NULL && owner->name != NULL ? owner->name : "无主",
+               map_get_property_level(map, (size_t)focus->position),
+               MAP_MAX_PROPERTY_LEVEL);
+        printf("  owner=%s level=%u/%d\n",
                owner != NULL && owner->name != NULL ? owner->name : "unowned",
                map_get_property_level(map, (size_t)focus->position),
                MAP_MAX_PROPERTY_LEVEL);
@@ -273,7 +277,7 @@ void tui_render_game(const Map *map, const TuiPlayerView *players, size_t player
     tui_print_board(board, board_colors, players, player_count);
 
     puts("");
-    puts("Legend: S=Start T=Tool G=Gift M=Magic H=Hospital P=Prison $=Mine 0=Land");
+    puts("图例：S=起点 T=道具屋 G=礼品屋 M=魔法屋 H=医院 P=监狱 $=矿地 0=地产");
 
     if (players == NULL || player_count == 0) {
         return;
@@ -282,14 +286,14 @@ void tui_render_game(const Map *map, const TuiPlayerView *players, size_t player
     tui_render_property(map, players, player_count);
 
     puts("");
-    puts("Players (> current, WINNER winner):");
+    puts("玩家（> 表示当前行动，胜者表示最终赢家）：");
     for (size_t i = 0; i < player_count; ++i) {
-        printf("%c %s  money=%d  pos=%d%s%s\n",
+        printf("%c %s  资金=%d  位置=%d%s%s\n",
                players[i].current ? '>' : ' ',
                players[i].name != NULL ? players[i].name : "(null)",
                players[i].money,
                players[i].position,
-               players[i].active ? "" : "  BANKRUPT",
-               players[i].winner ? "  WINNER" : "");
+               players[i].active ? "" : "  已破产",
+               players[i].winner ? "  获胜者" : "");
     }
 }

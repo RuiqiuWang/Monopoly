@@ -2,6 +2,7 @@
 #define MONOPOLY_TOOL_ROOM_H
 
 #include "player.h"
+#include "input.h"
 
 typedef enum {
     TOOL_ROOM_BLOCK = ITEM_BARRIER,
@@ -19,5 +20,7 @@ typedef enum {
 
 ToolRoomBuyResult Tool_Room_Buy(Player *player, ToolRoomItem item);
 void Enter_Tool_Room(Player *player);
+void Enter_Tool_Room_With_Refresh(
+    Player *player, InputRefreshCallback refresh, void *context);
 
 #endif

@@ -38,7 +38,8 @@ ToolRoomBuyResult Tool_Room_Buy(Player *player, ToolRoomItem item)
     return TOOL_ROOM_BUY_OK;
 }
 
-void Enter_Tool_Room(Player *player)
+void Enter_Tool_Room_With_Refresh(
+    Player *player, InputRefreshCallback refresh, void *context)
 {
     char input[32];
     const char *message = NULL;
@@ -47,28 +48,39 @@ void Enter_Tool_Room(Player *player)
     for (;;) {
         ToolRoomItem item;
         ToolRoomBuyResult result;
-        if (!first_frame) input_clear_screen();
+        if (!first_frame) {
+            if (refresh != NULL) refresh(message, context);
+            else {
+                input_clear_screen();
+                if (message != NULL) puts(message);
+            }
+        }
         first_frame = false;
-        if (message != NULL) puts(message);
+        message = NULL;
         if (item_count(player) >= TOOL_ROOM_ITEM_LIMIT) {
-            puts("Tool room closed: inventory limit reached.");
+            puts("道具屋已关闭：道具数量已达到上限。");
             return;
         }
         if (player->points < 30) {
-            puts("Tool room closed: not enough points for any item.");
+            puts("道具屋已关闭：点数不足以购买任何道具。");
             return;
         }
-        puts("Tool room: 1=barrier(50), 2=bomb(30), 3=robot(50), F=exit");
-        if (!input_read_line("Tool room> ", input, sizeof(input))) return;
+        puts("道具屋：1=路障（50点），2=炸弹（30点），3=机器娃娃（50点），F=退出");
+        if (!input_read_line("道具屋> ", input, sizeof(input))) return;
         if ((input[0] == 'f' || input[0] == 'F') && input[1] == '\0') return;
         if (input[1] != '\0' || input[0] < '1' || input[0] > '3') {
-            message = "Invalid Input";
+            message = "输入无效（Invalid Input）：请输入1、2、3或F。";
             continue;
         }
         item = (ToolRoomItem)(input[0] - '1');
         result = Tool_Room_Buy(player, item);
-        if (result == TOOL_ROOM_BUY_OK) message = "Item purchased.";
-        else if (result == TOOL_ROOM_BUY_NOT_ENOUGH_POINTS) message = "Not enough points.";
-        else message = "Invalid Input";
+        if (result == TOOL_ROOM_BUY_OK) message = "道具购买成功。（Item purchased.）";
+        else if (result == TOOL_ROOM_BUY_NOT_ENOUGH_POINTS) message = "操作失败：点数不足。";
+        else message = "输入无效（Invalid Input）：无法购买该道具。";
     }
+}
+
+void Enter_Tool_Room(Player *player)
+{
+    Enter_Tool_Room_With_Refresh(player, NULL, NULL);
 }

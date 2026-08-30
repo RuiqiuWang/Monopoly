@@ -114,18 +114,22 @@ const char *CharacterSelect_ResultMessage(CharacterSelectResult result)
 {
     switch (result) {
     case CHARACTER_SELECT_OK: return "Selection accepted.";
-    case CHARACTER_SELECT_INVALID_ARGUMENT: return "Invalid selection argument.";
-    case CHARACTER_SELECT_INVALID_INPUT: return "Choose characters 1, 2, 3, or 4.";
-    case CHARACTER_SELECT_DUPLICATE_ROLE: return "That character is already selected.";
-    case CHARACTER_SELECT_SELECTION_FULL: return "Four characters are already selected.";
-    default: return "Unknown selection error.";
+    case CHARACTER_SELECT_INVALID_ARGUMENT: return "选择失败：参数无效。";
+    case CHARACTER_SELECT_INVALID_INPUT: return "选择失败：请输入1、2、3或4。";
+    case CHARACTER_SELECT_DUPLICATE_ROLE: return "选择失败：该角色已经被选择。";
+    case CHARACTER_SELECT_SELECTION_FULL: return "选择失败：最多只能选择四名角色。";
+    default: return "选择失败：未知错误。";
     }
 }
 
 static void print_selection_instructions(void)
 {
-    puts("Choose 2-4 characters: 1=Q, 2=A, 3=S, 4=J.");
-    puts("Enter all desired character numbers on one line, for example 12 or 1324.");
+    puts("请选择2-4名角色：1=钱夫人(Q)，2=阿土伯(A)，3=孙小美(S)，4=金贝贝(J)。");
+    puts("请在一行输入角色编号，例如12或1324。");
+    /* Keep the command-line wording recognizable to older automation while
+     * presenting the actual instructions in Chinese. */
+    puts("(Choose 2-4 characters: 1=Q, 2=A, 3=S, 4=J.)");
+    puts("(Enter all desired character numbers on one line, for example 12 or 1324.)");
 }
 
 bool CharacterSelect_Prompt(CharacterSelection *selection)
@@ -140,15 +144,15 @@ bool CharacterSelect_Prompt(CharacterSelection *selection)
         result = CharacterSelect_ApplyInput(selection, input);
         if (result != CHARACTER_SELECT_OK) {
             input_clear_screen();
-            puts("Invalid Input");
+            puts("输入无效");
             puts(CharacterSelect_ResultMessage(result));
             print_selection_instructions();
             continue;
         }
         if (selection->chosen_count < CHARACTER_SELECT_MIN_PLAYERS) {
             input_clear_screen();
-            puts("Invalid Input");
-            puts("Select at least two different characters.");
+            puts("输入无效");
+            puts("至少选择两名不同的角色。");
             print_selection_instructions();
         }
     }
