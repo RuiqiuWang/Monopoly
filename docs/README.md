@@ -2,6 +2,18 @@
 # 开发人员请以/function_name/details开分支，后续统一merge
 # 测试人员请以issue的形式提交测试的结果
 
-## 终端 TUI
+## Integrated startup flow
 
-运行 `make engine`（或直接运行 `game_engine`）后，终端只保留一个不断刷新的游戏界面。按 Enter 执行当前玩家回合；移动、买地、升级或支付租金完成后会立即重绘地图和当前地产信息栏。输入 `q` 后按 Enter 退出。
+The main executable now uses this sequence:
+
+1. Select 2-4 characters (`1=Q`, `2=A`, `3=S`, `4=J`).
+2. On the first run, optionally open the tutorial.
+3. Enter the game TUI and command loop.
+
+An empty command line rolls for the current player. Existing commands such as
+`step`, `query`, `sell`, `block`, `bomb`, `robot`, `help`, and `quit` remain
+available.
+
+All interactive runtime modules use the shared interface declared in
+`include/input.h`. The TUI remains responsible for rendering the board,
+current player, focused property, bankruptcy, and winner state.

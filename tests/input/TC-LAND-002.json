@@ -1,0 +1,30 @@
+{
+  "schema_version": "1.0",
+  "case_id": "TC-LAND-002",
+  "case_name": "sell land level1 base500 counts upgrade cost",
+  "map_file": "map.json",
+  "preset": {
+    "users": ["A", "Q"],
+    "current_user": "A",
+    "phase": "COMMAND",
+    "game_status": "RUNNING",
+    "players": [
+      {"id": "A", "fund": 500, "credit": 0, "position": 0, "status": "NORMAL", "remaining_rounds": 0, "items": {"BLOCK": 0, "BOMB": 0, "ROBOT": 0}, "god_of_wealth_rounds": 0},
+      {"id": "Q", "fund": 500, "credit": 0, "position": 7, "status": "NORMAL", "remaining_rounds": 0, "items": {"BLOCK": 0, "BOMB": 0, "ROBOT": 0}, "god_of_wealth_rounds": 0}
+    ],
+    "properties": [
+      {"position": 30, "owner": "A", "level": 1}
+    ],
+    "map_items": [],
+    "dice_sequence": []
+  },
+  "actions": [
+    {"command": "SELL", "params": {"position": 30}}
+  ],
+  "expected": {
+    "players": [
+      {"id": "A", "fund": 2500}
+    ],
+    "properties_absent": [30]
+  }
+}

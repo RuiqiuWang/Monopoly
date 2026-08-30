@@ -1,4 +1,5 @@
 #include "tutorial.h"
+#include "input.h"
 #include "tui.h"
 
 #include <ctype.h>
@@ -24,13 +25,6 @@ static const char *const kTutorialPages[TUTORIAL_PAGE_COUNT][3] = {
         "最终按游戏规则完成目标或成为最后仍在游戏的玩家获胜。"
     }
 };
-
-static void discard_line(void)
-{
-    int ch;
-    while ((ch = getchar()) != '\n' && ch != EOF) {
-    }
-}
 
 bool tutorial_state_load(TutorialState *state, const char *path)
 {
@@ -94,8 +88,7 @@ bool tutorial_prompt_first_run(void)
     char input[32];
 
     for (;;) {
-        printf("是否进行新手教程？[Y/N]: " );
-        if (fgets(input, sizeof(input), stdin) == NULL) {
+        if (!input_read_line("是否进行新手教程？[Y/N]: ", input, sizeof(input))) {
             return false;
         }
         if (tutorial_parse_choice(input) == TUTORIAL_CHOICE_YES) {
@@ -104,7 +97,6 @@ bool tutorial_prompt_first_run(void)
         if (tutorial_parse_choice(input) == TUTORIAL_CHOICE_NO) {
             return false;
         }
-        discard_line();
         puts("请输入 Y 或 N。");
     }
 }
@@ -128,7 +120,7 @@ void tutorial_run(const Map *map)
             printf("输入区：按空格结束教程并进入游戏：" );
         }
 
-        if (fgets(input, sizeof(input), stdin) == NULL) {
+        if (!input_read_line(NULL, input, sizeof(input))) {
             return;
         }
         if (input[0] != ' ') {
