@@ -4,6 +4,12 @@
 #define NAME_LEN 5
 #define ITEM_COUNT 8
 
+enum {
+    ITEM_BARRIER = 0,
+    ITEM_ROBOT = 1,
+    ITEM_BOMB = 2
+};
+
 // 颜色
 typedef enum {
     COLOR_GREEN,
@@ -37,5 +43,7 @@ typedef struct {
     int active;            // 是否仍在游戏中
     int is_winner;         // 是否获胜
 } Player;
+
+const char *status_to_string(PlayerStatus status);
 
 #endif

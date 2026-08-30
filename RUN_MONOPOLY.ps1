@@ -152,6 +152,12 @@ function Build-Target {
                 "tutorial_test.exe",
                 "command_test",
                 "command_test.exe",
+                "mine_test",
+                "mine_test.exe",
+                "tool_room_test",
+                "tool_room_test.exe",
+                "assets_test",
+                "assets_test.exe",
                 "tests\json_runner",
                 "tests\json_runner.exe"
             )
@@ -163,13 +169,22 @@ function Build-Target {
             Invoke-Compiler ($commonFlags + @("movement.c", "tests\movement_cli.c", "-o", "movement_cli.exe"))
         }
         "game_engine" {
-            Invoke-Compiler ($commonFlags + @("game_engine.c", "command.c", "tutorial.c", "map.c", "tui.c", "movement.c", "-o", "game_engine.exe"))
+            Invoke-Compiler ($commonFlags + @("game_engine.c", "command.c", "tutorial.c", "map.c", "tui.c", "movement.c", "mine.c", "tool_room.c", "assets.c", "player.c", "-o", "game_engine.exe"))
         }
         "tutorial_test" {
             Invoke-Compiler ($commonFlags + @("tutorial.c", "tui.c", "map.c", "movement.c", "tests\test_tutorial.c", "-o", "tutorial_test.exe"))
         }
         "command_test" {
             Invoke-Compiler ($commonFlags + @("command.c", "tests\test_command.c", "-o", "command_test.exe"))
+        }
+        "mine_test" {
+            Invoke-Compiler ($commonFlags + @("mine.c", "map.c", "player.c", "tests\test_mine.c", "-o", "mine_test.exe"))
+        }
+        "tool_room_test" {
+            Invoke-Compiler ($commonFlags + @("tool_room.c", "player.c", "tests\test_tool_room.c", "-o", "tool_room_test.exe"))
+        }
+        "assets_test" {
+            Invoke-Compiler ($commonFlags + @("assets.c", "map.c", "player.c", "tests\test_assets.c", "-o", "assets_test.exe"))
         }
         "tests/json_runner" {
             Invoke-Compiler ($commonFlags + @("movement.c", "tests\json_engine.c", "tests\json_runner.c", "-o", "tests\json_runner.exe"))
@@ -258,6 +273,9 @@ $buildSteps = @(
     "movement_cli",
     "tutorial_test",
     "command_test",
+    "mine_test",
+    "tool_room_test",
+    "assets_test",
     "game_engine",
     "tests/json_runner"
 )
@@ -280,7 +298,10 @@ $cases = Get-ChildItem (Join-Path $root "tests\input") -Filter *.json | Sort-Obj
 $unitTests = @(
     @{ Name = "movement unit"; Path = "test_movement" },
     @{ Name = "tutorial choice unit"; Path = "tutorial_test" },
-    @{ Name = "command unit"; Path = "command_test" }
+    @{ Name = "command unit"; Path = "command_test" },
+    @{ Name = "mine unit"; Path = "mine_test" },
+    @{ Name = "tool room unit"; Path = "tool_room_test" },
+    @{ Name = "assets unit"; Path = "assets_test" }
 )
 for ($i = 0; $i -lt $unitTests.Count; $i++) {
     $unitExe = Resolve-Executable (Join-Path $root $unitTests[$i].Path)
@@ -298,5 +319,12 @@ foreach ($case in $cases) {
     $testIndex++
 }
 
+Write-Step -Index ($testIndex) -Total ($testTotal + 1) -Label "game engine end-to-end" -Verb "Running Test"
+try {
+    & $python (Join-Path $root "tests\e2e_game.py")
+    if ($LASTEXITCODE -ne 0) { throw "game engine end-to-end failed" }
+    Write-Pass
+} catch { Write-Fail $_.Exception.Message }
+
 Write-Host ""
-Write-Host "All checks passed: $($buildSteps.Count) build steps, $testTotal tests."
+Write-Host "All checks passed: $($buildSteps.Count) build steps, $($testTotal + 1) tests."
