@@ -58,6 +58,13 @@ typedef struct {
     int action_count;
     char case_id[64];
     char case_name[128];
+    /* The JSON harness models prompts and command errors explicitly so that
+       automation can validate the same state transitions as the TUI. */
+    char pending_prompt[32];
+    char winner;
+    char error_code[32];
+    int next_action_is_answer;
+    int next_action_is_phase_probe;
 } JsonCase;
 
 void json_case_apply_action(JsonCase *tc, const JsonAction *action);

@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import json
 import subprocess
+import tempfile
 from pathlib import Path
 from typing import Any
 
@@ -197,6 +198,25 @@ def run_case_file(case_file: Path, output_file: Path) -> dict[str, Any]:
             "errors": [{"code": "INVALID_C_OUTPUT", "message": str(exc)}],
         }
 
+    if case.get("expected_result") == "ERROR":
+        expected_code = case.get("expected_error_code")
+        actual_code = actual.get("error_code")
+        errors = []
+        if actual_code != expected_code:
+            errors.append(_error(
+                "actual.error_code",
+                "error code differs",
+                expected=repr(expected_code),
+                actual=repr(actual_code),
+            ))
+        return {
+            "schema_version": "1.0",
+            "case_id": case.get("case_id", case_file.stem),
+            "actual": actual,
+            "result": "PASS" if not errors else "FAIL",
+            "errors": errors,
+        }
+
     errors: list[dict[str, str]] = []
     _compare(expected, actual, "actual", errors)
     return {
@@ -216,17 +236,35 @@ def main() -> int:
     case_files = sorted(input_dir.glob("*.json"))
     total = 0
     passed = 0
-    for case_file in case_files:
-        total += 1
-        output_file = output_dir / case_file.name
-        report = run_case_file(case_file, output_file)
-        result = report.get("result", "ERROR")
-        case_id = report.get("case_id", case_file.stem)
-        print(f"[{result}] {case_id}")
-        if result == "PASS":
-            passed += 1
-        elif report.get("errors"):
-            print(json.dumps(report["errors"], ensure_ascii=False))
+    with tempfile.TemporaryDirectory(prefix="monopoly-json-cases-") as temp_dir:
+        temp_dir_path = Path(temp_dir)
+        for case_file in case_files:
+            try:
+                parsed = json.loads(case_file.read_text(encoding="utf-8"))
+            except (OSError, json.JSONDecodeError):
+                parsed = None
+            cases = parsed.get("tests") if isinstance(parsed, dict) else None
+            if not isinstance(cases, list):
+                cases = [parsed]
+            for index, case in enumerate(cases):
+                if case_file.name == "Group3_Testcases.json":
+                    input_file = temp_dir_path / f"group3_{index:03d}.json"
+                    input_file.write_text(
+                        json.dumps(case, ensure_ascii=False), encoding="utf-8"
+                    )
+                    output_file = output_dir / f"Group3_{index:03d}.json"
+                else:
+                    input_file = case_file
+                    output_file = output_dir / case_file.name
+                total += 1
+                report = run_case_file(input_file, output_file)
+                result = report.get("result", "ERROR")
+                case_id = report.get("case_id", input_file.stem)
+                print(f"[{result}] {case_id}")
+                if result == "PASS":
+                    passed += 1
+                elif report.get("errors"):
+                    print(json.dumps(report["errors"], ensure_ascii=False))
 
     summary = {"total": total, "passed": passed, "failed": total - passed}
     print(json.dumps(summary, ensure_ascii=False))

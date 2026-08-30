@@ -657,6 +657,10 @@ static int parse_case_object(const char *text, JsonCase *tc)
             if (!parse_actions_array(&p, tc)) return 0;
         } else if (strcmp(key, "expected") == 0) {
             if (!skip_json_value(&p)) return 0;
+        } else if (strcmp(key, "expected_result") == 0 ||
+                   strcmp(key, "expected_error_code") == 0) {
+            char ignored[64];
+            if (!parse_json_string(&p, ignored, sizeof(ignored))) return 0;
         } else {
             return 0;
         }
