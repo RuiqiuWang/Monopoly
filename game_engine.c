@@ -91,7 +91,59 @@ static void build_tui_players(
         views[i].active = players[i].active != 0;
         views[i].current = i == current_index;
         views[i].property_focus = i == property_focus_index;
+        views[i].winner = players[i].is_winner != 0;
     }
+}
+
+static void append_message(char *message, size_t message_size, const char *text)
+{
+    size_t used;
+
+    if (message == NULL || message_size == 0 || text == NULL) {
+        return;
+    }
+    used = strlen(message);
+    if (used < message_size - 1) {
+        snprintf(message + used, message_size - used, "%s", text);
+    }
+}
+
+static void reclaim_player_properties(Map *map, int player_id)
+{
+    if (map == NULL) {
+        return;
+    }
+    for (size_t i = 0; i < MAP_BLOCK_COUNT; ++i) {
+        if (map_get_property_owner(map, i) == player_id) {
+            map_clear_property(map, i);
+        }
+    }
+}
+
+static bool bankrupt_player(Map *map, Player *player, char *message, size_t message_size)
+{
+    if (player == NULL || !player->active || player->money >= 0) {
+        return false;
+    }
+
+    reclaim_player_properties(map, player->id);
+    player->active = 0;
+    player->is_winner = 0;
+    append_message(message, message_size, " 玩家 ");
+    append_message(message, message_size, player->name);
+    append_message(message, message_size, " 资金低于 0，已破产；其地产已归还系统。");
+    return true;
+}
+
+static int count_active_players(const Player players[], int player_count)
+{
+    int count = 0;
+    for (int i = 0; i < player_count; ++i) {
+        if (players[i].active) {
+            ++count;
+        }
+    }
+    return count;
 }
 
 /* Resolve the landing in one transaction so the following redraw shows both
@@ -141,9 +193,6 @@ static void resolve_landing(Map *map, Player players[], int player_count, Player
         int rent = price * (int)level / 10;
         for (int i = 0; i < player_count; ++i) {
             if (players[i].id == owner_id && players[i].active) {
-                if (rent > player->money) {
-                    rent = player->money;
-                }
                 player->money -= rent;
                 players[i].money += rent;
                 snprintf(message + strlen(message), message_size - strlen(message),
@@ -223,6 +272,8 @@ int main(void)
         CommandResult command_result;
         PlayerMoveResult move_result;
         int step;
+        int active_count;
+        int winner_index = -1;
 
         printf("\n按 Enter%s，输入 q 后 Enter 退出: ",
                have_action ? " 让下一位玩家行动" : " 让当前玩家行动");
@@ -272,6 +323,32 @@ int main(void)
         }
         property_focus_index = current_index;
         have_action = 1;
+
+        /* Bankruptcy is evaluated in memory immediately after every action. */
+        bankrupt_player(&map, &players[current_index], message, sizeof(message));
+        active_count = count_active_players(players, player_count);
+        if (active_count <= 1) {
+            for (int i = 0; i < player_count; ++i) {
+                players[i].is_winner = 0;
+                if (players[i].active) {
+                    winner_index = i;
+                    players[i].is_winner = 1;
+                }
+            }
+            if (winner_index >= 0) {
+                append_message(message, sizeof(message), " 仅剩一名未破产玩家，");
+                append_message(message, sizeof(message), players[winner_index].name);
+                append_message(message, sizeof(message), " 获胜！");
+                property_focus_index = winner_index;
+                current_index = winner_index;
+            } else {
+                append_message(message, sizeof(message), " 所有玩家均已破产，游戏结束。");
+            }
+            render_game_state(&map, players, player_count, arrival_order, current_index,
+                              property_focus_index, round, message);
+            break;
+        }
+
         current_index = (current_index + 1) % player_count;
         if (current_index == 0) {
             ++round;

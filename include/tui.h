@@ -17,6 +17,7 @@ typedef struct {
     bool current;
     bool property_focus;
     int id;
+    bool winner;
 } TuiPlayerView;
 
 void tui_clear_screen(void);

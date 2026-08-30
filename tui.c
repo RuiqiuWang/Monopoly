@@ -341,15 +341,14 @@ void tui_render_game(const Map *map, const TuiPlayerView *players, size_t player
     tui_render_current_property(map, players, player_count);
 
     puts("");
-    puts("Players (> 表示当前行动者):");
+    puts("Players (> 表示当前行动者, WINNER 表示获胜者):");
     for (size_t i = 0; i < player_count; ++i) {
-        if (!players[i].active) {
-            continue;
-        }
-        printf("%c %s  money=%d  pos=%d\n",
+        printf("%c %s  money=%d  pos=%d%s%s\n",
                players[i].current ? '>' : ' ',
                players[i].name != NULL ? players[i].name : "(null)",
                players[i].money,
-               players[i].position);
+               players[i].position,
+               players[i].active ? "" : "  破产",
+               players[i].winner ? "  WINNER" : "");
     }
 }
