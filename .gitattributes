@@ -1,0 +1,6 @@
+RUN_MONOPOLY text eol=lf
+*.c text
+*.h text
+*.py text
+*.ps1 text
+Makefile text

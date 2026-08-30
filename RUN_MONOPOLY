@@ -112,6 +112,12 @@ run_build() {
             clean)
                 rm -f test_movement test_movement.exe \
                       movement_cli movement_cli.exe \
+                      character_select_cli character_select_cli.exe \
+                      character_select_test character_select_test.exe \
+                      map_test map_test.exe \
+                      mine_test mine_test.exe \
+                      tool_room_test tool_room_test.exe \
+                      assets_test assets_test.exe \
                       game_engine game_engine.exe \
                       tests/json_runner tests/json_runner.exe
                 ;;
@@ -121,14 +127,32 @@ run_build() {
             movement_cli)
                 $CC_BIN $CPPFLAGS_VALUE $CFLAGS_VALUE movement.c tests/movement_cli.c -o movement_cli
                 ;;
+            character_select_cli)
+                $CC_BIN $CPPFLAGS_VALUE $CFLAGS_VALUE character_select.c input.c character_select_cli.c -o character_select_cli
+                ;;
             game_engine)
-                $CC_BIN $CPPFLAGS_VALUE $CFLAGS_VALUE game_engine.c command.c tutorial.c map.c tui.c movement.c -o game_engine
+                $CC_BIN $CPPFLAGS_VALUE $CFLAGS_VALUE game_engine.c command.c tutorial.c map.c tui.c movement.c mine.c tool_room.c assets.c player.c character_select.c input.c -o game_engine
                 ;;
             tutorial_test)
-                $CC_BIN $CPPFLAGS_VALUE $CFLAGS_VALUE tutorial.c tui.c map.c movement.c tests/test_tutorial.c -o tutorial_test
+                $CC_BIN $CPPFLAGS_VALUE $CFLAGS_VALUE tutorial.c input.c tui.c map.c movement.c tests/test_tutorial.c -o tutorial_test
                 ;;
             command_test)
                 $CC_BIN $CPPFLAGS_VALUE $CFLAGS_VALUE command.c tests/test_command.c -o command_test
+                ;;
+            mine_test)
+                $CC_BIN $CPPFLAGS_VALUE $CFLAGS_VALUE mine.c map.c player.c tests/test_mine.c -o mine_test
+                ;;
+            tool_room_test)
+                $CC_BIN $CPPFLAGS_VALUE $CFLAGS_VALUE tool_room.c input.c player.c tests/test_tool_room.c -o tool_room_test
+                ;;
+            assets_test)
+                $CC_BIN $CPPFLAGS_VALUE $CFLAGS_VALUE assets.c map.c player.c tests/test_assets.c -o assets_test
+                ;;
+            character_select_test)
+                $CC_BIN $CPPFLAGS_VALUE $CFLAGS_VALUE character_select.c input.c tests/test_character_select.c -o character_select_test
+                ;;
+            map_test)
+                $CC_BIN $CPPFLAGS_VALUE $CFLAGS_VALUE map.c tests/test_map.c -o map_test
                 ;;
             tests/json_runner)
                 $CC_BIN $CPPFLAGS_VALUE $CFLAGS_VALUE movement.c tests/json_engine.c tests/json_runner.c -o tests/json_runner
@@ -223,7 +247,7 @@ collect_json_cases() {
 
 main() {
     local env_total=4
-    local build_total=7
+    local build_total=13
     local test_total
     local step=1
     local cases=()
@@ -242,26 +266,44 @@ main() {
     run_build 3 "$build_total" "movement_cli"
     run_build 4 "$build_total" "tutorial_test"
     run_build 5 "$build_total" "command_test"
-    run_build 6 "$build_total" "game_engine"
-    run_build 7 "$build_total" "tests/json_runner"
+    run_build 6 "$build_total" "mine_test"
+    run_build 7 "$build_total" "tool_room_test"
+    run_build 8 "$build_total" "assets_test"
+    run_build 9 "$build_total" "character_select_cli"
+    run_build 10 "$build_total" "character_select_test"
+    run_build 11 "$build_total" "map_test"
+    run_build 12 "$build_total" "game_engine"
+    run_build 13 "$build_total" "tests/json_runner"
     printf '\n'
 
     while IFS= read -r case_file; do
         cases+=("$case_file")
     done < <(collect_json_cases)
 
-    test_total=$((3 + ${#cases[@]}))
+    test_total=$((9 + ${#cases[@]}))
     run_test_command "$step" "$test_total" "movement unit" "$ROOT/test_movement"
     step=$((step + 1))
     run_test_command "$step" "$test_total" "tutorial choice unit" "$ROOT/tutorial_test"
     step=$((step + 1))
     run_test_command "$step" "$test_total" "command unit" "$ROOT/command_test"
     step=$((step + 1))
+    run_test_command "$step" "$test_total" "mine unit" "$ROOT/mine_test"
+    step=$((step + 1))
+    run_test_command "$step" "$test_total" "tool room unit" "$ROOT/tool_room_test"
+    step=$((step + 1))
+    run_test_command "$step" "$test_total" "assets unit" "$ROOT/assets_test"
+    step=$((step + 1))
+    run_test_command "$step" "$test_total" "character select unit" "$ROOT/character_select_test"
+    step=$((step + 1))
+    run_test_command "$step" "$test_total" "map property unit" "$ROOT/map_test"
+    step=$((step + 1))
 
     for case_file in "${cases[@]}"; do
         run_json_case "$step" "$test_total" "$case_file"
         step=$((step + 1))
     done
+
+    run_test_command "$step" "$test_total" "game engine end-to-end" "$PYTHON_BIN" "$ROOT/tests/e2e_game.py"
 
     printf '\nAll checks passed: %d build steps, %d tests.\n' "$build_total" "$test_total"
 }

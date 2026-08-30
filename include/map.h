@@ -42,13 +42,22 @@ typedef enum {
 typedef struct {
     BlockBits blocks[MAP_BLOCK_COUNT];
     double cost[MAP_BLOCK_COUNT];
+    int property_owner[MAP_BLOCK_COUNT];
+    unsigned char property_level[MAP_BLOCK_COUNT];
 } Map;
+
+#define MAP_PROPERTY_UNOWNED 0
+#define MAP_MAX_PROPERTY_LEVEL 3
 
 void map_init(Map *map);
 bool map_valid_index(size_t index);
 BlockBits map_get_block(const Map *map, size_t index);
 double map_get_cost(const Map *map, size_t index);
 void map_set_item(Map *map, size_t index, Item_Type item);
+int map_get_property_owner(const Map *map, size_t index);
+unsigned int map_get_property_level(const Map *map, size_t index);
+bool map_set_property(Map *map, size_t index, int owner_id, unsigned int level);
+bool map_clear_property(Map *map, size_t index);
 
 bool map_block_is_start(BlockBits block);
 bool map_block_is_tool_room(BlockBits block);

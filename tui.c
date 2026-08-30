@@ -170,7 +170,79 @@ static void tui_print_board(
 
 void tui_clear_screen(void)
 {
-    fputs("\033[2J\033[H", stdout);
+    fputs("\033[H\033[2J", stdout);
+    fflush(stdout);
+}
+
+static const char *tui_block_name(BlockBits block)
+{
+    if (map_block_is_start(block)) return "Start";
+    if (map_block_is_tool_room(block)) return "Tool room";
+    if (map_block_is_gift_room(block)) return "Gift room";
+    if (map_block_is_magic_room(block)) return "Magic room";
+    if (map_block_is_hospital(block)) return "Hospital";
+    if (map_block_is_jail(block)) return "Jail";
+    if (map_block_is_mine(block)) return "Mine";
+    if (map_block_is_purchasable(block)) return "Property";
+    return "Block";
+}
+
+static const char *tui_plot_name(BlockBits block)
+{
+    if (map_block_is_plot(block, IS_PLOT_ONE)) return "Zone 1";
+    if (map_block_is_plot(block, IS_PLOT_TWO)) return "Zone 2";
+    if (map_block_is_plot(block, IS_PLOT_THREE)) return "Zone 3";
+    return "Special";
+}
+
+static const TuiPlayerView *tui_focus_player(
+    const TuiPlayerView *players, size_t player_count)
+{
+    if (players == NULL) return NULL;
+    for (size_t i = 0; i < player_count; ++i) {
+        if (players[i].property_focus) return &players[i];
+    }
+    for (size_t i = 0; i < player_count; ++i) {
+        if (players[i].current) return &players[i];
+    }
+    return NULL;
+}
+
+static const TuiPlayerView *tui_find_player(
+    const TuiPlayerView *players, size_t player_count, int id)
+{
+    for (size_t i = 0; players != NULL && i < player_count; ++i) {
+        if (players[i].id == id) return &players[i];
+    }
+    return NULL;
+}
+
+static void tui_render_property(
+    const Map *map, const TuiPlayerView *players, size_t player_count)
+{
+    const TuiPlayerView *focus = tui_focus_player(players, player_count);
+    BlockBits block;
+
+    puts("");
+    puts("Current block:");
+    if (map == NULL || focus == NULL || focus->position < 0 ||
+        focus->position >= MAP_BLOCK_COUNT) {
+        puts("  No block information.");
+        return;
+    }
+    block = map_get_block(map, (size_t)focus->position);
+    printf("  player=%s position=%d type=%s\n",
+           focus->name != NULL ? focus->name : "?", focus->position,
+           tui_block_name(block));
+    if (map_block_is_purchasable(block)) {
+        int owner_id = map_get_property_owner(map, (size_t)focus->position);
+        const TuiPlayerView *owner = tui_find_player(players, player_count, owner_id);
+        printf("  price=%.0f zone=%s owner=%s level=%u/%d\n",
+               map_get_cost(map, (size_t)focus->position), tui_plot_name(block),
+               owner != NULL && owner->name != NULL ? owner->name : "unowned",
+               map_get_property_level(map, (size_t)focus->position),
+               MAP_MAX_PROPERTY_LEVEL);
+    }
 }
 
 void tui_render_map(const Map *map)
@@ -201,20 +273,23 @@ void tui_render_game(const Map *map, const TuiPlayerView *players, size_t player
     tui_print_board(board, board_colors, players, player_count);
 
     puts("");
-    puts("Legend: S=Start/Player T=Tool G=Gift M=Magic H=Hospital P=Prison $=Mine 0=Land");
+    puts("Legend: S=Start T=Tool G=Gift M=Magic H=Hospital P=Prison $=Mine 0=Land");
 
     if (players == NULL || player_count == 0) {
         return;
     }
 
-    puts("Players:");
+    tui_render_property(map, players, player_count);
+
+    puts("");
+    puts("Players (> current, WINNER winner):");
     for (size_t i = 0; i < player_count; ++i) {
-        if (!players[i].active) {
-            continue;
-        }
-        printf("  %s  money=%d  pos=%d\n",
+        printf("%c %s  money=%d  pos=%d%s%s\n",
+               players[i].current ? '>' : ' ',
                players[i].name != NULL ? players[i].name : "(null)",
                players[i].money,
-               players[i].position);
+               players[i].position,
+               players[i].active ? "" : "  BANKRUPT",
+               players[i].winner ? "  WINNER" : "");
     }
 }
