@@ -51,10 +51,11 @@ void Enter_Tool_Room_With_Refresh(
         ToolRoomItem item;
         ToolRoomBuyResult result;
         if (!first_frame) {
-            if (refresh != NULL) refresh(message, context);
+            /* The previous result belongs below the input that produced it;
+             * redraw a clean frame before opening the next prompt. */
+            if (refresh != NULL) refresh(NULL, context);
             else {
                 input_clear_screen();
-                if (message != NULL) puts(message);
             }
         }
         first_frame = false;
@@ -74,9 +75,13 @@ void Enter_Tool_Room_With_Refresh(
         puts("输入 1、2 或 3 购买；输入 F 后按回车离开道具屋。\n"
              "(Tool room: 1=barrier(50), 2=bomb(30), 3=robot(50), F=exit)");
         if (!input_read_line("道具屋> ", input, sizeof(input))) return;
-        if ((input[0] == 'f' || input[0] == 'F') && input[1] == '\0') return;
+        if ((input[0] == 'f' || input[0] == 'F') && input[1] == '\0') {
+            puts("已退出道具屋。");
+            return;
+        }
         if (input[1] != '\0' || input[0] < '1' || input[0] > '3') {
             message = "输入无效（Invalid Input）：请输入1、2、3或F。";
+            puts(message);
             continue;
         }
         item = (ToolRoomItem)(input[0] - '1');
@@ -91,6 +96,11 @@ void Enter_Tool_Room_With_Refresh(
             message = detail;
         }
         else message = "输入无效（Invalid Input）：无法购买该道具。";
+        puts(message);
+        if (result == TOOL_ROOM_BUY_OK && item_count(player) >= TOOL_ROOM_ITEM_LIMIT) {
+            puts("道具屋已关闭：道具数量已达到上限。");
+            return;
+        }
     }
 }
 
