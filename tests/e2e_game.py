@@ -79,6 +79,7 @@ try:
         "1000\n"
         "12\n"
         "step 1\n"
+        " \n"
         "Y\n"
         "step 2\n"
         "N\n"
@@ -90,6 +91,7 @@ try:
         "quit\n"
     )
     assert "Property upgraded to level 1." in property_flow
+    assert "Invalid Input" in property_flow
     assert "Paid rent 200 to Q." in property_flow
     assert "Player Q sold property 1 for 800." in property_flow
     assert "properties: none" in property_flow
@@ -126,6 +128,8 @@ try:
         "step 62\n"
         "step 69\n"
         "step 34\n"
+        "x\n"
+        "k\n"
         "1\n"
         "step 1\n"
         "N\n"
@@ -138,6 +142,7 @@ try:
     )
     assert "Barrier placed at 30." in item_effect
     assert "Stopped by a barrier." in item_effect
+    assert item_effect.count("Invalid Input") == 2
 
     state.write_text('{"has_run": 1}\n', encoding="utf-8")
     bomb_effect = run_game(
@@ -192,6 +197,7 @@ try:
         "quit\n"
     )
     assert "Invalid gift. This opportunity was skipped." in invalid_gift
+    assert "Invalid Input" in invalid_gift
     assert "god_of_wealth_rounds=0" in invalid_gift
 
     state.write_text('{"has_run": 1}\n', encoding="utf-8")

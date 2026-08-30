@@ -32,6 +32,8 @@ bool Gift_House_Prompt(Player *player)
     puts("Gift house: 1=money(2000), 2=points(200), 3=God of Wealth(5 turns)");
     if (!input_read_line("Gift house> ", input, sizeof(input))) return false;
     if (input[1] != '\0' || input[0] < '1' || input[0] > '3') {
+        input_clear_screen();
+        puts("Invalid Input");
         puts("Invalid gift. This opportunity was skipped.");
         return false;
     }

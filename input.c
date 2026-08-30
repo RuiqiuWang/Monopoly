@@ -3,6 +3,12 @@
 #include <stdio.h>
 #include <string.h>
 
+void input_clear_screen(void)
+{
+    fputs("\033[H\033[2J", stdout);
+    fflush(stdout);
+}
+
 bool input_read_line(const char *prompt, char *buffer, size_t buffer_size)
 {
     int ch;

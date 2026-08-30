@@ -60,6 +60,8 @@ static int prompt_initial_money(void)
         if (*end == '\0' && value >= MIN_PLAYER_MONEY && value <= MAX_PLAYER_MONEY) {
             return (int)value;
         }
+        input_clear_screen();
+        puts("Invalid Input");
         puts("Initial money must be an integer from 1000 to 50000.");
     }
 }
@@ -111,8 +113,15 @@ static bool prompt_confirmation(const char *prompt)
 {
     char input[16];
 
-    if (!input_read_line(prompt, input, sizeof(input))) return false;
-    return (input[0] == 'y' || input[0] == 'Y') && input[1] == '\0';
+    for (;;) {
+        if (!input_read_line(prompt, input, sizeof(input))) return false;
+        if (input[1] == '\0' &&
+            (input[0] == 'y' || input[0] == 'Y')) return true;
+        if (input[1] == '\0' &&
+            (input[0] == 'n' || input[0] == 'N')) return false;
+        input_clear_screen();
+        puts("Invalid Input");
+    }
 }
 
 static void render_game_state(

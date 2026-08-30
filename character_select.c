@@ -122,23 +122,34 @@ const char *CharacterSelect_ResultMessage(CharacterSelectResult result)
     }
 }
 
+static void print_selection_instructions(void)
+{
+    puts("Choose 2-4 characters: 1=Q, 2=A, 3=S, 4=J.");
+    puts("Enter all desired character numbers on one line, for example 12 or 1324.");
+}
+
 bool CharacterSelect_Prompt(CharacterSelection *selection)
 {
     char input[64];
     if (selection == NULL) return false;
     CharacterSelect_Init(selection);
-    puts("Choose 2-4 characters: 1=Q, 2=A, 3=S, 4=J.");
-    puts("Enter all desired character numbers on one line, for example 12 or 1324.");
+    print_selection_instructions();
     while (selection->chosen_count < CHARACTER_SELECT_MIN_PLAYERS) {
         CharacterSelectResult result;
         if (!input_read_line("Characters> ", input, sizeof(input))) return false;
         result = CharacterSelect_ApplyInput(selection, input);
         if (result != CHARACTER_SELECT_OK) {
+            input_clear_screen();
+            puts("Invalid Input");
             puts(CharacterSelect_ResultMessage(result));
+            print_selection_instructions();
             continue;
         }
         if (selection->chosen_count < CHARACTER_SELECT_MIN_PLAYERS) {
+            input_clear_screen();
+            puts("Invalid Input");
             puts("Select at least two different characters.");
+            print_selection_instructions();
         }
     }
     return true;

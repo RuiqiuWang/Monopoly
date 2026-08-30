@@ -106,7 +106,8 @@ TutorialChoice tutorial_prompt_first_run(void)
         if (tutorial_parse_choice(input) == TUTORIAL_CHOICE_NO) {
             return TUTORIAL_CHOICE_NO;
         }
-        puts("请输入 Y 或 N。");
+        input_clear_screen();
+        puts("Invalid Input");
     }
 }
 
