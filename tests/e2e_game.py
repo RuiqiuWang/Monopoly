@@ -83,6 +83,61 @@ try:
     reset_output = run_game("1000\n12\nreset\nquit\n")
     assert "Play record cleared" in reset_output
     assert not state.exists()
+
+    state.write_text('{"has_run": 1}\n', encoding="utf-8")
+    item_effect = run_game(
+        "1000\n"
+        "12\n"
+        "step 2\n"
+        "step 1\n"
+        "step 62\n"
+        "step 69\n"
+        "step 34\n"
+        "1\n"
+        "step 1\n"
+        "block 2\n"
+        "step 1\n"
+        "step 29\n"
+        "quit\n"
+    )
+    assert "Barrier placed at 30." in item_effect
+    assert "Stopped by a barrier." in item_effect
+
+    state.write_text('{"has_run": 1}\n', encoding="utf-8")
+    bomb_effect = run_game(
+        "1000\n"
+        "12\n"
+        "step 2\n"
+        "step 1\n"
+        "step 62\n"
+        "step 69\n"
+        "step 34\n"
+        "2\n"
+        "F\n"
+        "step 1\n"
+        "bomb 2\n"
+        "step 29\n"
+        "step 1\n"
+        "step 1\n"
+        "step 1\n"
+        "quit\n"
+    )
+    assert "Bomb placed at 30." in bomb_effect
+    assert "Hit a bomb and was sent to hospital." in bomb_effect
+    assert bomb_effect.count("skips this turn in hospital") == 3
+
+    state.write_text('{"has_run": 1}\n', encoding="utf-8")
+    gift_effect = run_game(
+        "1000\n"
+        "12\n"
+        "step 35\n"
+        "3\n"
+        "step 1\n"
+        "query 1\n"
+        "quit\n"
+    )
+    assert "Gift house:" in gift_effect
+    assert "god_of_wealth_rounds=5" in gift_effect
     print("PASS: game engine end-to-end workflow")
 finally:
     if backup is None:

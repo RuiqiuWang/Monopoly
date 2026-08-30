@@ -2,9 +2,9 @@ CC = gcc
 CFLAGS ?= -std=c11 -Wall -Wextra -Wpedantic -finput-charset=UTF-8 -fexec-charset=UTF-8
 CPPFLAGS ?= -Iinclude
 
-.PHONY: all test cli engine tutorial_test command_test mine_test tool_room_test assets_test character_select_test map_test e2e_test json_test clean
+.PHONY: all test cli engine tutorial_test command_test mine_test tool_room_test assets_test character_select_test map_test item_usage_test item_effect_test gift_house_test help_query_test e2e_test json_test clean
 
-all: test_movement movement_cli character_select_cli tutorial_test command_test mine_test tool_room_test assets_test character_select_test map_test game_engine
+all: test_movement movement_cli character_select_cli tutorial_test command_test mine_test tool_room_test assets_test character_select_test map_test item_usage_test item_effect_test gift_house_test help_query_test game_engine
 
 test_movement: movement.c include/movement.h include/player.h tests/test_movement.c
 	$(CC) $(CPPFLAGS) $(CFLAGS) movement.c tests/test_movement.c -o $@
@@ -12,8 +12,8 @@ test_movement: movement.c include/movement.h include/player.h tests/test_movemen
 movement_cli: movement.c include/movement.h include/player.h tests/movement_cli.c
 	$(CC) $(CPPFLAGS) $(CFLAGS) movement.c tests/movement_cli.c -o $@
 
-game_engine: game_engine.c command.c tutorial.c map.c movement.c tui.c mine.c tool_room.c assets.c player.c character_select.c input.c include/command.h include/map.h include/tui.h include/tutorial.h include/movement.h include/player.h include/block_bit_utils.h include/mine.h include/tool_room.h include/assets.h include/character_select.h include/input.h
-	$(CC) $(CPPFLAGS) $(CFLAGS) game_engine.c command.c tutorial.c map.c tui.c movement.c mine.c tool_room.c assets.c player.c character_select.c input.c -o $@
+game_engine: game_engine.c command.c tutorial.c map.c movement.c tui.c mine.c tool_room.c assets.c player.c character_select.c input.c item_usage.c item_effect.c gift_house.c help_query.c
+	$(CC) $(CPPFLAGS) $(CFLAGS) game_engine.c command.c tutorial.c map.c tui.c movement.c mine.c tool_room.c assets.c player.c character_select.c input.c item_usage.c item_effect.c gift_house.c help_query.c -o $@
 
 tutorial_test: tutorial.c input.c tui.c map.c movement.c include/tutorial.h include/input.h include/tui.h include/map.h include/movement.h include/player.h include/block_bit_utils.h tests/test_tutorial.c
 	$(CC) $(CPPFLAGS) $(CFLAGS) tutorial.c input.c tui.c map.c movement.c tests/test_tutorial.c -o $@
@@ -39,6 +39,18 @@ character_select_test: character_select.c input.c tests/test_character_select.c 
 map_test: map.c tests/test_map.c include/map.h
 	$(CC) $(CPPFLAGS) $(CFLAGS) map.c tests/test_map.c -o $@
 
+item_usage_test: item_usage.c map.c tests/test_item_usage.c include/item_usage.h
+	$(CC) $(CPPFLAGS) $(CFLAGS) item_usage.c map.c tests/test_item_usage.c -o $@
+
+item_effect_test: item_effect.c movement.c map.c tests/test_item_effect.c include/item_effect.h
+	$(CC) $(CPPFLAGS) $(CFLAGS) item_effect.c movement.c map.c tests/test_item_effect.c -o $@
+
+gift_house_test: gift_house.c input.c tests/test_gift_house.c include/gift_house.h
+	$(CC) $(CPPFLAGS) $(CFLAGS) gift_house.c input.c tests/test_gift_house.c -o $@
+
+help_query_test: help_query.c tests/test_help_query.c include/help_query.h
+	$(CC) $(CPPFLAGS) $(CFLAGS) help_query.c tests/test_help_query.c -o $@
+
 e2e_test: game_engine
 	python tests/e2e_game.py
 
@@ -55,7 +67,7 @@ json_test:
 tests/json_runner: tests/json_runner.c movement.c include/movement.h include/player.h
 	$(CC) $(CPPFLAGS) $(CFLAGS) movement.c tests/json_engine.c tests/json_runner.c -o $@
 
-test: test_movement tutorial_test command_test mine_test tool_room_test assets_test character_select_test map_test e2e_test
+test: test_movement tutorial_test command_test mine_test tool_room_test assets_test character_select_test map_test item_usage_test item_effect_test gift_house_test help_query_test e2e_test
 	./test_movement
 	./tutorial_test
 	./command_test
@@ -64,6 +76,10 @@ test: test_movement tutorial_test command_test mine_test tool_room_test assets_t
 	./assets_test
 	./character_select_test
 	./map_test
+	./item_usage_test
+	./item_effect_test
+	./gift_house_test
+	./help_query_test
 
 clean:
-	rm -f test_movement test_movement.exe movement_cli movement_cli.exe character_select_cli character_select_cli.exe tutorial_test tutorial_test.exe command_test command_test.exe mine_test mine_test.exe tool_room_test tool_room_test.exe assets_test assets_test.exe character_select_test character_select_test.exe map_test map_test.exe game_engine game_engine.exe tests/json_runner tests/json_runner.exe player_assets.json
+	rm -f test_movement test_movement.exe movement_cli movement_cli.exe character_select_cli character_select_cli.exe tutorial_test tutorial_test.exe command_test command_test.exe mine_test mine_test.exe tool_room_test tool_room_test.exe assets_test assets_test.exe character_select_test character_select_test.exe map_test map_test.exe item_usage_test item_usage_test.exe item_effect_test item_effect_test.exe gift_house_test gift_house_test.exe help_query_test help_query_test.exe game_engine game_engine.exe tests/json_runner tests/json_runner.exe player_assets.json

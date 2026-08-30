@@ -13,7 +13,11 @@
 #include "assets.h"
 #include "character_select.h"
 #include "command.h"
+#include "gift_house.h"
+#include "help_query.h"
 #include "input.h"
+#include "item_effect.h"
+#include "item_usage.h"
 #include "map.h"
 #include "mine.h"
 #include "movement.h"
@@ -196,9 +200,19 @@ static void resolve_property(
         int rent = price * (int)level / 10;
         if (owner >= 0 && players[owner].active) {
             char detail[96];
-            player->money -= rent;
-            players[owner].money += rent;
-            snprintf(detail, sizeof(detail), " Paid rent %d to %s.", rent, players[owner].name);
+            if (player->god_of_wealth_rounds > 0) {
+                snprintf(detail, sizeof(detail),
+                         " God of Wealth waived rent to %s.", players[owner].name);
+            } else if (players[owner].status == PLAYER_HOSPITAL ||
+                       players[owner].status == PLAYER_JAIL) {
+                snprintf(detail, sizeof(detail),
+                         " Rent waived because %s is unavailable.", players[owner].name);
+            } else {
+                player->money -= rent;
+                players[owner].money += rent;
+                snprintf(detail, sizeof(detail),
+                         " Paid rent %d to %s.", rent, players[owner].name);
+            }
             append_message(message, size, detail);
         }
     }
@@ -223,46 +237,20 @@ static bool sell_property(Map *map, Player *player, int position, char *message,
     return true;
 }
 
-static void apply_map_item(Map *map, Player *player, CommandType type, int offset,
-                           char *message, size_t size)
+static void describe_item_result(ItemUseResult result, const char *success,
+                                 char *message, size_t size)
 {
-    int target;
-    int inventory = type == COMMAND_BLOCK ? ITEM_BARRIER : ITEM_BOMB;
-    if (offset < -10 || offset > 10 || player->items[inventory] <= 0) {
-        snprintf(message, size, "Item unavailable or offset out of range.");
-        return;
-    }
-    target = (player->position + offset) % MAP_BLOCK_COUNT;
-    if (target < 0) target += MAP_BLOCK_COUNT;
-    if (block_has_any_flag(map_get_block(map, (size_t)target),
-                           (BlockBits)(HAS_OBSTACLE | HAS_BOMB))) {
-        snprintf(message, size, "Target already contains an item.");
-        return;
-    }
-    map_set_item(map, (size_t)target,
-                 type == COMMAND_BLOCK ? HAS_OBSTACLE : HAS_BOMB);
-    --player->items[inventory];
-    snprintf(message, size, "%s placed at %d.",
-             type == COMMAND_BLOCK ? "Barrier" : "Bomb", target);
-}
-
-static void apply_robot(Map *map, Player *player, char *message, size_t size)
-{
-    if (player->items[ITEM_ROBOT] <= 0) {
-        snprintf(message, size, "Robot unavailable.");
-        return;
-    }
-    --player->items[ITEM_ROBOT];
-    for (int distance = 1; distance <= 10; ++distance) {
-        map_set_item(map, (size_t)((player->position + distance) % MAP_BLOCK_COUNT), NO_ITEM);
-    }
-    snprintf(message, size, "Robot cleared items in the next 10 blocks.");
+    const char *text = success;
+    if (result == ITEM_USE_DISTANCE_OUT_OF_RANGE) text = "Offset must be between -10 and 10.";
+    else if (result == ITEM_USE_NOT_OWNED) text = "Item unavailable.";
+    else if (result == ITEM_USE_TARGET_OCCUPIED) text = "Target already contains an item.";
+    else if (result != ITEM_USE_OK) text = "Error: item could not be used.";
+    snprintf(message, size, "%s", text);
 }
 
 static void print_help(void)
 {
-    puts("Commands: Enter/roll, step <steps>, query [id], sell <position>,");
-    puts("          block <offset>, bomb <offset>, robot, reset, help, quit");
+    fputs(HelpQuery_Text(), stdout);
 }
 
 int main(void)
@@ -306,6 +294,26 @@ int main(void)
         CommandResult result;
         int action_index;
         int steps;
+        int god_rounds_at_turn_start;
+        ItemEffectReport movement_report;
+        ItemEffectMoveResult movement_result;
+
+        if (Process_Hospital_Turn(&players[current_index]) ==
+            ITEM_EFFECT_TURN_SKIPPED) {
+            int skipped = current_index;
+            int next;
+            snprintf(message, sizeof(message),
+                     "Player %s skips this turn in hospital (%d remaining).",
+                     players[skipped].name, players[skipped].status_rounds);
+            focus_index = skipped;
+            next = next_active_player(players, player_count, skipped);
+            if (next < 0) break;
+            if (next <= skipped) ++round;
+            current_index = next;
+            render_game_state(&map, players, player_count, arrivals, current_index,
+                              focus_index, round, message);
+            continue;
+        }
 
         if (!input_read_line("Command (Enter=roll): ", input, sizeof(input))) break;
         if ((input[0] == 'q' || input[0] == 'Q') && input[1] == '\0') break;
@@ -344,14 +352,25 @@ int main(void)
             continue;
         }
         if (command.type == COMMAND_BLOCK || command.type == COMMAND_BOMB) {
-            apply_map_item(&map, &players[current_index], command.type,
-                           command.argument, message, sizeof(message));
+            ItemUseResult item_result = command.type == COMMAND_BLOCK
+                ? Use_Block(&players[current_index], &map, command.argument)
+                : Use_Bomb(&players[current_index], &map, command.argument);
+            int target = (players[current_index].position + command.argument) %
+                MAP_BLOCK_COUNT;
+            if (target < 0) target += MAP_BLOCK_COUNT;
+            if (item_result == ITEM_USE_OK) {
+                snprintf(message, sizeof(message), "%s placed at %d.",
+                         command.type == COMMAND_BLOCK ? "Barrier" : "Bomb", target);
+            } else {
+                describe_item_result(item_result, "", message, sizeof(message));
+            }
             render_game_state(&map, players, player_count, arrivals, current_index,
                               current_index, round, message);
             continue;
         }
         if (command.type == COMMAND_ROBOT) {
-            apply_robot(&map, &players[current_index], message, sizeof(message));
+            describe_item_result(Use_Robot(&players[current_index], &map),
+                "Robot cleared items in the next 10 blocks.", message, sizeof(message));
             render_game_state(&map, players, player_count, arrivals, current_index,
                               current_index, round, message);
             continue;
@@ -366,26 +385,41 @@ int main(void)
 
         action_index = current_index;
         steps = command.type == COMMAND_ROLL ? Get_Random_Step() : command.steps;
+        god_rounds_at_turn_start = players[action_index].god_of_wealth_rounds;
         if (action_index < 0 || !players[action_index].active) {
             render_game_state(&map, players, player_count, arrivals, current_index,
                               focus_index, round, "Error: player does not exist or is inactive.");
             continue;
         }
-        if (Move_Player(&players[action_index], steps) != PLAYER_MOVE_OK) {
+        movement_result = Move_Player_With_Item_Effects(
+            &players[action_index], &map, steps, &movement_report);
+        if (movement_result < ITEM_EFFECT_MOVE_OK) {
             render_game_state(&map, players, player_count, arrivals, current_index,
                               focus_index, round, "Error: movement failed.");
             continue;
         }
         arrivals[action_index] = ++arrival_counter;
-        snprintf(message, sizeof(message), "Player %s moved %d steps to %d.",
-                 players[action_index].name, steps, players[action_index].position);
-        Check_Player_in_Mine(&players[action_index], &map);
-        if (map_block_is_tool_room(
-                map_get_block(&map, (size_t)players[action_index].position))) {
-            Enter_Tool_Room(&players[action_index]);
+        snprintf(message, sizeof(message), "Player %s moved %d of %d steps to %d.",
+                 players[action_index].name, movement_report.travelled_steps,
+                 steps, players[action_index].position);
+        if (movement_result == ITEM_EFFECT_MOVE_STOPPED_BY_BARRIER) {
+            append_message(message, sizeof(message), " Stopped by a barrier.");
+        } else if (movement_result == ITEM_EFFECT_MOVE_SENT_TO_HOSPITAL) {
+            append_message(message, sizeof(message), " Hit a bomb and was sent to hospital.");
         }
-        resolve_property(&map, players, player_count, &players[action_index],
-                         message, sizeof(message));
+        if (!movement_report.skip_landing_event) {
+            BlockBits landing = map_get_block(
+                &map, (size_t)players[action_index].position);
+            Check_Player_in_Mine(&players[action_index], &map);
+            if (map_block_is_tool_room(landing)) Enter_Tool_Room(&players[action_index]);
+            if (map_block_is_gift_room(landing)) Gift_House_Prompt(&players[action_index]);
+            resolve_property(&map, players, player_count, &players[action_index],
+                             message, sizeof(message));
+        }
+        if (god_rounds_at_turn_start > 0 &&
+            players[action_index].god_of_wealth_rounds > 0) {
+            --players[action_index].god_of_wealth_rounds;
+        }
         update_bankruptcy(&map, &players[action_index], message, sizeof(message));
         focus_index = action_index;
 

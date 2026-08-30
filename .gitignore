@@ -12,6 +12,10 @@ tool_room_test
 assets_test
 character_select_test
 map_test
+item_usage_test
+item_effect_test
+gift_house_test
+help_query_test
 tests/json_runner
 player_assets.json
 tests/output/

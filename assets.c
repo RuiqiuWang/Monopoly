@@ -11,6 +11,7 @@ void query_assets(const Player *player, const Map *map)
            player->items[ITEM_BARRIER], player->items[ITEM_ROBOT], player->items[ITEM_BOMB]);
     printf("status=%s remaining_rounds=%d\n",
            status_to_string(player->status), player->status_rounds);
+    printf("god_of_wealth_rounds=%d\n", player->god_of_wealth_rounds);
     fputs("properties:", stdout);
     if (map != NULL) {
         int found = 0;
@@ -37,11 +38,13 @@ bool query_assets_to_json(const Player *player, const Map *map, const char *file
             "{\n  \"id\": %d,\n  \"name\": \"%s\",\n"
             "  \"position\": %d,\n  \"money\": %d,\n  \"points\": %d,\n"
             "  \"items\": {\"barrier\": %d, \"robot\": %d, \"bomb\": %d},\n"
-            "  \"status\": \"%s\",\n  \"status_rounds\": %d,\n  \"active\": %s,\n"
+            "  \"status\": \"%s\",\n  \"status_rounds\": %d,\n"
+            "  \"god_of_wealth_rounds\": %d,\n  \"active\": %s,\n"
             "  \"properties\": [",
             player->id, player->name, player->position, player->money, player->points,
             player->items[ITEM_BARRIER], player->items[ITEM_ROBOT], player->items[ITEM_BOMB],
             status_to_string(player->status), player->status_rounds,
+            player->god_of_wealth_rounds,
             player->active ? "true" : "false");
     if (map != NULL) {
         int first = 1;
