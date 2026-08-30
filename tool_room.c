@@ -1,4 +1,5 @@
 #include "tool_room.h"
+#include "input.h"
 
 #include <stdio.h>
 #include <string.h>
@@ -48,9 +49,7 @@ void Enter_Tool_Room(Player *player)
             puts("Tool room closed.");
             return;
         }
-        fputs("Tool room> ", stdout);
-        if (fgets(input, sizeof(input), stdin) == NULL) return;
-        input[strcspn(input, "\r\n")] = '\0';
+        if (!input_read_line("Tool room> ", input, sizeof(input))) return;
         if ((input[0] == 'f' || input[0] == 'F') && input[1] == '\0') return;
         if (input[1] != '\0' || input[0] < '1' || input[0] > '3') {
             puts("Invalid item. Choose 1, 2, 3, or F.");

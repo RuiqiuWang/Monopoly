@@ -14,6 +14,10 @@ typedef struct {
     int position;
     unsigned long arrival_order;
     bool active;
+    bool current;
+    bool property_focus;
+    int id;
+    bool winner;
 } TuiPlayerView;
 
 void tui_clear_screen(void);
