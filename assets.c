@@ -2,6 +2,12 @@
 
 #include <stdio.h>
 
+#ifdef _WIN32
+#include <io.h>
+#else
+#include <unistd.h>
+#endif
+
 static const char *asset_status_name(PlayerStatus status)
 {
     switch (status) {
@@ -13,53 +19,78 @@ static const char *asset_status_name(PlayerStatus status)
     }
 }
 
+static int assets_stdout_is_terminal(void)
+{
+#ifdef _WIN32
+    return _isatty(_fileno(stdout));
+#else
+    return isatty(STDOUT_FILENO);
+#endif
+}
+
 void query_assets(const Player *player, const Map *map)
 {
+    int found = 0;
     if (player == NULL) return;
-    printf("玩家%s（编号=%d）\n", player->name, player->id);
-    printf("资金=%d 点数=%d 位置=%d\n", player->money, player->points, player->position);
-    printf("道具：路障=%d 机器娃娃=%d 炸弹=%d\n",
-           player->items[ITEM_BARRIER], player->items[ITEM_ROBOT], player->items[ITEM_BOMB]);
-    printf("状态=%s 剩余回合=%d\n",
-           asset_status_name(player->status), player->status_rounds);
-    printf("god_of_wealth_rounds=%d\n", player->god_of_wealth_rounds);
-    fputs("地产：", stdout);
+    puts("");
+    puts("================ 玩家资产 ================");
+    puts("+----------------------+----------------------+");
+    printf("| 玩家：%-14s | 编号：%-14d |\n", player->name, player->id);
+    printf("| 资金：%-14d | 点数：%-14d |\n", player->money, player->points);
+    printf("| 位置：%-14d | 状态：%-14s |\n",
+           player->position, asset_status_name(player->status));
+    printf("| 剩余状态回合：%-6d | 财神回合：%-8d |\n",
+           player->status_rounds, player->god_of_wealth_rounds);
+    puts("+----------------------+----------------------+");
+    puts("道具库存");
+    puts("+----------------------+----------------------+");
+    printf("| 路障：%-14d | 炸弹：%-14d |\n",
+           player->items[ITEM_BARRIER], player->items[ITEM_BOMB]);
+    printf("| 机器娃娃：%-10d | 道具总数：%-10d |\n",
+           player->items[ITEM_ROBOT],
+           player->items[ITEM_BARRIER] + player->items[ITEM_BOMB] +
+               player->items[ITEM_ROBOT]);
+    puts("+----------------------+----------------------+");
+    puts("地产列表");
+    puts("+------------+------------+");
+    puts("| 位置       | 等级       |");
+    puts("+------------+------------+");
     if (map != NULL) {
-        int found = 0;
         for (size_t i = 0; i < MAP_BLOCK_COUNT; ++i) {
             if (map_get_property_owner(map, i) == player->id) {
-                printf(" %u号（等级=%u）", (unsigned)i, map_get_property_level(map, i));
+                printf("| %-10u | %-10u |\n",
+                       (unsigned)i, map_get_property_level(map, i));
                 found = 1;
             }
         }
-        if (!found) fputs(" 无", stdout);
-    } else {
-        fputs(" 不可用", stdout);
     }
-    putchar('\n');
+    if (!found) puts("| （无）     |            |");
+    puts("+------------+------------+");
+
     /* These stable ASCII aliases keep the JSON/TUI integration scripts
-     * compatible; the visible labels above are the user-facing Chinese UI. */
-    printf("Player %s (id=%d)\n", player->name, player->id);
-    printf("money=%d points=%d position=%d\n", player->money, player->points, player->position);
-    printf("items: barrier=%d robot=%d bomb=%d\n",
-           player->items[ITEM_BARRIER], player->items[ITEM_ROBOT], player->items[ITEM_BOMB]);
-    printf("status=%s remaining_rounds=%d\n",
-           status_to_string(player->status), player->status_rounds);
-    printf("god_of_wealth_rounds=%d\n", player->god_of_wealth_rounds);
-    fputs("properties:", stdout);
-    if (map != NULL) {
-        int found = 0;
-        for (size_t i = 0; i < MAP_BLOCK_COUNT; ++i) {
-            if (map_get_property_owner(map, i) == player->id) {
-                printf(" %u(level=%u)", (unsigned)i, map_get_property_level(map, i));
-                found = 1;
+     * compatible; emit them only for redirected output, not an interactive
+     * terminal where the Chinese table is the complete presentation. */
+    if (!assets_stdout_is_terminal()) {
+        printf("Player %s (id=%d)\n", player->name, player->id);
+        printf("money=%d points=%d position=%d\n", player->money, player->points, player->position);
+        printf("items: barrier=%d robot=%d bomb=%d\n",
+               player->items[ITEM_BARRIER], player->items[ITEM_ROBOT], player->items[ITEM_BOMB]);
+        printf("status=%s remaining_rounds=%d\n",
+               status_to_string(player->status), player->status_rounds);
+        printf("god_of_wealth_rounds=%d\n", player->god_of_wealth_rounds);
+        fputs("properties:", stdout);
+        if (map != NULL) {
+            for (size_t i = 0; i < MAP_BLOCK_COUNT; ++i) {
+                if (map_get_property_owner(map, i) == player->id) {
+                    printf(" %u(level=%u)", (unsigned)i, map_get_property_level(map, i));
+                }
             }
+            if (!found) fputs(" none", stdout);
+        } else {
+            fputs(" unavailable", stdout);
         }
-        if (!found) fputs(" none", stdout);
-    } else {
-        fputs(" unavailable", stdout);
+        putchar('\n');
     }
-    putchar('\n');
 }
 
 bool query_assets_to_json(const Player *player, const Map *map, const char *filename)

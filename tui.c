@@ -73,7 +73,16 @@ static void tui_build_board(char board[TUI_ROWS][TUI_COLS][4], const Map *map)
 
     for (size_t i = 0; i < MAP_BLOCK_COUNT; ++i) {
         const TuiCoord coord = kMapCoords[i];
-        strcpy(board[coord.row][coord.col], tui_block_symbol(map_get_block(map, i)));
+        BlockBits block = map_get_block(map, i);
+
+        strcpy(board[coord.row][coord.col], tui_block_symbol(block));
+        if (map_block_is_purchasable(block) &&
+            map_get_property_owner(map, i) != MAP_PROPERTY_UNOWNED) {
+            /* Level 0 is an owned empty plot; levels 1-3 are the
+             * progressively upgraded buildings shown on the board. */
+            snprintf(board[coord.row][coord.col], 4, "%u",
+                     map_get_property_level(map, i));
+        }
     }
 }
 
@@ -302,7 +311,7 @@ void tui_render_game(const Map *map, const TuiPlayerView *players, size_t player
     tui_print_board(board, board_colors, map, players, player_count);
 
     puts("");
-    puts("图例：S=起点 T=道具屋 G=礼品屋 M=魔法屋 H=医院 P=监狱 $=矿地 0=地产");
+    puts("图例：S=起点 T=道具屋 G=礼品屋 M=魔法屋 H=医院 P=监狱 $=矿地 0=未购买 1=茅屋 2=洋房 3=摩天楼");
 
     if (players == NULL || player_count == 0) {
         return;
