@@ -1,0 +1,25 @@
+#include <assert.h>
+#include <stdio.h>
+
+#include "assets.h"
+
+int main(void)
+{
+    Player player = {0};
+    Map map;
+    FILE *file;
+    player.id = 1;
+    player.name[0] = 'A';
+    player.money = 900;
+    player.points = 20;
+    player.active = 1;
+    player.status = PLAYER_NORMAL;
+    map_init(&map);
+    assert(query_assets_to_json(&player, &map, "assets_test.json"));
+    file = fopen("assets_test.json", "r");
+    assert(file != NULL);
+    fclose(file);
+    remove("assets_test.json");
+    assert(!query_assets_to_json(NULL, &map, "assets_test.json"));
+    return 0;
+}
