@@ -1,0 +1,6405 @@
+{
+  "schema_version": "1.0",
+  "tests": [
+    {
+      "schema_version": "1.0",
+      "case_id": "TC-ADDED-001",
+      "case_name": "新增步数覆盖测试1：从7移动2步",
+      "map_file": "map.json",
+      "preset": {
+        "users": [
+          "A",
+          "Q"
+        ],
+        "current_user": "A",
+        "phase": "COMMAND",
+        "game_status": "RUNNING",
+        "players": [
+          {
+            "id": "A",
+            "fund": 1000,
+            "credit": 0,
+            "position": 7,
+            "status": "NORMAL",
+            "remaining_rounds": 0,
+            "items": {
+              "BLOCK": 0,
+              "BOMB": 0,
+              "ROBOT": 0
+            },
+            "god_of_wealth_rounds": 0
+          },
+          {
+            "id": "Q",
+            "fund": 1000,
+            "credit": 0,
+            "position": 17,
+            "status": "NORMAL",
+            "remaining_rounds": 0,
+            "items": {
+              "BLOCK": 0,
+              "BOMB": 0,
+              "ROBOT": 0
+            },
+            "god_of_wealth_rounds": 0
+          }
+        ],
+        "properties": [],
+        "map_items": [],
+        "dice_sequence": []
+      },
+      "actions": [
+        {
+          "command": "STEP",
+          "params": {
+            "steps": 2
+          }
+        }
+      ],
+      "expected": {
+        "players": [
+          {
+            "id": "A",
+            "position": 9
+          }
+        ]
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "case_id": "TC-ADDED-002",
+      "case_name": "新增步数覆盖测试2：从14移动3步",
+      "map_file": "map.json",
+      "preset": {
+        "users": [
+          "A",
+          "Q"
+        ],
+        "current_user": "A",
+        "phase": "COMMAND",
+        "game_status": "RUNNING",
+        "players": [
+          {
+            "id": "A",
+            "fund": 1000,
+            "credit": 0,
+            "position": 14,
+            "status": "NORMAL",
+            "remaining_rounds": 0,
+            "items": {
+              "BLOCK": 0,
+              "BOMB": 0,
+              "ROBOT": 0
+            },
+            "god_of_wealth_rounds": 0
+          },
+          {
+            "id": "Q",
+            "fund": 1000,
+            "credit": 0,
+            "position": 24,
+            "status": "NORMAL",
+            "remaining_rounds": 0,
+            "items": {
+              "BLOCK": 0,
+              "BOMB": 0,
+              "ROBOT": 0
+            },
+            "god_of_wealth_rounds": 0
+          }
+        ],
+        "properties": [],
+        "map_items": [],
+        "dice_sequence": []
+      },
+      "actions": [
+        {
+          "command": "STEP",
+          "params": {
+            "steps": 3
+          }
+        }
+      ],
+      "expected": {
+        "players": [
+          {
+            "id": "A",
+            "position": 17
+          }
+        ]
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "case_id": "TC-ADDED-003",
+      "case_name": "新增步数覆盖测试3：从21移动4步",
+      "map_file": "map.json",
+      "preset": {
+        "users": [
+          "A",
+          "Q"
+        ],
+        "current_user": "A",
+        "phase": "COMMAND",
+        "game_status": "RUNNING",
+        "players": [
+          {
+            "id": "A",
+            "fund": 1000,
+            "credit": 0,
+            "position": 21,
+            "status": "NORMAL",
+            "remaining_rounds": 0,
+            "items": {
+              "BLOCK": 0,
+              "BOMB": 0,
+              "ROBOT": 0
+            },
+            "god_of_wealth_rounds": 0
+          },
+          {
+            "id": "Q",
+            "fund": 1000,
+            "credit": 0,
+            "position": 31,
+            "status": "NORMAL",
+            "remaining_rounds": 0,
+            "items": {
+              "BLOCK": 0,
+              "BOMB": 0,
+              "ROBOT": 0
+            },
+            "god_of_wealth_rounds": 0
+          }
+        ],
+        "properties": [],
+        "map_items": [],
+        "dice_sequence": []
+      },
+      "actions": [
+        {
+          "command": "STEP",
+          "params": {
+            "steps": 4
+          }
+        }
+      ],
+      "expected": {
+        "players": [
+          {
+            "id": "A",
+            "position": 25
+          }
+        ]
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "case_id": "TC-ADDED-004",
+      "case_name": "新增步数覆盖测试4：从28移动5步",
+      "map_file": "map.json",
+      "preset": {
+        "users": [
+          "A",
+          "Q"
+        ],
+        "current_user": "A",
+        "phase": "COMMAND",
+        "game_status": "RUNNING",
+        "players": [
+          {
+            "id": "A",
+            "fund": 1000,
+            "credit": 0,
+            "position": 28,
+            "status": "NORMAL",
+            "remaining_rounds": 0,
+            "items": {
+              "BLOCK": 0,
+              "BOMB": 0,
+              "ROBOT": 0
+            },
+            "god_of_wealth_rounds": 0
+          },
+          {
+            "id": "Q",
+            "fund": 1000,
+            "credit": 0,
+            "position": 38,
+            "status": "NORMAL",
+            "remaining_rounds": 0,
+            "items": {
+              "BLOCK": 0,
+              "BOMB": 0,
+              "ROBOT": 0
+            },
+            "god_of_wealth_rounds": 0
+          }
+        ],
+        "properties": [],
+        "map_items": [],
+        "dice_sequence": []
+      },
+      "actions": [
+        {
+          "command": "STEP",
+          "params": {
+            "steps": 5
+          }
+        }
+      ],
+      "expected": {
+        "players": [
+          {
+            "id": "A",
+            "position": 33
+          }
+        ]
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "case_id": "TC-ADDED-005",
+      "case_name": "新增步数覆盖测试5：从35移动6步",
+      "map_file": "map.json",
+      "preset": {
+        "users": [
+          "A",
+          "Q"
+        ],
+        "current_user": "A",
+        "phase": "COMMAND",
+        "game_status": "RUNNING",
+        "players": [
+          {
+            "id": "A",
+            "fund": 1000,
+            "credit": 0,
+            "position": 35,
+            "status": "NORMAL",
+            "remaining_rounds": 0,
+            "items": {
+              "BLOCK": 0,
+              "BOMB": 0,
+              "ROBOT": 0
+            },
+            "god_of_wealth_rounds": 0
+          },
+          {
+            "id": "Q",
+            "fund": 1000,
+            "credit": 0,
+            "position": 45,
+            "status": "NORMAL",
+            "remaining_rounds": 0,
+            "items": {
+              "BLOCK": 0,
+              "BOMB": 0,
+              "ROBOT": 0
+            },
+            "god_of_wealth_rounds": 0
+          }
+        ],
+        "properties": [],
+        "map_items": [],
+        "dice_sequence": []
+      },
+      "actions": [
+        {
+          "command": "STEP",
+          "params": {
+            "steps": 6
+          }
+        }
+      ],
+      "expected": {
+        "players": [
+          {
+            "id": "A",
+            "position": 41
+          }
+        ]
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "case_id": "TC-ADDED-006",
+      "case_name": "新增步数覆盖测试6：从42移动7步",
+      "map_file": "map.json",
+      "preset": {
+        "users": [
+          "A",
+          "Q"
+        ],
+        "current_user": "A",
+        "phase": "COMMAND",
+        "game_status": "RUNNING",
+        "players": [
+          {
+            "id": "A",
+            "fund": 1000,
+            "credit": 0,
+            "position": 42,
+            "status": "NORMAL",
+            "remaining_rounds": 0,
+            "items": {
+              "BLOCK": 0,
+              "BOMB": 0,
+              "ROBOT": 0
+            },
+            "god_of_wealth_rounds": 0
+          },
+          {
+            "id": "Q",
+            "fund": 1000,
+            "credit": 0,
+            "position": 52,
+            "status": "NORMAL",
+            "remaining_rounds": 0,
+            "items": {
+              "BLOCK": 0,
+              "BOMB": 0,
+              "ROBOT": 0
+            },
+            "god_of_wealth_rounds": 0
+          }
+        ],
+        "properties": [],
+        "map_items": [],
+        "dice_sequence": []
+      },
+      "actions": [
+        {
+          "command": "STEP",
+          "params": {
+            "steps": 7
+          }
+        }
+      ],
+      "expected": {
+        "players": [
+          {
+            "id": "A",
+            "position": 49
+          }
+        ]
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "case_id": "TC-ADDED-007",
+      "case_name": "新增步数覆盖测试7：从49移动8步",
+      "map_file": "map.json",
+      "preset": {
+        "users": [
+          "A",
+          "Q"
+        ],
+        "current_user": "A",
+        "phase": "COMMAND",
+        "game_status": "RUNNING",
+        "players": [
+          {
+            "id": "A",
+            "fund": 1000,
+            "credit": 0,
+            "position": 49,
+            "status": "NORMAL",
+            "remaining_rounds": 0,
+            "items": {
+              "BLOCK": 0,
+              "BOMB": 0,
+              "ROBOT": 0
+            },
+            "god_of_wealth_rounds": 0
+          },
+          {
+            "id": "Q",
+            "fund": 1000,
+            "credit": 0,
+            "position": 59,
+            "status": "NORMAL",
+            "remaining_rounds": 0,
+            "items": {
+              "BLOCK": 0,
+              "BOMB": 0,
+              "ROBOT": 0
+            },
+            "god_of_wealth_rounds": 0
+          }
+        ],
+        "properties": [],
+        "map_items": [],
+        "dice_sequence": []
+      },
+      "actions": [
+        {
+          "command": "STEP",
+          "params": {
+            "steps": 8
+          }
+        }
+      ],
+      "expected": {
+        "players": [
+          {
+            "id": "A",
+            "position": 57
+          }
+        ]
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "case_id": "TC-ADDED-008",
+      "case_name": "新增步数覆盖测试8：从56移动9步",
+      "map_file": "map.json",
+      "preset": {
+        "users": [
+          "A",
+          "Q"
+        ],
+        "current_user": "A",
+        "phase": "COMMAND",
+        "game_status": "RUNNING",
+        "players": [
+          {
+            "id": "A",
+            "fund": 1000,
+            "credit": 0,
+            "position": 56,
+            "status": "NORMAL",
+            "remaining_rounds": 0,
+            "items": {
+              "BLOCK": 0,
+              "BOMB": 0,
+              "ROBOT": 0
+            },
+            "god_of_wealth_rounds": 0
+          },
+          {
+            "id": "Q",
+            "fund": 1000,
+            "credit": 0,
+            "position": 66,
+            "status": "NORMAL",
+            "remaining_rounds": 0,
+            "items": {
+              "BLOCK": 0,
+              "BOMB": 0,
+              "ROBOT": 0
+            },
+            "god_of_wealth_rounds": 0
+          }
+        ],
+        "properties": [],
+        "map_items": [],
+        "dice_sequence": []
+      },
+      "actions": [
+        {
+          "command": "STEP",
+          "params": {
+            "steps": 9
+          }
+        }
+      ],
+      "expected": {
+        "players": [
+          {
+            "id": "A",
+            "position": 65
+          }
+        ]
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "case_id": "TC-ADDED-009",
+      "case_name": "新增步数覆盖测试9：从63移动10步",
+      "map_file": "map.json",
+      "preset": {
+        "users": [
+          "A",
+          "Q"
+        ],
+        "current_user": "A",
+        "phase": "COMMAND",
+        "game_status": "RUNNING",
+        "players": [
+          {
+            "id": "A",
+            "fund": 1000,
+            "credit": 0,
+            "position": 63,
+            "status": "NORMAL",
+            "remaining_rounds": 0,
+            "items": {
+              "BLOCK": 0,
+              "BOMB": 0,
+              "ROBOT": 0
+            },
+            "god_of_wealth_rounds": 0
+          },
+          {
+            "id": "Q",
+            "fund": 1000,
+            "credit": 0,
+            "position": 3,
+            "status": "NORMAL",
+            "remaining_rounds": 0,
+            "items": {
+              "BLOCK": 0,
+              "BOMB": 0,
+              "ROBOT": 0
+            },
+            "god_of_wealth_rounds": 0
+          }
+        ],
+        "properties": [],
+        "map_items": [],
+        "dice_sequence": []
+      },
+      "actions": [
+        {
+          "command": "STEP",
+          "params": {
+            "steps": 10
+          }
+        }
+      ],
+      "expected": {
+        "players": [
+          {
+            "id": "A",
+            "position": 3
+          }
+        ]
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "case_id": "TC-ADDED-010",
+      "case_name": "新增步数覆盖测试10：从0移动11步",
+      "map_file": "map.json",
+      "preset": {
+        "users": [
+          "A",
+          "Q"
+        ],
+        "current_user": "A",
+        "phase": "COMMAND",
+        "game_status": "RUNNING",
+        "players": [
+          {
+            "id": "A",
+            "fund": 1000,
+            "credit": 0,
+            "position": 0,
+            "status": "NORMAL",
+            "remaining_rounds": 0,
+            "items": {
+              "BLOCK": 0,
+              "BOMB": 0,
+              "ROBOT": 0
+            },
+            "god_of_wealth_rounds": 0
+          },
+          {
+            "id": "Q",
+            "fund": 1000,
+            "credit": 0,
+            "position": 10,
+            "status": "NORMAL",
+            "remaining_rounds": 0,
+            "items": {
+              "BLOCK": 0,
+              "BOMB": 0,
+              "ROBOT": 0
+            },
+            "god_of_wealth_rounds": 0
+          }
+        ],
+        "properties": [],
+        "map_items": [],
+        "dice_sequence": []
+      },
+      "actions": [
+        {
+          "command": "STEP",
+          "params": {
+            "steps": 11
+          }
+        }
+      ],
+      "expected": {
+        "players": [
+          {
+            "id": "A",
+            "position": 11
+          }
+        ]
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "case_id": "TC-ADDED-011",
+      "case_name": "新增步数覆盖测试11：从7移动12步",
+      "map_file": "map.json",
+      "preset": {
+        "users": [
+          "A",
+          "Q"
+        ],
+        "current_user": "A",
+        "phase": "COMMAND",
+        "game_status": "RUNNING",
+        "players": [
+          {
+            "id": "A",
+            "fund": 1000,
+            "credit": 0,
+            "position": 7,
+            "status": "NORMAL",
+            "remaining_rounds": 0,
+            "items": {
+              "BLOCK": 0,
+              "BOMB": 0,
+              "ROBOT": 0
+            },
+            "god_of_wealth_rounds": 0
+          },
+          {
+            "id": "Q",
+            "fund": 1000,
+            "credit": 0,
+            "position": 17,
+            "status": "NORMAL",
+            "remaining_rounds": 0,
+            "items": {
+              "BLOCK": 0,
+              "BOMB": 0,
+              "ROBOT": 0
+            },
+            "god_of_wealth_rounds": 0
+          }
+        ],
+        "properties": [],
+        "map_items": [],
+        "dice_sequence": []
+      },
+      "actions": [
+        {
+          "command": "STEP",
+          "params": {
+            "steps": 12
+          }
+        }
+      ],
+      "expected": {
+        "players": [
+          {
+            "id": "A",
+            "position": 19
+          }
+        ]
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "case_id": "TC-ADDED-012",
+      "case_name": "新增步数覆盖测试12：从14移动13步",
+      "map_file": "map.json",
+      "preset": {
+        "users": [
+          "A",
+          "Q"
+        ],
+        "current_user": "A",
+        "phase": "COMMAND",
+        "game_status": "RUNNING",
+        "players": [
+          {
+            "id": "A",
+            "fund": 1000,
+            "credit": 0,
+            "position": 14,
+            "status": "NORMAL",
+            "remaining_rounds": 0,
+            "items": {
+              "BLOCK": 0,
+              "BOMB": 0,
+              "ROBOT": 0
+            },
+            "god_of_wealth_rounds": 0
+          },
+          {
+            "id": "Q",
+            "fund": 1000,
+            "credit": 0,
+            "position": 24,
+            "status": "NORMAL",
+            "remaining_rounds": 0,
+            "items": {
+              "BLOCK": 0,
+              "BOMB": 0,
+              "ROBOT": 0
+            },
+            "god_of_wealth_rounds": 0
+          }
+        ],
+        "properties": [],
+        "map_items": [],
+        "dice_sequence": []
+      },
+      "actions": [
+        {
+          "command": "STEP",
+          "params": {
+            "steps": 13
+          }
+        }
+      ],
+      "expected": {
+        "players": [
+          {
+            "id": "A",
+            "position": 27
+          }
+        ]
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "case_id": "TC-ADDED-013",
+      "case_name": "新增步数覆盖测试13：从21移动14步",
+      "map_file": "map.json",
+      "preset": {
+        "users": [
+          "A",
+          "Q"
+        ],
+        "current_user": "A",
+        "phase": "COMMAND",
+        "game_status": "RUNNING",
+        "players": [
+          {
+            "id": "A",
+            "fund": 1000,
+            "credit": 0,
+            "position": 21,
+            "status": "NORMAL",
+            "remaining_rounds": 0,
+            "items": {
+              "BLOCK": 0,
+              "BOMB": 0,
+              "ROBOT": 0
+            },
+            "god_of_wealth_rounds": 0
+          },
+          {
+            "id": "Q",
+            "fund": 1000,
+            "credit": 0,
+            "position": 31,
+            "status": "NORMAL",
+            "remaining_rounds": 0,
+            "items": {
+              "BLOCK": 0,
+              "BOMB": 0,
+              "ROBOT": 0
+            },
+            "god_of_wealth_rounds": 0
+          }
+        ],
+        "properties": [],
+        "map_items": [],
+        "dice_sequence": []
+      },
+      "actions": [
+        {
+          "command": "STEP",
+          "params": {
+            "steps": 14
+          }
+        }
+      ],
+      "expected": {
+        "players": [
+          {
+            "id": "A",
+            "position": 35
+          }
+        ]
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "case_id": "TC-ADDED-014",
+      "case_name": "新增步数覆盖测试14：从28移动15步",
+      "map_file": "map.json",
+      "preset": {
+        "users": [
+          "A",
+          "Q"
+        ],
+        "current_user": "A",
+        "phase": "COMMAND",
+        "game_status": "RUNNING",
+        "players": [
+          {
+            "id": "A",
+            "fund": 1000,
+            "credit": 0,
+            "position": 28,
+            "status": "NORMAL",
+            "remaining_rounds": 0,
+            "items": {
+              "BLOCK": 0,
+              "BOMB": 0,
+              "ROBOT": 0
+            },
+            "god_of_wealth_rounds": 0
+          },
+          {
+            "id": "Q",
+            "fund": 1000,
+            "credit": 0,
+            "position": 38,
+            "status": "NORMAL",
+            "remaining_rounds": 0,
+            "items": {
+              "BLOCK": 0,
+              "BOMB": 0,
+              "ROBOT": 0
+            },
+            "god_of_wealth_rounds": 0
+          }
+        ],
+        "properties": [],
+        "map_items": [],
+        "dice_sequence": []
+      },
+      "actions": [
+        {
+          "command": "STEP",
+          "params": {
+            "steps": 15
+          }
+        }
+      ],
+      "expected": {
+        "players": [
+          {
+            "id": "A",
+            "position": 43
+          }
+        ]
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "case_id": "TC-ADDED-015",
+      "case_name": "新增步数覆盖测试15：从35移动16步",
+      "map_file": "map.json",
+      "preset": {
+        "users": [
+          "A",
+          "Q"
+        ],
+        "current_user": "A",
+        "phase": "COMMAND",
+        "game_status": "RUNNING",
+        "players": [
+          {
+            "id": "A",
+            "fund": 1000,
+            "credit": 0,
+            "position": 35,
+            "status": "NORMAL",
+            "remaining_rounds": 0,
+            "items": {
+              "BLOCK": 0,
+              "BOMB": 0,
+              "ROBOT": 0
+            },
+            "god_of_wealth_rounds": 0
+          },
+          {
+            "id": "Q",
+            "fund": 1000,
+            "credit": 0,
+            "position": 45,
+            "status": "NORMAL",
+            "remaining_rounds": 0,
+            "items": {
+              "BLOCK": 0,
+              "BOMB": 0,
+              "ROBOT": 0
+            },
+            "god_of_wealth_rounds": 0
+          }
+        ],
+        "properties": [],
+        "map_items": [],
+        "dice_sequence": []
+      },
+      "actions": [
+        {
+          "command": "STEP",
+          "params": {
+            "steps": 16
+          }
+        }
+      ],
+      "expected": {
+        "players": [
+          {
+            "id": "A",
+            "position": 51
+          }
+        ]
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "case_id": "TC-ADDED-016",
+      "case_name": "新增步数覆盖测试16：从42移动17步",
+      "map_file": "map.json",
+      "preset": {
+        "users": [
+          "A",
+          "Q"
+        ],
+        "current_user": "A",
+        "phase": "COMMAND",
+        "game_status": "RUNNING",
+        "players": [
+          {
+            "id": "A",
+            "fund": 1000,
+            "credit": 0,
+            "position": 42,
+            "status": "NORMAL",
+            "remaining_rounds": 0,
+            "items": {
+              "BLOCK": 0,
+              "BOMB": 0,
+              "ROBOT": 0
+            },
+            "god_of_wealth_rounds": 0
+          },
+          {
+            "id": "Q",
+            "fund": 1000,
+            "credit": 0,
+            "position": 52,
+            "status": "NORMAL",
+            "remaining_rounds": 0,
+            "items": {
+              "BLOCK": 0,
+              "BOMB": 0,
+              "ROBOT": 0
+            },
+            "god_of_wealth_rounds": 0
+          }
+        ],
+        "properties": [],
+        "map_items": [],
+        "dice_sequence": []
+      },
+      "actions": [
+        {
+          "command": "STEP",
+          "params": {
+            "steps": 17
+          }
+        }
+      ],
+      "expected": {
+        "players": [
+          {
+            "id": "A",
+            "position": 59
+          }
+        ]
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "case_id": "TC-ADDED-017",
+      "case_name": "新增步数覆盖测试17：从49移动18步",
+      "map_file": "map.json",
+      "preset": {
+        "users": [
+          "A",
+          "Q"
+        ],
+        "current_user": "A",
+        "phase": "COMMAND",
+        "game_status": "RUNNING",
+        "players": [
+          {
+            "id": "A",
+            "fund": 1000,
+            "credit": 0,
+            "position": 49,
+            "status": "NORMAL",
+            "remaining_rounds": 0,
+            "items": {
+              "BLOCK": 0,
+              "BOMB": 0,
+              "ROBOT": 0
+            },
+            "god_of_wealth_rounds": 0
+          },
+          {
+            "id": "Q",
+            "fund": 1000,
+            "credit": 0,
+            "position": 59,
+            "status": "NORMAL",
+            "remaining_rounds": 0,
+            "items": {
+              "BLOCK": 0,
+              "BOMB": 0,
+              "ROBOT": 0
+            },
+            "god_of_wealth_rounds": 0
+          }
+        ],
+        "properties": [],
+        "map_items": [],
+        "dice_sequence": []
+      },
+      "actions": [
+        {
+          "command": "STEP",
+          "params": {
+            "steps": 18
+          }
+        }
+      ],
+      "expected": {
+        "players": [
+          {
+            "id": "A",
+            "position": 67
+          }
+        ]
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "case_id": "TC-ADDED-018",
+      "case_name": "新增步数覆盖测试18：从56移动19步",
+      "map_file": "map.json",
+      "preset": {
+        "users": [
+          "A",
+          "Q"
+        ],
+        "current_user": "A",
+        "phase": "COMMAND",
+        "game_status": "RUNNING",
+        "players": [
+          {
+            "id": "A",
+            "fund": 1000,
+            "credit": 0,
+            "position": 56,
+            "status": "NORMAL",
+            "remaining_rounds": 0,
+            "items": {
+              "BLOCK": 0,
+              "BOMB": 0,
+              "ROBOT": 0
+            },
+            "god_of_wealth_rounds": 0
+          },
+          {
+            "id": "Q",
+            "fund": 1000,
+            "credit": 0,
+            "position": 66,
+            "status": "NORMAL",
+            "remaining_rounds": 0,
+            "items": {
+              "BLOCK": 0,
+              "BOMB": 0,
+              "ROBOT": 0
+            },
+            "god_of_wealth_rounds": 0
+          }
+        ],
+        "properties": [],
+        "map_items": [],
+        "dice_sequence": []
+      },
+      "actions": [
+        {
+          "command": "STEP",
+          "params": {
+            "steps": 19
+          }
+        }
+      ],
+      "expected": {
+        "players": [
+          {
+            "id": "A",
+            "position": 5
+          }
+        ]
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "case_id": "TC-ADDED-019",
+      "case_name": "新增步数覆盖测试19：从63移动20步",
+      "map_file": "map.json",
+      "preset": {
+        "users": [
+          "A",
+          "Q"
+        ],
+        "current_user": "A",
+        "phase": "COMMAND",
+        "game_status": "RUNNING",
+        "players": [
+          {
+            "id": "A",
+            "fund": 1000,
+            "credit": 0,
+            "position": 63,
+            "status": "NORMAL",
+            "remaining_rounds": 0,
+            "items": {
+              "BLOCK": 0,
+              "BOMB": 0,
+              "ROBOT": 0
+            },
+            "god_of_wealth_rounds": 0
+          },
+          {
+            "id": "Q",
+            "fund": 1000,
+            "credit": 0,
+            "position": 3,
+            "status": "NORMAL",
+            "remaining_rounds": 0,
+            "items": {
+              "BLOCK": 0,
+              "BOMB": 0,
+              "ROBOT": 0
+            },
+            "god_of_wealth_rounds": 0
+          }
+        ],
+        "properties": [],
+        "map_items": [],
+        "dice_sequence": []
+      },
+      "actions": [
+        {
+          "command": "STEP",
+          "params": {
+            "steps": 20
+          }
+        }
+      ],
+      "expected": {
+        "players": [
+          {
+            "id": "A",
+            "position": 13
+          }
+        ]
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "case_id": "TC-ADDED-020",
+      "case_name": "新增步数覆盖测试20：从0移动21步",
+      "map_file": "map.json",
+      "preset": {
+        "users": [
+          "A",
+          "Q"
+        ],
+        "current_user": "A",
+        "phase": "COMMAND",
+        "game_status": "RUNNING",
+        "players": [
+          {
+            "id": "A",
+            "fund": 1000,
+            "credit": 0,
+            "position": 0,
+            "status": "NORMAL",
+            "remaining_rounds": 0,
+            "items": {
+              "BLOCK": 0,
+              "BOMB": 0,
+              "ROBOT": 0
+            },
+            "god_of_wealth_rounds": 0
+          },
+          {
+            "id": "Q",
+            "fund": 1000,
+            "credit": 0,
+            "position": 10,
+            "status": "NORMAL",
+            "remaining_rounds": 0,
+            "items": {
+              "BLOCK": 0,
+              "BOMB": 0,
+              "ROBOT": 0
+            },
+            "god_of_wealth_rounds": 0
+          }
+        ],
+        "properties": [],
+        "map_items": [],
+        "dice_sequence": []
+      },
+      "actions": [
+        {
+          "command": "STEP",
+          "params": {
+            "steps": 21
+          }
+        }
+      ],
+      "expected": {
+        "players": [
+          {
+            "id": "A",
+            "position": 21
+          }
+        ]
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "case_id": "TC-ADDED-021",
+      "case_name": "新增步数覆盖测试21：从7移动22步",
+      "map_file": "map.json",
+      "preset": {
+        "users": [
+          "A",
+          "Q"
+        ],
+        "current_user": "A",
+        "phase": "COMMAND",
+        "game_status": "RUNNING",
+        "players": [
+          {
+            "id": "A",
+            "fund": 1000,
+            "credit": 0,
+            "position": 7,
+            "status": "NORMAL",
+            "remaining_rounds": 0,
+            "items": {
+              "BLOCK": 0,
+              "BOMB": 0,
+              "ROBOT": 0
+            },
+            "god_of_wealth_rounds": 0
+          },
+          {
+            "id": "Q",
+            "fund": 1000,
+            "credit": 0,
+            "position": 17,
+            "status": "NORMAL",
+            "remaining_rounds": 0,
+            "items": {
+              "BLOCK": 0,
+              "BOMB": 0,
+              "ROBOT": 0
+            },
+            "god_of_wealth_rounds": 0
+          }
+        ],
+        "properties": [],
+        "map_items": [],
+        "dice_sequence": []
+      },
+      "actions": [
+        {
+          "command": "STEP",
+          "params": {
+            "steps": 22
+          }
+        }
+      ],
+      "expected": {
+        "players": [
+          {
+            "id": "A",
+            "position": 29
+          }
+        ]
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "case_id": "TC-ADDED-022",
+      "case_name": "新增步数覆盖测试22：从14移动23步",
+      "map_file": "map.json",
+      "preset": {
+        "users": [
+          "A",
+          "Q"
+        ],
+        "current_user": "A",
+        "phase": "COMMAND",
+        "game_status": "RUNNING",
+        "players": [
+          {
+            "id": "A",
+            "fund": 1000,
+            "credit": 0,
+            "position": 14,
+            "status": "NORMAL",
+            "remaining_rounds": 0,
+            "items": {
+              "BLOCK": 0,
+              "BOMB": 0,
+              "ROBOT": 0
+            },
+            "god_of_wealth_rounds": 0
+          },
+          {
+            "id": "Q",
+            "fund": 1000,
+            "credit": 0,
+            "position": 24,
+            "status": "NORMAL",
+            "remaining_rounds": 0,
+            "items": {
+              "BLOCK": 0,
+              "BOMB": 0,
+              "ROBOT": 0
+            },
+            "god_of_wealth_rounds": 0
+          }
+        ],
+        "properties": [],
+        "map_items": [],
+        "dice_sequence": []
+      },
+      "actions": [
+        {
+          "command": "STEP",
+          "params": {
+            "steps": 23
+          }
+        }
+      ],
+      "expected": {
+        "players": [
+          {
+            "id": "A",
+            "position": 37
+          }
+        ]
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "case_id": "TC-ADDED-023",
+      "case_name": "新增步数覆盖测试23：从21移动24步",
+      "map_file": "map.json",
+      "preset": {
+        "users": [
+          "A",
+          "Q"
+        ],
+        "current_user": "A",
+        "phase": "COMMAND",
+        "game_status": "RUNNING",
+        "players": [
+          {
+            "id": "A",
+            "fund": 1000,
+            "credit": 0,
+            "position": 21,
+            "status": "NORMAL",
+            "remaining_rounds": 0,
+            "items": {
+              "BLOCK": 0,
+              "BOMB": 0,
+              "ROBOT": 0
+            },
+            "god_of_wealth_rounds": 0
+          },
+          {
+            "id": "Q",
+            "fund": 1000,
+            "credit": 0,
+            "position": 31,
+            "status": "NORMAL",
+            "remaining_rounds": 0,
+            "items": {
+              "BLOCK": 0,
+              "BOMB": 0,
+              "ROBOT": 0
+            },
+            "god_of_wealth_rounds": 0
+          }
+        ],
+        "properties": [],
+        "map_items": [],
+        "dice_sequence": []
+      },
+      "actions": [
+        {
+          "command": "STEP",
+          "params": {
+            "steps": 24
+          }
+        }
+      ],
+      "expected": {
+        "players": [
+          {
+            "id": "A",
+            "position": 45
+          }
+        ]
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "case_id": "TC-ADDED-024",
+      "case_name": "新增步数覆盖测试24：从28移动25步",
+      "map_file": "map.json",
+      "preset": {
+        "users": [
+          "A",
+          "Q"
+        ],
+        "current_user": "A",
+        "phase": "COMMAND",
+        "game_status": "RUNNING",
+        "players": [
+          {
+            "id": "A",
+            "fund": 1000,
+            "credit": 0,
+            "position": 28,
+            "status": "NORMAL",
+            "remaining_rounds": 0,
+            "items": {
+              "BLOCK": 0,
+              "BOMB": 0,
+              "ROBOT": 0
+            },
+            "god_of_wealth_rounds": 0
+          },
+          {
+            "id": "Q",
+            "fund": 1000,
+            "credit": 0,
+            "position": 38,
+            "status": "NORMAL",
+            "remaining_rounds": 0,
+            "items": {
+              "BLOCK": 0,
+              "BOMB": 0,
+              "ROBOT": 0
+            },
+            "god_of_wealth_rounds": 0
+          }
+        ],
+        "properties": [],
+        "map_items": [],
+        "dice_sequence": []
+      },
+      "actions": [
+        {
+          "command": "STEP",
+          "params": {
+            "steps": 25
+          }
+        }
+      ],
+      "expected": {
+        "players": [
+          {
+            "id": "A",
+            "position": 53
+          }
+        ]
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "case_id": "TC-ADDED-025",
+      "case_name": "新增步数覆盖测试25：从35移动26步",
+      "map_file": "map.json",
+      "preset": {
+        "users": [
+          "A",
+          "Q"
+        ],
+        "current_user": "A",
+        "phase": "COMMAND",
+        "game_status": "RUNNING",
+        "players": [
+          {
+            "id": "A",
+            "fund": 1000,
+            "credit": 0,
+            "position": 35,
+            "status": "NORMAL",
+            "remaining_rounds": 0,
+            "items": {
+              "BLOCK": 0,
+              "BOMB": 0,
+              "ROBOT": 0
+            },
+            "god_of_wealth_rounds": 0
+          },
+          {
+            "id": "Q",
+            "fund": 1000,
+            "credit": 0,
+            "position": 45,
+            "status": "NORMAL",
+            "remaining_rounds": 0,
+            "items": {
+              "BLOCK": 0,
+              "BOMB": 0,
+              "ROBOT": 0
+            },
+            "god_of_wealth_rounds": 0
+          }
+        ],
+        "properties": [],
+        "map_items": [],
+        "dice_sequence": []
+      },
+      "actions": [
+        {
+          "command": "STEP",
+          "params": {
+            "steps": 26
+          }
+        }
+      ],
+      "expected": {
+        "players": [
+          {
+            "id": "A",
+            "position": 61
+          }
+        ]
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "case_id": "TC-ADDED-026",
+      "case_name": "新增步数覆盖测试26：从42移动27步",
+      "map_file": "map.json",
+      "preset": {
+        "users": [
+          "A",
+          "Q"
+        ],
+        "current_user": "A",
+        "phase": "COMMAND",
+        "game_status": "RUNNING",
+        "players": [
+          {
+            "id": "A",
+            "fund": 1000,
+            "credit": 0,
+            "position": 42,
+            "status": "NORMAL",
+            "remaining_rounds": 0,
+            "items": {
+              "BLOCK": 0,
+              "BOMB": 0,
+              "ROBOT": 0
+            },
+            "god_of_wealth_rounds": 0
+          },
+          {
+            "id": "Q",
+            "fund": 1000,
+            "credit": 0,
+            "position": 52,
+            "status": "NORMAL",
+            "remaining_rounds": 0,
+            "items": {
+              "BLOCK": 0,
+              "BOMB": 0,
+              "ROBOT": 0
+            },
+            "god_of_wealth_rounds": 0
+          }
+        ],
+        "properties": [],
+        "map_items": [],
+        "dice_sequence": []
+      },
+      "actions": [
+        {
+          "command": "STEP",
+          "params": {
+            "steps": 27
+          }
+        }
+      ],
+      "expected": {
+        "players": [
+          {
+            "id": "A",
+            "position": 69
+          }
+        ]
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "case_id": "TC-ADDED-027",
+      "case_name": "新增步数覆盖测试27：从49移动28步",
+      "map_file": "map.json",
+      "preset": {
+        "users": [
+          "A",
+          "Q"
+        ],
+        "current_user": "A",
+        "phase": "COMMAND",
+        "game_status": "RUNNING",
+        "players": [
+          {
+            "id": "A",
+            "fund": 1000,
+            "credit": 0,
+            "position": 49,
+            "status": "NORMAL",
+            "remaining_rounds": 0,
+            "items": {
+              "BLOCK": 0,
+              "BOMB": 0,
+              "ROBOT": 0
+            },
+            "god_of_wealth_rounds": 0
+          },
+          {
+            "id": "Q",
+            "fund": 1000,
+            "credit": 0,
+            "position": 59,
+            "status": "NORMAL",
+            "remaining_rounds": 0,
+            "items": {
+              "BLOCK": 0,
+              "BOMB": 0,
+              "ROBOT": 0
+            },
+            "god_of_wealth_rounds": 0
+          }
+        ],
+        "properties": [],
+        "map_items": [],
+        "dice_sequence": []
+      },
+      "actions": [
+        {
+          "command": "STEP",
+          "params": {
+            "steps": 28
+          }
+        }
+      ],
+      "expected": {
+        "players": [
+          {
+            "id": "A",
+            "position": 7
+          }
+        ]
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "case_id": "TC-ADDED-028",
+      "case_name": "新增步数覆盖测试28：从56移动29步",
+      "map_file": "map.json",
+      "preset": {
+        "users": [
+          "A",
+          "Q"
+        ],
+        "current_user": "A",
+        "phase": "COMMAND",
+        "game_status": "RUNNING",
+        "players": [
+          {
+            "id": "A",
+            "fund": 1000,
+            "credit": 0,
+            "position": 56,
+            "status": "NORMAL",
+            "remaining_rounds": 0,
+            "items": {
+              "BLOCK": 0,
+              "BOMB": 0,
+              "ROBOT": 0
+            },
+            "god_of_wealth_rounds": 0
+          },
+          {
+            "id": "Q",
+            "fund": 1000,
+            "credit": 0,
+            "position": 66,
+            "status": "NORMAL",
+            "remaining_rounds": 0,
+            "items": {
+              "BLOCK": 0,
+              "BOMB": 0,
+              "ROBOT": 0
+            },
+            "god_of_wealth_rounds": 0
+          }
+        ],
+        "properties": [],
+        "map_items": [],
+        "dice_sequence": []
+      },
+      "actions": [
+        {
+          "command": "STEP",
+          "params": {
+            "steps": 29
+          }
+        }
+      ],
+      "expected": {
+        "players": [
+          {
+            "id": "A",
+            "position": 15
+          }
+        ]
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "case_id": "TC-ADDED-029",
+      "case_name": "新增步数覆盖测试29：从63移动30步",
+      "map_file": "map.json",
+      "preset": {
+        "users": [
+          "A",
+          "Q"
+        ],
+        "current_user": "A",
+        "phase": "COMMAND",
+        "game_status": "RUNNING",
+        "players": [
+          {
+            "id": "A",
+            "fund": 1000,
+            "credit": 0,
+            "position": 63,
+            "status": "NORMAL",
+            "remaining_rounds": 0,
+            "items": {
+              "BLOCK": 0,
+              "BOMB": 0,
+              "ROBOT": 0
+            },
+            "god_of_wealth_rounds": 0
+          },
+          {
+            "id": "Q",
+            "fund": 1000,
+            "credit": 0,
+            "position": 3,
+            "status": "NORMAL",
+            "remaining_rounds": 0,
+            "items": {
+              "BLOCK": 0,
+              "BOMB": 0,
+              "ROBOT": 0
+            },
+            "god_of_wealth_rounds": 0
+          }
+        ],
+        "properties": [],
+        "map_items": [],
+        "dice_sequence": []
+      },
+      "actions": [
+        {
+          "command": "STEP",
+          "params": {
+            "steps": 30
+          }
+        }
+      ],
+      "expected": {
+        "players": [
+          {
+            "id": "A",
+            "position": 23
+          }
+        ]
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "case_id": "TC-ADDED-030",
+      "case_name": "新增步数覆盖测试30：从0移动31步",
+      "map_file": "map.json",
+      "preset": {
+        "users": [
+          "A",
+          "Q"
+        ],
+        "current_user": "A",
+        "phase": "COMMAND",
+        "game_status": "RUNNING",
+        "players": [
+          {
+            "id": "A",
+            "fund": 1000,
+            "credit": 0,
+            "position": 0,
+            "status": "NORMAL",
+            "remaining_rounds": 0,
+            "items": {
+              "BLOCK": 0,
+              "BOMB": 0,
+              "ROBOT": 0
+            },
+            "god_of_wealth_rounds": 0
+          },
+          {
+            "id": "Q",
+            "fund": 1000,
+            "credit": 0,
+            "position": 10,
+            "status": "NORMAL",
+            "remaining_rounds": 0,
+            "items": {
+              "BLOCK": 0,
+              "BOMB": 0,
+              "ROBOT": 0
+            },
+            "god_of_wealth_rounds": 0
+          }
+        ],
+        "properties": [],
+        "map_items": [],
+        "dice_sequence": []
+      },
+      "actions": [
+        {
+          "command": "STEP",
+          "params": {
+            "steps": 31
+          }
+        }
+      ],
+      "expected": {
+        "players": [
+          {
+            "id": "A",
+            "position": 31
+          }
+        ]
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "case_id": "TC-ADDED-031",
+      "case_name": "新增步数覆盖测试31：从7移动32步",
+      "map_file": "map.json",
+      "preset": {
+        "users": [
+          "A",
+          "Q"
+        ],
+        "current_user": "A",
+        "phase": "COMMAND",
+        "game_status": "RUNNING",
+        "players": [
+          {
+            "id": "A",
+            "fund": 1000,
+            "credit": 0,
+            "position": 7,
+            "status": "NORMAL",
+            "remaining_rounds": 0,
+            "items": {
+              "BLOCK": 0,
+              "BOMB": 0,
+              "ROBOT": 0
+            },
+            "god_of_wealth_rounds": 0
+          },
+          {
+            "id": "Q",
+            "fund": 1000,
+            "credit": 0,
+            "position": 17,
+            "status": "NORMAL",
+            "remaining_rounds": 0,
+            "items": {
+              "BLOCK": 0,
+              "BOMB": 0,
+              "ROBOT": 0
+            },
+            "god_of_wealth_rounds": 0
+          }
+        ],
+        "properties": [],
+        "map_items": [],
+        "dice_sequence": []
+      },
+      "actions": [
+        {
+          "command": "STEP",
+          "params": {
+            "steps": 32
+          }
+        }
+      ],
+      "expected": {
+        "players": [
+          {
+            "id": "A",
+            "position": 39
+          }
+        ]
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "case_id": "TC-ADDED-032",
+      "case_name": "新增步数覆盖测试32：从14移动33步",
+      "map_file": "map.json",
+      "preset": {
+        "users": [
+          "A",
+          "Q"
+        ],
+        "current_user": "A",
+        "phase": "COMMAND",
+        "game_status": "RUNNING",
+        "players": [
+          {
+            "id": "A",
+            "fund": 1000,
+            "credit": 0,
+            "position": 14,
+            "status": "NORMAL",
+            "remaining_rounds": 0,
+            "items": {
+              "BLOCK": 0,
+              "BOMB": 0,
+              "ROBOT": 0
+            },
+            "god_of_wealth_rounds": 0
+          },
+          {
+            "id": "Q",
+            "fund": 1000,
+            "credit": 0,
+            "position": 24,
+            "status": "NORMAL",
+            "remaining_rounds": 0,
+            "items": {
+              "BLOCK": 0,
+              "BOMB": 0,
+              "ROBOT": 0
+            },
+            "god_of_wealth_rounds": 0
+          }
+        ],
+        "properties": [],
+        "map_items": [],
+        "dice_sequence": []
+      },
+      "actions": [
+        {
+          "command": "STEP",
+          "params": {
+            "steps": 33
+          }
+        }
+      ],
+      "expected": {
+        "players": [
+          {
+            "id": "A",
+            "position": 47
+          }
+        ]
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "case_id": "TC-ADDED-033",
+      "case_name": "新增步数覆盖测试33：从21移动34步",
+      "map_file": "map.json",
+      "preset": {
+        "users": [
+          "A",
+          "Q"
+        ],
+        "current_user": "A",
+        "phase": "COMMAND",
+        "game_status": "RUNNING",
+        "players": [
+          {
+            "id": "A",
+            "fund": 1000,
+            "credit": 0,
+            "position": 21,
+            "status": "NORMAL",
+            "remaining_rounds": 0,
+            "items": {
+              "BLOCK": 0,
+              "BOMB": 0,
+              "ROBOT": 0
+            },
+            "god_of_wealth_rounds": 0
+          },
+          {
+            "id": "Q",
+            "fund": 1000,
+            "credit": 0,
+            "position": 31,
+            "status": "NORMAL",
+            "remaining_rounds": 0,
+            "items": {
+              "BLOCK": 0,
+              "BOMB": 0,
+              "ROBOT": 0
+            },
+            "god_of_wealth_rounds": 0
+          }
+        ],
+        "properties": [],
+        "map_items": [],
+        "dice_sequence": []
+      },
+      "actions": [
+        {
+          "command": "STEP",
+          "params": {
+            "steps": 34
+          }
+        }
+      ],
+      "expected": {
+        "players": [
+          {
+            "id": "A",
+            "position": 55
+          }
+        ]
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "case_id": "TC-ADDED-034",
+      "case_name": "新增步数覆盖测试34：从28移动35步",
+      "map_file": "map.json",
+      "preset": {
+        "users": [
+          "A",
+          "Q"
+        ],
+        "current_user": "A",
+        "phase": "COMMAND",
+        "game_status": "RUNNING",
+        "players": [
+          {
+            "id": "A",
+            "fund": 1000,
+            "credit": 0,
+            "position": 28,
+            "status": "NORMAL",
+            "remaining_rounds": 0,
+            "items": {
+              "BLOCK": 0,
+              "BOMB": 0,
+              "ROBOT": 0
+            },
+            "god_of_wealth_rounds": 0
+          },
+          {
+            "id": "Q",
+            "fund": 1000,
+            "credit": 0,
+            "position": 38,
+            "status": "NORMAL",
+            "remaining_rounds": 0,
+            "items": {
+              "BLOCK": 0,
+              "BOMB": 0,
+              "ROBOT": 0
+            },
+            "god_of_wealth_rounds": 0
+          }
+        ],
+        "properties": [],
+        "map_items": [],
+        "dice_sequence": []
+      },
+      "actions": [
+        {
+          "command": "STEP",
+          "params": {
+            "steps": 35
+          }
+        }
+      ],
+      "expected": {
+        "players": [
+          {
+            "id": "A",
+            "position": 63
+          }
+        ]
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "case_id": "TC-ADDED-035",
+      "case_name": "新增步数覆盖测试35：从35移动36步",
+      "map_file": "map.json",
+      "preset": {
+        "users": [
+          "A",
+          "Q"
+        ],
+        "current_user": "A",
+        "phase": "COMMAND",
+        "game_status": "RUNNING",
+        "players": [
+          {
+            "id": "A",
+            "fund": 1000,
+            "credit": 0,
+            "position": 35,
+            "status": "NORMAL",
+            "remaining_rounds": 0,
+            "items": {
+              "BLOCK": 0,
+              "BOMB": 0,
+              "ROBOT": 0
+            },
+            "god_of_wealth_rounds": 0
+          },
+          {
+            "id": "Q",
+            "fund": 1000,
+            "credit": 0,
+            "position": 45,
+            "status": "NORMAL",
+            "remaining_rounds": 0,
+            "items": {
+              "BLOCK": 0,
+              "BOMB": 0,
+              "ROBOT": 0
+            },
+            "god_of_wealth_rounds": 0
+          }
+        ],
+        "properties": [],
+        "map_items": [],
+        "dice_sequence": []
+      },
+      "actions": [
+        {
+          "command": "STEP",
+          "params": {
+            "steps": 36
+          }
+        }
+      ],
+      "expected": {
+        "players": [
+          {
+            "id": "A",
+            "position": 1
+          }
+        ]
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "case_id": "TC-ADDED-036",
+      "case_name": "新增步数覆盖测试36：从42移动37步",
+      "map_file": "map.json",
+      "preset": {
+        "users": [
+          "A",
+          "Q"
+        ],
+        "current_user": "A",
+        "phase": "COMMAND",
+        "game_status": "RUNNING",
+        "players": [
+          {
+            "id": "A",
+            "fund": 1000,
+            "credit": 0,
+            "position": 42,
+            "status": "NORMAL",
+            "remaining_rounds": 0,
+            "items": {
+              "BLOCK": 0,
+              "BOMB": 0,
+              "ROBOT": 0
+            },
+            "god_of_wealth_rounds": 0
+          },
+          {
+            "id": "Q",
+            "fund": 1000,
+            "credit": 0,
+            "position": 52,
+            "status": "NORMAL",
+            "remaining_rounds": 0,
+            "items": {
+              "BLOCK": 0,
+              "BOMB": 0,
+              "ROBOT": 0
+            },
+            "god_of_wealth_rounds": 0
+          }
+        ],
+        "properties": [],
+        "map_items": [],
+        "dice_sequence": []
+      },
+      "actions": [
+        {
+          "command": "STEP",
+          "params": {
+            "steps": 37
+          }
+        }
+      ],
+      "expected": {
+        "players": [
+          {
+            "id": "A",
+            "position": 9
+          }
+        ]
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "case_id": "TC-ADDED-037",
+      "case_name": "新增步数覆盖测试37：从49移动38步",
+      "map_file": "map.json",
+      "preset": {
+        "users": [
+          "A",
+          "Q"
+        ],
+        "current_user": "A",
+        "phase": "COMMAND",
+        "game_status": "RUNNING",
+        "players": [
+          {
+            "id": "A",
+            "fund": 1000,
+            "credit": 0,
+            "position": 49,
+            "status": "NORMAL",
+            "remaining_rounds": 0,
+            "items": {
+              "BLOCK": 0,
+              "BOMB": 0,
+              "ROBOT": 0
+            },
+            "god_of_wealth_rounds": 0
+          },
+          {
+            "id": "Q",
+            "fund": 1000,
+            "credit": 0,
+            "position": 59,
+            "status": "NORMAL",
+            "remaining_rounds": 0,
+            "items": {
+              "BLOCK": 0,
+              "BOMB": 0,
+              "ROBOT": 0
+            },
+            "god_of_wealth_rounds": 0
+          }
+        ],
+        "properties": [],
+        "map_items": [],
+        "dice_sequence": []
+      },
+      "actions": [
+        {
+          "command": "STEP",
+          "params": {
+            "steps": 38
+          }
+        }
+      ],
+      "expected": {
+        "players": [
+          {
+            "id": "A",
+            "position": 17
+          }
+        ]
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "case_id": "TC-ADDED-038",
+      "case_name": "新增步数覆盖测试38：从56移动39步",
+      "map_file": "map.json",
+      "preset": {
+        "users": [
+          "A",
+          "Q"
+        ],
+        "current_user": "A",
+        "phase": "COMMAND",
+        "game_status": "RUNNING",
+        "players": [
+          {
+            "id": "A",
+            "fund": 1000,
+            "credit": 0,
+            "position": 56,
+            "status": "NORMAL",
+            "remaining_rounds": 0,
+            "items": {
+              "BLOCK": 0,
+              "BOMB": 0,
+              "ROBOT": 0
+            },
+            "god_of_wealth_rounds": 0
+          },
+          {
+            "id": "Q",
+            "fund": 1000,
+            "credit": 0,
+            "position": 66,
+            "status": "NORMAL",
+            "remaining_rounds": 0,
+            "items": {
+              "BLOCK": 0,
+              "BOMB": 0,
+              "ROBOT": 0
+            },
+            "god_of_wealth_rounds": 0
+          }
+        ],
+        "properties": [],
+        "map_items": [],
+        "dice_sequence": []
+      },
+      "actions": [
+        {
+          "command": "STEP",
+          "params": {
+            "steps": 39
+          }
+        }
+      ],
+      "expected": {
+        "players": [
+          {
+            "id": "A",
+            "position": 25
+          }
+        ]
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "case_id": "TC-ADDED-039",
+      "case_name": "新增步数覆盖测试39：从63移动40步",
+      "map_file": "map.json",
+      "preset": {
+        "users": [
+          "A",
+          "Q"
+        ],
+        "current_user": "A",
+        "phase": "COMMAND",
+        "game_status": "RUNNING",
+        "players": [
+          {
+            "id": "A",
+            "fund": 1000,
+            "credit": 0,
+            "position": 63,
+            "status": "NORMAL",
+            "remaining_rounds": 0,
+            "items": {
+              "BLOCK": 0,
+              "BOMB": 0,
+              "ROBOT": 0
+            },
+            "god_of_wealth_rounds": 0
+          },
+          {
+            "id": "Q",
+            "fund": 1000,
+            "credit": 0,
+            "position": 3,
+            "status": "NORMAL",
+            "remaining_rounds": 0,
+            "items": {
+              "BLOCK": 0,
+              "BOMB": 0,
+              "ROBOT": 0
+            },
+            "god_of_wealth_rounds": 0
+          }
+        ],
+        "properties": [],
+        "map_items": [],
+        "dice_sequence": []
+      },
+      "actions": [
+        {
+          "command": "STEP",
+          "params": {
+            "steps": 40
+          }
+        }
+      ],
+      "expected": {
+        "players": [
+          {
+            "id": "A",
+            "position": 33
+          }
+        ]
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "case_id": "TC-ADDED-040",
+      "case_name": "新增步数覆盖测试40：从0移动41步",
+      "map_file": "map.json",
+      "preset": {
+        "users": [
+          "A",
+          "Q"
+        ],
+        "current_user": "A",
+        "phase": "COMMAND",
+        "game_status": "RUNNING",
+        "players": [
+          {
+            "id": "A",
+            "fund": 1000,
+            "credit": 0,
+            "position": 0,
+            "status": "NORMAL",
+            "remaining_rounds": 0,
+            "items": {
+              "BLOCK": 0,
+              "BOMB": 0,
+              "ROBOT": 0
+            },
+            "god_of_wealth_rounds": 0
+          },
+          {
+            "id": "Q",
+            "fund": 1000,
+            "credit": 0,
+            "position": 10,
+            "status": "NORMAL",
+            "remaining_rounds": 0,
+            "items": {
+              "BLOCK": 0,
+              "BOMB": 0,
+              "ROBOT": 0
+            },
+            "god_of_wealth_rounds": 0
+          }
+        ],
+        "properties": [],
+        "map_items": [],
+        "dice_sequence": []
+      },
+      "actions": [
+        {
+          "command": "STEP",
+          "params": {
+            "steps": 41
+          }
+        }
+      ],
+      "expected": {
+        "players": [
+          {
+            "id": "A",
+            "position": 41
+          }
+        ]
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "case_id": "TC-ADDED-041",
+      "case_name": "新增步数覆盖测试41：从7移动42步",
+      "map_file": "map.json",
+      "preset": {
+        "users": [
+          "A",
+          "Q"
+        ],
+        "current_user": "A",
+        "phase": "COMMAND",
+        "game_status": "RUNNING",
+        "players": [
+          {
+            "id": "A",
+            "fund": 1000,
+            "credit": 0,
+            "position": 7,
+            "status": "NORMAL",
+            "remaining_rounds": 0,
+            "items": {
+              "BLOCK": 0,
+              "BOMB": 0,
+              "ROBOT": 0
+            },
+            "god_of_wealth_rounds": 0
+          },
+          {
+            "id": "Q",
+            "fund": 1000,
+            "credit": 0,
+            "position": 17,
+            "status": "NORMAL",
+            "remaining_rounds": 0,
+            "items": {
+              "BLOCK": 0,
+              "BOMB": 0,
+              "ROBOT": 0
+            },
+            "god_of_wealth_rounds": 0
+          }
+        ],
+        "properties": [],
+        "map_items": [],
+        "dice_sequence": []
+      },
+      "actions": [
+        {
+          "command": "STEP",
+          "params": {
+            "steps": 42
+          }
+        }
+      ],
+      "expected": {
+        "players": [
+          {
+            "id": "A",
+            "position": 49
+          }
+        ]
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "case_id": "TC-ADDED-042",
+      "case_name": "新增步数覆盖测试42：从14移动43步",
+      "map_file": "map.json",
+      "preset": {
+        "users": [
+          "A",
+          "Q"
+        ],
+        "current_user": "A",
+        "phase": "COMMAND",
+        "game_status": "RUNNING",
+        "players": [
+          {
+            "id": "A",
+            "fund": 1000,
+            "credit": 0,
+            "position": 14,
+            "status": "NORMAL",
+            "remaining_rounds": 0,
+            "items": {
+              "BLOCK": 0,
+              "BOMB": 0,
+              "ROBOT": 0
+            },
+            "god_of_wealth_rounds": 0
+          },
+          {
+            "id": "Q",
+            "fund": 1000,
+            "credit": 0,
+            "position": 24,
+            "status": "NORMAL",
+            "remaining_rounds": 0,
+            "items": {
+              "BLOCK": 0,
+              "BOMB": 0,
+              "ROBOT": 0
+            },
+            "god_of_wealth_rounds": 0
+          }
+        ],
+        "properties": [],
+        "map_items": [],
+        "dice_sequence": []
+      },
+      "actions": [
+        {
+          "command": "STEP",
+          "params": {
+            "steps": 43
+          }
+        }
+      ],
+      "expected": {
+        "players": [
+          {
+            "id": "A",
+            "position": 57
+          }
+        ]
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "case_id": "TC-ADDED-043",
+      "case_name": "新增步数覆盖测试43：从21移动44步",
+      "map_file": "map.json",
+      "preset": {
+        "users": [
+          "A",
+          "Q"
+        ],
+        "current_user": "A",
+        "phase": "COMMAND",
+        "game_status": "RUNNING",
+        "players": [
+          {
+            "id": "A",
+            "fund": 1000,
+            "credit": 0,
+            "position": 21,
+            "status": "NORMAL",
+            "remaining_rounds": 0,
+            "items": {
+              "BLOCK": 0,
+              "BOMB": 0,
+              "ROBOT": 0
+            },
+            "god_of_wealth_rounds": 0
+          },
+          {
+            "id": "Q",
+            "fund": 1000,
+            "credit": 0,
+            "position": 31,
+            "status": "NORMAL",
+            "remaining_rounds": 0,
+            "items": {
+              "BLOCK": 0,
+              "BOMB": 0,
+              "ROBOT": 0
+            },
+            "god_of_wealth_rounds": 0
+          }
+        ],
+        "properties": [],
+        "map_items": [],
+        "dice_sequence": []
+      },
+      "actions": [
+        {
+          "command": "STEP",
+          "params": {
+            "steps": 44
+          }
+        }
+      ],
+      "expected": {
+        "players": [
+          {
+            "id": "A",
+            "position": 65
+          }
+        ]
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "case_id": "TC-ADDED-044",
+      "case_name": "新增步数覆盖测试44：从28移动45步",
+      "map_file": "map.json",
+      "preset": {
+        "users": [
+          "A",
+          "Q"
+        ],
+        "current_user": "A",
+        "phase": "COMMAND",
+        "game_status": "RUNNING",
+        "players": [
+          {
+            "id": "A",
+            "fund": 1000,
+            "credit": 0,
+            "position": 28,
+            "status": "NORMAL",
+            "remaining_rounds": 0,
+            "items": {
+              "BLOCK": 0,
+              "BOMB": 0,
+              "ROBOT": 0
+            },
+            "god_of_wealth_rounds": 0
+          },
+          {
+            "id": "Q",
+            "fund": 1000,
+            "credit": 0,
+            "position": 38,
+            "status": "NORMAL",
+            "remaining_rounds": 0,
+            "items": {
+              "BLOCK": 0,
+              "BOMB": 0,
+              "ROBOT": 0
+            },
+            "god_of_wealth_rounds": 0
+          }
+        ],
+        "properties": [],
+        "map_items": [],
+        "dice_sequence": []
+      },
+      "actions": [
+        {
+          "command": "STEP",
+          "params": {
+            "steps": 45
+          }
+        }
+      ],
+      "expected": {
+        "players": [
+          {
+            "id": "A",
+            "position": 3
+          }
+        ]
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "case_id": "TC-ADDED-045",
+      "case_name": "新增步数覆盖测试45：从35移动46步",
+      "map_file": "map.json",
+      "preset": {
+        "users": [
+          "A",
+          "Q"
+        ],
+        "current_user": "A",
+        "phase": "COMMAND",
+        "game_status": "RUNNING",
+        "players": [
+          {
+            "id": "A",
+            "fund": 1000,
+            "credit": 0,
+            "position": 35,
+            "status": "NORMAL",
+            "remaining_rounds": 0,
+            "items": {
+              "BLOCK": 0,
+              "BOMB": 0,
+              "ROBOT": 0
+            },
+            "god_of_wealth_rounds": 0
+          },
+          {
+            "id": "Q",
+            "fund": 1000,
+            "credit": 0,
+            "position": 45,
+            "status": "NORMAL",
+            "remaining_rounds": 0,
+            "items": {
+              "BLOCK": 0,
+              "BOMB": 0,
+              "ROBOT": 0
+            },
+            "god_of_wealth_rounds": 0
+          }
+        ],
+        "properties": [],
+        "map_items": [],
+        "dice_sequence": []
+      },
+      "actions": [
+        {
+          "command": "STEP",
+          "params": {
+            "steps": 46
+          }
+        }
+      ],
+      "expected": {
+        "players": [
+          {
+            "id": "A",
+            "position": 11
+          }
+        ]
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "case_id": "TC-ADDED-046",
+      "case_name": "新增步数覆盖测试46：从42移动47步",
+      "map_file": "map.json",
+      "preset": {
+        "users": [
+          "A",
+          "Q"
+        ],
+        "current_user": "A",
+        "phase": "COMMAND",
+        "game_status": "RUNNING",
+        "players": [
+          {
+            "id": "A",
+            "fund": 1000,
+            "credit": 0,
+            "position": 42,
+            "status": "NORMAL",
+            "remaining_rounds": 0,
+            "items": {
+              "BLOCK": 0,
+              "BOMB": 0,
+              "ROBOT": 0
+            },
+            "god_of_wealth_rounds": 0
+          },
+          {
+            "id": "Q",
+            "fund": 1000,
+            "credit": 0,
+            "position": 52,
+            "status": "NORMAL",
+            "remaining_rounds": 0,
+            "items": {
+              "BLOCK": 0,
+              "BOMB": 0,
+              "ROBOT": 0
+            },
+            "god_of_wealth_rounds": 0
+          }
+        ],
+        "properties": [],
+        "map_items": [],
+        "dice_sequence": []
+      },
+      "actions": [
+        {
+          "command": "STEP",
+          "params": {
+            "steps": 47
+          }
+        }
+      ],
+      "expected": {
+        "players": [
+          {
+            "id": "A",
+            "position": 19
+          }
+        ]
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "case_id": "TC-ADDED-047",
+      "case_name": "新增步数覆盖测试47：从49移动48步",
+      "map_file": "map.json",
+      "preset": {
+        "users": [
+          "A",
+          "Q"
+        ],
+        "current_user": "A",
+        "phase": "COMMAND",
+        "game_status": "RUNNING",
+        "players": [
+          {
+            "id": "A",
+            "fund": 1000,
+            "credit": 0,
+            "position": 49,
+            "status": "NORMAL",
+            "remaining_rounds": 0,
+            "items": {
+              "BLOCK": 0,
+              "BOMB": 0,
+              "ROBOT": 0
+            },
+            "god_of_wealth_rounds": 0
+          },
+          {
+            "id": "Q",
+            "fund": 1000,
+            "credit": 0,
+            "position": 59,
+            "status": "NORMAL",
+            "remaining_rounds": 0,
+            "items": {
+              "BLOCK": 0,
+              "BOMB": 0,
+              "ROBOT": 0
+            },
+            "god_of_wealth_rounds": 0
+          }
+        ],
+        "properties": [],
+        "map_items": [],
+        "dice_sequence": []
+      },
+      "actions": [
+        {
+          "command": "STEP",
+          "params": {
+            "steps": 48
+          }
+        }
+      ],
+      "expected": {
+        "players": [
+          {
+            "id": "A",
+            "position": 27
+          }
+        ]
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "case_id": "TC-ADDED-048",
+      "case_name": "新增步数覆盖测试48：从56移动49步",
+      "map_file": "map.json",
+      "preset": {
+        "users": [
+          "A",
+          "Q"
+        ],
+        "current_user": "A",
+        "phase": "COMMAND",
+        "game_status": "RUNNING",
+        "players": [
+          {
+            "id": "A",
+            "fund": 1000,
+            "credit": 0,
+            "position": 56,
+            "status": "NORMAL",
+            "remaining_rounds": 0,
+            "items": {
+              "BLOCK": 0,
+              "BOMB": 0,
+              "ROBOT": 0
+            },
+            "god_of_wealth_rounds": 0
+          },
+          {
+            "id": "Q",
+            "fund": 1000,
+            "credit": 0,
+            "position": 66,
+            "status": "NORMAL",
+            "remaining_rounds": 0,
+            "items": {
+              "BLOCK": 0,
+              "BOMB": 0,
+              "ROBOT": 0
+            },
+            "god_of_wealth_rounds": 0
+          }
+        ],
+        "properties": [],
+        "map_items": [],
+        "dice_sequence": []
+      },
+      "actions": [
+        {
+          "command": "STEP",
+          "params": {
+            "steps": 49
+          }
+        }
+      ],
+      "expected": {
+        "players": [
+          {
+            "id": "A",
+            "position": 35
+          }
+        ]
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "case_id": "TC-ADDED-049",
+      "case_name": "新增步数覆盖测试49：从63移动50步",
+      "map_file": "map.json",
+      "preset": {
+        "users": [
+          "A",
+          "Q"
+        ],
+        "current_user": "A",
+        "phase": "COMMAND",
+        "game_status": "RUNNING",
+        "players": [
+          {
+            "id": "A",
+            "fund": 1000,
+            "credit": 0,
+            "position": 63,
+            "status": "NORMAL",
+            "remaining_rounds": 0,
+            "items": {
+              "BLOCK": 0,
+              "BOMB": 0,
+              "ROBOT": 0
+            },
+            "god_of_wealth_rounds": 0
+          },
+          {
+            "id": "Q",
+            "fund": 1000,
+            "credit": 0,
+            "position": 3,
+            "status": "NORMAL",
+            "remaining_rounds": 0,
+            "items": {
+              "BLOCK": 0,
+              "BOMB": 0,
+              "ROBOT": 0
+            },
+            "god_of_wealth_rounds": 0
+          }
+        ],
+        "properties": [],
+        "map_items": [],
+        "dice_sequence": []
+      },
+      "actions": [
+        {
+          "command": "STEP",
+          "params": {
+            "steps": 50
+          }
+        }
+      ],
+      "expected": {
+        "players": [
+          {
+            "id": "A",
+            "position": 43
+          }
+        ]
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "case_id": "TC-ADDED-050",
+      "case_name": "新增步数覆盖测试50：从0移动51步",
+      "map_file": "map.json",
+      "preset": {
+        "users": [
+          "A",
+          "Q"
+        ],
+        "current_user": "A",
+        "phase": "COMMAND",
+        "game_status": "RUNNING",
+        "players": [
+          {
+            "id": "A",
+            "fund": 1000,
+            "credit": 0,
+            "position": 0,
+            "status": "NORMAL",
+            "remaining_rounds": 0,
+            "items": {
+              "BLOCK": 0,
+              "BOMB": 0,
+              "ROBOT": 0
+            },
+            "god_of_wealth_rounds": 0
+          },
+          {
+            "id": "Q",
+            "fund": 1000,
+            "credit": 0,
+            "position": 10,
+            "status": "NORMAL",
+            "remaining_rounds": 0,
+            "items": {
+              "BLOCK": 0,
+              "BOMB": 0,
+              "ROBOT": 0
+            },
+            "god_of_wealth_rounds": 0
+          }
+        ],
+        "properties": [],
+        "map_items": [],
+        "dice_sequence": []
+      },
+      "actions": [
+        {
+          "command": "STEP",
+          "params": {
+            "steps": 51
+          }
+        }
+      ],
+      "expected": {
+        "players": [
+          {
+            "id": "A",
+            "position": 51
+          }
+        ]
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "case_id": "TC-ADDED-051",
+      "case_name": "新增步数覆盖测试51：从7移动52步",
+      "map_file": "map.json",
+      "preset": {
+        "users": [
+          "A",
+          "Q"
+        ],
+        "current_user": "A",
+        "phase": "COMMAND",
+        "game_status": "RUNNING",
+        "players": [
+          {
+            "id": "A",
+            "fund": 1000,
+            "credit": 0,
+            "position": 7,
+            "status": "NORMAL",
+            "remaining_rounds": 0,
+            "items": {
+              "BLOCK": 0,
+              "BOMB": 0,
+              "ROBOT": 0
+            },
+            "god_of_wealth_rounds": 0
+          },
+          {
+            "id": "Q",
+            "fund": 1000,
+            "credit": 0,
+            "position": 17,
+            "status": "NORMAL",
+            "remaining_rounds": 0,
+            "items": {
+              "BLOCK": 0,
+              "BOMB": 0,
+              "ROBOT": 0
+            },
+            "god_of_wealth_rounds": 0
+          }
+        ],
+        "properties": [],
+        "map_items": [],
+        "dice_sequence": []
+      },
+      "actions": [
+        {
+          "command": "STEP",
+          "params": {
+            "steps": 52
+          }
+        }
+      ],
+      "expected": {
+        "players": [
+          {
+            "id": "A",
+            "position": 59
+          }
+        ]
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "case_id": "TC-ADDED-052",
+      "case_name": "新增步数覆盖测试52：从14移动53步",
+      "map_file": "map.json",
+      "preset": {
+        "users": [
+          "A",
+          "Q"
+        ],
+        "current_user": "A",
+        "phase": "COMMAND",
+        "game_status": "RUNNING",
+        "players": [
+          {
+            "id": "A",
+            "fund": 1000,
+            "credit": 0,
+            "position": 14,
+            "status": "NORMAL",
+            "remaining_rounds": 0,
+            "items": {
+              "BLOCK": 0,
+              "BOMB": 0,
+              "ROBOT": 0
+            },
+            "god_of_wealth_rounds": 0
+          },
+          {
+            "id": "Q",
+            "fund": 1000,
+            "credit": 0,
+            "position": 24,
+            "status": "NORMAL",
+            "remaining_rounds": 0,
+            "items": {
+              "BLOCK": 0,
+              "BOMB": 0,
+              "ROBOT": 0
+            },
+            "god_of_wealth_rounds": 0
+          }
+        ],
+        "properties": [],
+        "map_items": [],
+        "dice_sequence": []
+      },
+      "actions": [
+        {
+          "command": "STEP",
+          "params": {
+            "steps": 53
+          }
+        }
+      ],
+      "expected": {
+        "players": [
+          {
+            "id": "A",
+            "position": 67
+          }
+        ]
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "case_id": "TC-ADDED-053",
+      "case_name": "新增步数覆盖测试53：从21移动54步",
+      "map_file": "map.json",
+      "preset": {
+        "users": [
+          "A",
+          "Q"
+        ],
+        "current_user": "A",
+        "phase": "COMMAND",
+        "game_status": "RUNNING",
+        "players": [
+          {
+            "id": "A",
+            "fund": 1000,
+            "credit": 0,
+            "position": 21,
+            "status": "NORMAL",
+            "remaining_rounds": 0,
+            "items": {
+              "BLOCK": 0,
+              "BOMB": 0,
+              "ROBOT": 0
+            },
+            "god_of_wealth_rounds": 0
+          },
+          {
+            "id": "Q",
+            "fund": 1000,
+            "credit": 0,
+            "position": 31,
+            "status": "NORMAL",
+            "remaining_rounds": 0,
+            "items": {
+              "BLOCK": 0,
+              "BOMB": 0,
+              "ROBOT": 0
+            },
+            "god_of_wealth_rounds": 0
+          }
+        ],
+        "properties": [],
+        "map_items": [],
+        "dice_sequence": []
+      },
+      "actions": [
+        {
+          "command": "STEP",
+          "params": {
+            "steps": 54
+          }
+        }
+      ],
+      "expected": {
+        "players": [
+          {
+            "id": "A",
+            "position": 5
+          }
+        ]
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "case_id": "TC-ADDED-054",
+      "case_name": "新增步数覆盖测试54：从28移动55步",
+      "map_file": "map.json",
+      "preset": {
+        "users": [
+          "A",
+          "Q"
+        ],
+        "current_user": "A",
+        "phase": "COMMAND",
+        "game_status": "RUNNING",
+        "players": [
+          {
+            "id": "A",
+            "fund": 1000,
+            "credit": 0,
+            "position": 28,
+            "status": "NORMAL",
+            "remaining_rounds": 0,
+            "items": {
+              "BLOCK": 0,
+              "BOMB": 0,
+              "ROBOT": 0
+            },
+            "god_of_wealth_rounds": 0
+          },
+          {
+            "id": "Q",
+            "fund": 1000,
+            "credit": 0,
+            "position": 38,
+            "status": "NORMAL",
+            "remaining_rounds": 0,
+            "items": {
+              "BLOCK": 0,
+              "BOMB": 0,
+              "ROBOT": 0
+            },
+            "god_of_wealth_rounds": 0
+          }
+        ],
+        "properties": [],
+        "map_items": [],
+        "dice_sequence": []
+      },
+      "actions": [
+        {
+          "command": "STEP",
+          "params": {
+            "steps": 55
+          }
+        }
+      ],
+      "expected": {
+        "players": [
+          {
+            "id": "A",
+            "position": 13
+          }
+        ]
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "case_id": "TC-ADDED-055",
+      "case_name": "新增步数覆盖测试55：从35移动56步",
+      "map_file": "map.json",
+      "preset": {
+        "users": [
+          "A",
+          "Q"
+        ],
+        "current_user": "A",
+        "phase": "COMMAND",
+        "game_status": "RUNNING",
+        "players": [
+          {
+            "id": "A",
+            "fund": 1000,
+            "credit": 0,
+            "position": 35,
+            "status": "NORMAL",
+            "remaining_rounds": 0,
+            "items": {
+              "BLOCK": 0,
+              "BOMB": 0,
+              "ROBOT": 0
+            },
+            "god_of_wealth_rounds": 0
+          },
+          {
+            "id": "Q",
+            "fund": 1000,
+            "credit": 0,
+            "position": 45,
+            "status": "NORMAL",
+            "remaining_rounds": 0,
+            "items": {
+              "BLOCK": 0,
+              "BOMB": 0,
+              "ROBOT": 0
+            },
+            "god_of_wealth_rounds": 0
+          }
+        ],
+        "properties": [],
+        "map_items": [],
+        "dice_sequence": []
+      },
+      "actions": [
+        {
+          "command": "STEP",
+          "params": {
+            "steps": 56
+          }
+        }
+      ],
+      "expected": {
+        "players": [
+          {
+            "id": "A",
+            "position": 21
+          }
+        ]
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "case_id": "TC-ADDED-056",
+      "case_name": "新增步数覆盖测试56：从42移动57步",
+      "map_file": "map.json",
+      "preset": {
+        "users": [
+          "A",
+          "Q"
+        ],
+        "current_user": "A",
+        "phase": "COMMAND",
+        "game_status": "RUNNING",
+        "players": [
+          {
+            "id": "A",
+            "fund": 1000,
+            "credit": 0,
+            "position": 42,
+            "status": "NORMAL",
+            "remaining_rounds": 0,
+            "items": {
+              "BLOCK": 0,
+              "BOMB": 0,
+              "ROBOT": 0
+            },
+            "god_of_wealth_rounds": 0
+          },
+          {
+            "id": "Q",
+            "fund": 1000,
+            "credit": 0,
+            "position": 52,
+            "status": "NORMAL",
+            "remaining_rounds": 0,
+            "items": {
+              "BLOCK": 0,
+              "BOMB": 0,
+              "ROBOT": 0
+            },
+            "god_of_wealth_rounds": 0
+          }
+        ],
+        "properties": [],
+        "map_items": [],
+        "dice_sequence": []
+      },
+      "actions": [
+        {
+          "command": "STEP",
+          "params": {
+            "steps": 57
+          }
+        }
+      ],
+      "expected": {
+        "players": [
+          {
+            "id": "A",
+            "position": 29
+          }
+        ]
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "case_id": "TC-ADDED-057",
+      "case_name": "新增步数覆盖测试57：从49移动58步",
+      "map_file": "map.json",
+      "preset": {
+        "users": [
+          "A",
+          "Q"
+        ],
+        "current_user": "A",
+        "phase": "COMMAND",
+        "game_status": "RUNNING",
+        "players": [
+          {
+            "id": "A",
+            "fund": 1000,
+            "credit": 0,
+            "position": 49,
+            "status": "NORMAL",
+            "remaining_rounds": 0,
+            "items": {
+              "BLOCK": 0,
+              "BOMB": 0,
+              "ROBOT": 0
+            },
+            "god_of_wealth_rounds": 0
+          },
+          {
+            "id": "Q",
+            "fund": 1000,
+            "credit": 0,
+            "position": 59,
+            "status": "NORMAL",
+            "remaining_rounds": 0,
+            "items": {
+              "BLOCK": 0,
+              "BOMB": 0,
+              "ROBOT": 0
+            },
+            "god_of_wealth_rounds": 0
+          }
+        ],
+        "properties": [],
+        "map_items": [],
+        "dice_sequence": []
+      },
+      "actions": [
+        {
+          "command": "STEP",
+          "params": {
+            "steps": 58
+          }
+        }
+      ],
+      "expected": {
+        "players": [
+          {
+            "id": "A",
+            "position": 37
+          }
+        ]
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "case_id": "TC-ADDED-058",
+      "case_name": "新增步数覆盖测试58：从56移动59步",
+      "map_file": "map.json",
+      "preset": {
+        "users": [
+          "A",
+          "Q"
+        ],
+        "current_user": "A",
+        "phase": "COMMAND",
+        "game_status": "RUNNING",
+        "players": [
+          {
+            "id": "A",
+            "fund": 1000,
+            "credit": 0,
+            "position": 56,
+            "status": "NORMAL",
+            "remaining_rounds": 0,
+            "items": {
+              "BLOCK": 0,
+              "BOMB": 0,
+              "ROBOT": 0
+            },
+            "god_of_wealth_rounds": 0
+          },
+          {
+            "id": "Q",
+            "fund": 1000,
+            "credit": 0,
+            "position": 66,
+            "status": "NORMAL",
+            "remaining_rounds": 0,
+            "items": {
+              "BLOCK": 0,
+              "BOMB": 0,
+              "ROBOT": 0
+            },
+            "god_of_wealth_rounds": 0
+          }
+        ],
+        "properties": [],
+        "map_items": [],
+        "dice_sequence": []
+      },
+      "actions": [
+        {
+          "command": "STEP",
+          "params": {
+            "steps": 59
+          }
+        }
+      ],
+      "expected": {
+        "players": [
+          {
+            "id": "A",
+            "position": 45
+          }
+        ]
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "case_id": "TC-ADDED-059",
+      "case_name": "新增步数覆盖测试59：从63移动60步",
+      "map_file": "map.json",
+      "preset": {
+        "users": [
+          "A",
+          "Q"
+        ],
+        "current_user": "A",
+        "phase": "COMMAND",
+        "game_status": "RUNNING",
+        "players": [
+          {
+            "id": "A",
+            "fund": 1000,
+            "credit": 0,
+            "position": 63,
+            "status": "NORMAL",
+            "remaining_rounds": 0,
+            "items": {
+              "BLOCK": 0,
+              "BOMB": 0,
+              "ROBOT": 0
+            },
+            "god_of_wealth_rounds": 0
+          },
+          {
+            "id": "Q",
+            "fund": 1000,
+            "credit": 0,
+            "position": 3,
+            "status": "NORMAL",
+            "remaining_rounds": 0,
+            "items": {
+              "BLOCK": 0,
+              "BOMB": 0,
+              "ROBOT": 0
+            },
+            "god_of_wealth_rounds": 0
+          }
+        ],
+        "properties": [],
+        "map_items": [],
+        "dice_sequence": []
+      },
+      "actions": [
+        {
+          "command": "STEP",
+          "params": {
+            "steps": 60
+          }
+        }
+      ],
+      "expected": {
+        "players": [
+          {
+            "id": "A",
+            "position": 53
+          }
+        ]
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "case_id": "TC-ADDED-060",
+      "case_name": "新增步数覆盖测试60：从0移动61步",
+      "map_file": "map.json",
+      "preset": {
+        "users": [
+          "A",
+          "Q"
+        ],
+        "current_user": "A",
+        "phase": "COMMAND",
+        "game_status": "RUNNING",
+        "players": [
+          {
+            "id": "A",
+            "fund": 1000,
+            "credit": 0,
+            "position": 0,
+            "status": "NORMAL",
+            "remaining_rounds": 0,
+            "items": {
+              "BLOCK": 0,
+              "BOMB": 0,
+              "ROBOT": 0
+            },
+            "god_of_wealth_rounds": 0
+          },
+          {
+            "id": "Q",
+            "fund": 1000,
+            "credit": 0,
+            "position": 10,
+            "status": "NORMAL",
+            "remaining_rounds": 0,
+            "items": {
+              "BLOCK": 0,
+              "BOMB": 0,
+              "ROBOT": 0
+            },
+            "god_of_wealth_rounds": 0
+          }
+        ],
+        "properties": [],
+        "map_items": [],
+        "dice_sequence": []
+      },
+      "actions": [
+        {
+          "command": "STEP",
+          "params": {
+            "steps": 61
+          }
+        }
+      ],
+      "expected": {
+        "players": [
+          {
+            "id": "A",
+            "position": 61
+          }
+        ]
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "case_id": "TC-ADDED-061",
+      "case_name": "新增步数覆盖测试61：从7移动62步",
+      "map_file": "map.json",
+      "preset": {
+        "users": [
+          "A",
+          "Q"
+        ],
+        "current_user": "A",
+        "phase": "COMMAND",
+        "game_status": "RUNNING",
+        "players": [
+          {
+            "id": "A",
+            "fund": 1000,
+            "credit": 0,
+            "position": 7,
+            "status": "NORMAL",
+            "remaining_rounds": 0,
+            "items": {
+              "BLOCK": 0,
+              "BOMB": 0,
+              "ROBOT": 0
+            },
+            "god_of_wealth_rounds": 0
+          },
+          {
+            "id": "Q",
+            "fund": 1000,
+            "credit": 0,
+            "position": 17,
+            "status": "NORMAL",
+            "remaining_rounds": 0,
+            "items": {
+              "BLOCK": 0,
+              "BOMB": 0,
+              "ROBOT": 0
+            },
+            "god_of_wealth_rounds": 0
+          }
+        ],
+        "properties": [],
+        "map_items": [],
+        "dice_sequence": []
+      },
+      "actions": [
+        {
+          "command": "STEP",
+          "params": {
+            "steps": 62
+          }
+        }
+      ],
+      "expected": {
+        "players": [
+          {
+            "id": "A",
+            "position": 69
+          }
+        ]
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "case_id": "TC-ADDED-062",
+      "case_name": "新增步数覆盖测试62：从14移动63步",
+      "map_file": "map.json",
+      "preset": {
+        "users": [
+          "A",
+          "Q"
+        ],
+        "current_user": "A",
+        "phase": "COMMAND",
+        "game_status": "RUNNING",
+        "players": [
+          {
+            "id": "A",
+            "fund": 1000,
+            "credit": 0,
+            "position": 14,
+            "status": "NORMAL",
+            "remaining_rounds": 0,
+            "items": {
+              "BLOCK": 0,
+              "BOMB": 0,
+              "ROBOT": 0
+            },
+            "god_of_wealth_rounds": 0
+          },
+          {
+            "id": "Q",
+            "fund": 1000,
+            "credit": 0,
+            "position": 24,
+            "status": "NORMAL",
+            "remaining_rounds": 0,
+            "items": {
+              "BLOCK": 0,
+              "BOMB": 0,
+              "ROBOT": 0
+            },
+            "god_of_wealth_rounds": 0
+          }
+        ],
+        "properties": [],
+        "map_items": [],
+        "dice_sequence": []
+      },
+      "actions": [
+        {
+          "command": "STEP",
+          "params": {
+            "steps": 63
+          }
+        }
+      ],
+      "expected": {
+        "players": [
+          {
+            "id": "A",
+            "position": 7
+          }
+        ]
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "case_id": "TC-ADDED-063",
+      "case_name": "新增步数覆盖测试63：从21移动64步",
+      "map_file": "map.json",
+      "preset": {
+        "users": [
+          "A",
+          "Q"
+        ],
+        "current_user": "A",
+        "phase": "COMMAND",
+        "game_status": "RUNNING",
+        "players": [
+          {
+            "id": "A",
+            "fund": 1000,
+            "credit": 0,
+            "position": 21,
+            "status": "NORMAL",
+            "remaining_rounds": 0,
+            "items": {
+              "BLOCK": 0,
+              "BOMB": 0,
+              "ROBOT": 0
+            },
+            "god_of_wealth_rounds": 0
+          },
+          {
+            "id": "Q",
+            "fund": 1000,
+            "credit": 0,
+            "position": 31,
+            "status": "NORMAL",
+            "remaining_rounds": 0,
+            "items": {
+              "BLOCK": 0,
+              "BOMB": 0,
+              "ROBOT": 0
+            },
+            "god_of_wealth_rounds": 0
+          }
+        ],
+        "properties": [],
+        "map_items": [],
+        "dice_sequence": []
+      },
+      "actions": [
+        {
+          "command": "STEP",
+          "params": {
+            "steps": 64
+          }
+        }
+      ],
+      "expected": {
+        "players": [
+          {
+            "id": "A",
+            "position": 15
+          }
+        ]
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "case_id": "TC-ADDED-064",
+      "case_name": "新增步数覆盖测试64：从28移动65步",
+      "map_file": "map.json",
+      "preset": {
+        "users": [
+          "A",
+          "Q"
+        ],
+        "current_user": "A",
+        "phase": "COMMAND",
+        "game_status": "RUNNING",
+        "players": [
+          {
+            "id": "A",
+            "fund": 1000,
+            "credit": 0,
+            "position": 28,
+            "status": "NORMAL",
+            "remaining_rounds": 0,
+            "items": {
+              "BLOCK": 0,
+              "BOMB": 0,
+              "ROBOT": 0
+            },
+            "god_of_wealth_rounds": 0
+          },
+          {
+            "id": "Q",
+            "fund": 1000,
+            "credit": 0,
+            "position": 38,
+            "status": "NORMAL",
+            "remaining_rounds": 0,
+            "items": {
+              "BLOCK": 0,
+              "BOMB": 0,
+              "ROBOT": 0
+            },
+            "god_of_wealth_rounds": 0
+          }
+        ],
+        "properties": [],
+        "map_items": [],
+        "dice_sequence": []
+      },
+      "actions": [
+        {
+          "command": "STEP",
+          "params": {
+            "steps": 65
+          }
+        }
+      ],
+      "expected": {
+        "players": [
+          {
+            "id": "A",
+            "position": 23
+          }
+        ]
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "case_id": "TC-ADDED-065",
+      "case_name": "新增步数覆盖测试65：从35移动66步",
+      "map_file": "map.json",
+      "preset": {
+        "users": [
+          "A",
+          "Q"
+        ],
+        "current_user": "A",
+        "phase": "COMMAND",
+        "game_status": "RUNNING",
+        "players": [
+          {
+            "id": "A",
+            "fund": 1000,
+            "credit": 0,
+            "position": 35,
+            "status": "NORMAL",
+            "remaining_rounds": 0,
+            "items": {
+              "BLOCK": 0,
+              "BOMB": 0,
+              "ROBOT": 0
+            },
+            "god_of_wealth_rounds": 0
+          },
+          {
+            "id": "Q",
+            "fund": 1000,
+            "credit": 0,
+            "position": 45,
+            "status": "NORMAL",
+            "remaining_rounds": 0,
+            "items": {
+              "BLOCK": 0,
+              "BOMB": 0,
+              "ROBOT": 0
+            },
+            "god_of_wealth_rounds": 0
+          }
+        ],
+        "properties": [],
+        "map_items": [],
+        "dice_sequence": []
+      },
+      "actions": [
+        {
+          "command": "STEP",
+          "params": {
+            "steps": 66
+          }
+        }
+      ],
+      "expected": {
+        "players": [
+          {
+            "id": "A",
+            "position": 31
+          }
+        ]
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "case_id": "TC-ADDED-066",
+      "case_name": "新增步数覆盖测试66：从42移动67步",
+      "map_file": "map.json",
+      "preset": {
+        "users": [
+          "A",
+          "Q"
+        ],
+        "current_user": "A",
+        "phase": "COMMAND",
+        "game_status": "RUNNING",
+        "players": [
+          {
+            "id": "A",
+            "fund": 1000,
+            "credit": 0,
+            "position": 42,
+            "status": "NORMAL",
+            "remaining_rounds": 0,
+            "items": {
+              "BLOCK": 0,
+              "BOMB": 0,
+              "ROBOT": 0
+            },
+            "god_of_wealth_rounds": 0
+          },
+          {
+            "id": "Q",
+            "fund": 1000,
+            "credit": 0,
+            "position": 52,
+            "status": "NORMAL",
+            "remaining_rounds": 0,
+            "items": {
+              "BLOCK": 0,
+              "BOMB": 0,
+              "ROBOT": 0
+            },
+            "god_of_wealth_rounds": 0
+          }
+        ],
+        "properties": [],
+        "map_items": [],
+        "dice_sequence": []
+      },
+      "actions": [
+        {
+          "command": "STEP",
+          "params": {
+            "steps": 67
+          }
+        }
+      ],
+      "expected": {
+        "players": [
+          {
+            "id": "A",
+            "position": 39
+          }
+        ]
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "case_id": "TC-ADDED-067",
+      "case_name": "新增步数覆盖测试67：从49移动68步",
+      "map_file": "map.json",
+      "preset": {
+        "users": [
+          "A",
+          "Q"
+        ],
+        "current_user": "A",
+        "phase": "COMMAND",
+        "game_status": "RUNNING",
+        "players": [
+          {
+            "id": "A",
+            "fund": 1000,
+            "credit": 0,
+            "position": 49,
+            "status": "NORMAL",
+            "remaining_rounds": 0,
+            "items": {
+              "BLOCK": 0,
+              "BOMB": 0,
+              "ROBOT": 0
+            },
+            "god_of_wealth_rounds": 0
+          },
+          {
+            "id": "Q",
+            "fund": 1000,
+            "credit": 0,
+            "position": 59,
+            "status": "NORMAL",
+            "remaining_rounds": 0,
+            "items": {
+              "BLOCK": 0,
+              "BOMB": 0,
+              "ROBOT": 0
+            },
+            "god_of_wealth_rounds": 0
+          }
+        ],
+        "properties": [],
+        "map_items": [],
+        "dice_sequence": []
+      },
+      "actions": [
+        {
+          "command": "STEP",
+          "params": {
+            "steps": 68
+          }
+        }
+      ],
+      "expected": {
+        "players": [
+          {
+            "id": "A",
+            "position": 47
+          }
+        ]
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "case_id": "TC-ADDED-068",
+      "case_name": "新增步数覆盖测试68：从56移动69步",
+      "map_file": "map.json",
+      "preset": {
+        "users": [
+          "A",
+          "Q"
+        ],
+        "current_user": "A",
+        "phase": "COMMAND",
+        "game_status": "RUNNING",
+        "players": [
+          {
+            "id": "A",
+            "fund": 1000,
+            "credit": 0,
+            "position": 56,
+            "status": "NORMAL",
+            "remaining_rounds": 0,
+            "items": {
+              "BLOCK": 0,
+              "BOMB": 0,
+              "ROBOT": 0
+            },
+            "god_of_wealth_rounds": 0
+          },
+          {
+            "id": "Q",
+            "fund": 1000,
+            "credit": 0,
+            "position": 66,
+            "status": "NORMAL",
+            "remaining_rounds": 0,
+            "items": {
+              "BLOCK": 0,
+              "BOMB": 0,
+              "ROBOT": 0
+            },
+            "god_of_wealth_rounds": 0
+          }
+        ],
+        "properties": [],
+        "map_items": [],
+        "dice_sequence": []
+      },
+      "actions": [
+        {
+          "command": "STEP",
+          "params": {
+            "steps": 69
+          }
+        }
+      ],
+      "expected": {
+        "players": [
+          {
+            "id": "A",
+            "position": 55
+          }
+        ]
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "case_id": "TC-ADDED-069",
+      "case_name": "新增步数覆盖测试69：从63移动70步",
+      "map_file": "map.json",
+      "preset": {
+        "users": [
+          "A",
+          "Q"
+        ],
+        "current_user": "A",
+        "phase": "COMMAND",
+        "game_status": "RUNNING",
+        "players": [
+          {
+            "id": "A",
+            "fund": 1000,
+            "credit": 0,
+            "position": 63,
+            "status": "NORMAL",
+            "remaining_rounds": 0,
+            "items": {
+              "BLOCK": 0,
+              "BOMB": 0,
+              "ROBOT": 0
+            },
+            "god_of_wealth_rounds": 0
+          },
+          {
+            "id": "Q",
+            "fund": 1000,
+            "credit": 0,
+            "position": 3,
+            "status": "NORMAL",
+            "remaining_rounds": 0,
+            "items": {
+              "BLOCK": 0,
+              "BOMB": 0,
+              "ROBOT": 0
+            },
+            "god_of_wealth_rounds": 0
+          }
+        ],
+        "properties": [],
+        "map_items": [],
+        "dice_sequence": []
+      },
+      "actions": [
+        {
+          "command": "STEP",
+          "params": {
+            "steps": 70
+          }
+        }
+      ],
+      "expected": {
+        "players": [
+          {
+            "id": "A",
+            "position": 63
+          }
+        ]
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "case_id": "TC-ADDED-070",
+      "case_name": "新增步数覆盖测试70：从0移动1步",
+      "map_file": "map.json",
+      "preset": {
+        "users": [
+          "A",
+          "Q"
+        ],
+        "current_user": "A",
+        "phase": "COMMAND",
+        "game_status": "RUNNING",
+        "players": [
+          {
+            "id": "A",
+            "fund": 1000,
+            "credit": 0,
+            "position": 0,
+            "status": "NORMAL",
+            "remaining_rounds": 0,
+            "items": {
+              "BLOCK": 0,
+              "BOMB": 0,
+              "ROBOT": 0
+            },
+            "god_of_wealth_rounds": 0
+          },
+          {
+            "id": "Q",
+            "fund": 1000,
+            "credit": 0,
+            "position": 10,
+            "status": "NORMAL",
+            "remaining_rounds": 0,
+            "items": {
+              "BLOCK": 0,
+              "BOMB": 0,
+              "ROBOT": 0
+            },
+            "god_of_wealth_rounds": 0
+          }
+        ],
+        "properties": [],
+        "map_items": [],
+        "dice_sequence": []
+      },
+      "actions": [
+        {
+          "command": "STEP",
+          "params": {
+            "steps": 1
+          }
+        }
+      ],
+      "expected": {
+        "players": [
+          {
+            "id": "A",
+            "position": 1
+          }
+        ]
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "case_id": "TC-ADDED-071",
+      "case_name": "新增步数覆盖测试71：从7移动2步",
+      "map_file": "map.json",
+      "preset": {
+        "users": [
+          "A",
+          "Q"
+        ],
+        "current_user": "A",
+        "phase": "COMMAND",
+        "game_status": "RUNNING",
+        "players": [
+          {
+            "id": "A",
+            "fund": 1000,
+            "credit": 0,
+            "position": 7,
+            "status": "NORMAL",
+            "remaining_rounds": 0,
+            "items": {
+              "BLOCK": 0,
+              "BOMB": 0,
+              "ROBOT": 0
+            },
+            "god_of_wealth_rounds": 0
+          },
+          {
+            "id": "Q",
+            "fund": 1000,
+            "credit": 0,
+            "position": 17,
+            "status": "NORMAL",
+            "remaining_rounds": 0,
+            "items": {
+              "BLOCK": 0,
+              "BOMB": 0,
+              "ROBOT": 0
+            },
+            "god_of_wealth_rounds": 0
+          }
+        ],
+        "properties": [],
+        "map_items": [],
+        "dice_sequence": []
+      },
+      "actions": [
+        {
+          "command": "STEP",
+          "params": {
+            "steps": 2
+          }
+        }
+      ],
+      "expected": {
+        "players": [
+          {
+            "id": "A",
+            "position": 9
+          }
+        ]
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "case_id": "TC-ADDED-072",
+      "case_name": "新增步数覆盖测试72：从14移动3步",
+      "map_file": "map.json",
+      "preset": {
+        "users": [
+          "A",
+          "Q"
+        ],
+        "current_user": "A",
+        "phase": "COMMAND",
+        "game_status": "RUNNING",
+        "players": [
+          {
+            "id": "A",
+            "fund": 1000,
+            "credit": 0,
+            "position": 14,
+            "status": "NORMAL",
+            "remaining_rounds": 0,
+            "items": {
+              "BLOCK": 0,
+              "BOMB": 0,
+              "ROBOT": 0
+            },
+            "god_of_wealth_rounds": 0
+          },
+          {
+            "id": "Q",
+            "fund": 1000,
+            "credit": 0,
+            "position": 24,
+            "status": "NORMAL",
+            "remaining_rounds": 0,
+            "items": {
+              "BLOCK": 0,
+              "BOMB": 0,
+              "ROBOT": 0
+            },
+            "god_of_wealth_rounds": 0
+          }
+        ],
+        "properties": [],
+        "map_items": [],
+        "dice_sequence": []
+      },
+      "actions": [
+        {
+          "command": "STEP",
+          "params": {
+            "steps": 3
+          }
+        }
+      ],
+      "expected": {
+        "players": [
+          {
+            "id": "A",
+            "position": 17
+          }
+        ]
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "case_id": "TC-ADDED-073",
+      "case_name": "新增步数覆盖测试73：从21移动4步",
+      "map_file": "map.json",
+      "preset": {
+        "users": [
+          "A",
+          "Q"
+        ],
+        "current_user": "A",
+        "phase": "COMMAND",
+        "game_status": "RUNNING",
+        "players": [
+          {
+            "id": "A",
+            "fund": 1000,
+            "credit": 0,
+            "position": 21,
+            "status": "NORMAL",
+            "remaining_rounds": 0,
+            "items": {
+              "BLOCK": 0,
+              "BOMB": 0,
+              "ROBOT": 0
+            },
+            "god_of_wealth_rounds": 0
+          },
+          {
+            "id": "Q",
+            "fund": 1000,
+            "credit": 0,
+            "position": 31,
+            "status": "NORMAL",
+            "remaining_rounds": 0,
+            "items": {
+              "BLOCK": 0,
+              "BOMB": 0,
+              "ROBOT": 0
+            },
+            "god_of_wealth_rounds": 0
+          }
+        ],
+        "properties": [],
+        "map_items": [],
+        "dice_sequence": []
+      },
+      "actions": [
+        {
+          "command": "STEP",
+          "params": {
+            "steps": 4
+          }
+        }
+      ],
+      "expected": {
+        "players": [
+          {
+            "id": "A",
+            "position": 25
+          }
+        ]
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "case_id": "TC-ADDED-074",
+      "case_name": "新增步数覆盖测试74：从28移动5步",
+      "map_file": "map.json",
+      "preset": {
+        "users": [
+          "A",
+          "Q"
+        ],
+        "current_user": "A",
+        "phase": "COMMAND",
+        "game_status": "RUNNING",
+        "players": [
+          {
+            "id": "A",
+            "fund": 1000,
+            "credit": 0,
+            "position": 28,
+            "status": "NORMAL",
+            "remaining_rounds": 0,
+            "items": {
+              "BLOCK": 0,
+              "BOMB": 0,
+              "ROBOT": 0
+            },
+            "god_of_wealth_rounds": 0
+          },
+          {
+            "id": "Q",
+            "fund": 1000,
+            "credit": 0,
+            "position": 38,
+            "status": "NORMAL",
+            "remaining_rounds": 0,
+            "items": {
+              "BLOCK": 0,
+              "BOMB": 0,
+              "ROBOT": 0
+            },
+            "god_of_wealth_rounds": 0
+          }
+        ],
+        "properties": [],
+        "map_items": [],
+        "dice_sequence": []
+      },
+      "actions": [
+        {
+          "command": "STEP",
+          "params": {
+            "steps": 5
+          }
+        }
+      ],
+      "expected": {
+        "players": [
+          {
+            "id": "A",
+            "position": 33
+          }
+        ]
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "case_id": "TC-ADDED-075",
+      "case_name": "新增步数覆盖测试75：从35移动6步",
+      "map_file": "map.json",
+      "preset": {
+        "users": [
+          "A",
+          "Q"
+        ],
+        "current_user": "A",
+        "phase": "COMMAND",
+        "game_status": "RUNNING",
+        "players": [
+          {
+            "id": "A",
+            "fund": 1000,
+            "credit": 0,
+            "position": 35,
+            "status": "NORMAL",
+            "remaining_rounds": 0,
+            "items": {
+              "BLOCK": 0,
+              "BOMB": 0,
+              "ROBOT": 0
+            },
+            "god_of_wealth_rounds": 0
+          },
+          {
+            "id": "Q",
+            "fund": 1000,
+            "credit": 0,
+            "position": 45,
+            "status": "NORMAL",
+            "remaining_rounds": 0,
+            "items": {
+              "BLOCK": 0,
+              "BOMB": 0,
+              "ROBOT": 0
+            },
+            "god_of_wealth_rounds": 0
+          }
+        ],
+        "properties": [],
+        "map_items": [],
+        "dice_sequence": []
+      },
+      "actions": [
+        {
+          "command": "STEP",
+          "params": {
+            "steps": 6
+          }
+        }
+      ],
+      "expected": {
+        "players": [
+          {
+            "id": "A",
+            "position": 41
+          }
+        ]
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "case_id": "TC-ADDED-076",
+      "case_name": "新增步数覆盖测试76：从42移动7步",
+      "map_file": "map.json",
+      "preset": {
+        "users": [
+          "A",
+          "Q"
+        ],
+        "current_user": "A",
+        "phase": "COMMAND",
+        "game_status": "RUNNING",
+        "players": [
+          {
+            "id": "A",
+            "fund": 1000,
+            "credit": 0,
+            "position": 42,
+            "status": "NORMAL",
+            "remaining_rounds": 0,
+            "items": {
+              "BLOCK": 0,
+              "BOMB": 0,
+              "ROBOT": 0
+            },
+            "god_of_wealth_rounds": 0
+          },
+          {
+            "id": "Q",
+            "fund": 1000,
+            "credit": 0,
+            "position": 52,
+            "status": "NORMAL",
+            "remaining_rounds": 0,
+            "items": {
+              "BLOCK": 0,
+              "BOMB": 0,
+              "ROBOT": 0
+            },
+            "god_of_wealth_rounds": 0
+          }
+        ],
+        "properties": [],
+        "map_items": [],
+        "dice_sequence": []
+      },
+      "actions": [
+        {
+          "command": "STEP",
+          "params": {
+            "steps": 7
+          }
+        }
+      ],
+      "expected": {
+        "players": [
+          {
+            "id": "A",
+            "position": 49
+          }
+        ]
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "case_id": "TC-ADDED-077",
+      "case_name": "新增步数覆盖测试77：从49移动8步",
+      "map_file": "map.json",
+      "preset": {
+        "users": [
+          "A",
+          "Q"
+        ],
+        "current_user": "A",
+        "phase": "COMMAND",
+        "game_status": "RUNNING",
+        "players": [
+          {
+            "id": "A",
+            "fund": 1000,
+            "credit": 0,
+            "position": 49,
+            "status": "NORMAL",
+            "remaining_rounds": 0,
+            "items": {
+              "BLOCK": 0,
+              "BOMB": 0,
+              "ROBOT": 0
+            },
+            "god_of_wealth_rounds": 0
+          },
+          {
+            "id": "Q",
+            "fund": 1000,
+            "credit": 0,
+            "position": 59,
+            "status": "NORMAL",
+            "remaining_rounds": 0,
+            "items": {
+              "BLOCK": 0,
+              "BOMB": 0,
+              "ROBOT": 0
+            },
+            "god_of_wealth_rounds": 0
+          }
+        ],
+        "properties": [],
+        "map_items": [],
+        "dice_sequence": []
+      },
+      "actions": [
+        {
+          "command": "STEP",
+          "params": {
+            "steps": 8
+          }
+        }
+      ],
+      "expected": {
+        "players": [
+          {
+            "id": "A",
+            "position": 57
+          }
+        ]
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "case_id": "TC-ADDED-078",
+      "case_name": "新增步数覆盖测试78：从56移动9步",
+      "map_file": "map.json",
+      "preset": {
+        "users": [
+          "A",
+          "Q"
+        ],
+        "current_user": "A",
+        "phase": "COMMAND",
+        "game_status": "RUNNING",
+        "players": [
+          {
+            "id": "A",
+            "fund": 1000,
+            "credit": 0,
+            "position": 56,
+            "status": "NORMAL",
+            "remaining_rounds": 0,
+            "items": {
+              "BLOCK": 0,
+              "BOMB": 0,
+              "ROBOT": 0
+            },
+            "god_of_wealth_rounds": 0
+          },
+          {
+            "id": "Q",
+            "fund": 1000,
+            "credit": 0,
+            "position": 66,
+            "status": "NORMAL",
+            "remaining_rounds": 0,
+            "items": {
+              "BLOCK": 0,
+              "BOMB": 0,
+              "ROBOT": 0
+            },
+            "god_of_wealth_rounds": 0
+          }
+        ],
+        "properties": [],
+        "map_items": [],
+        "dice_sequence": []
+      },
+      "actions": [
+        {
+          "command": "STEP",
+          "params": {
+            "steps": 9
+          }
+        }
+      ],
+      "expected": {
+        "players": [
+          {
+            "id": "A",
+            "position": 65
+          }
+        ]
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "case_id": "TC-ADDED-079",
+      "case_name": "新增步数覆盖测试79：从63移动10步",
+      "map_file": "map.json",
+      "preset": {
+        "users": [
+          "A",
+          "Q"
+        ],
+        "current_user": "A",
+        "phase": "COMMAND",
+        "game_status": "RUNNING",
+        "players": [
+          {
+            "id": "A",
+            "fund": 1000,
+            "credit": 0,
+            "position": 63,
+            "status": "NORMAL",
+            "remaining_rounds": 0,
+            "items": {
+              "BLOCK": 0,
+              "BOMB": 0,
+              "ROBOT": 0
+            },
+            "god_of_wealth_rounds": 0
+          },
+          {
+            "id": "Q",
+            "fund": 1000,
+            "credit": 0,
+            "position": 3,
+            "status": "NORMAL",
+            "remaining_rounds": 0,
+            "items": {
+              "BLOCK": 0,
+              "BOMB": 0,
+              "ROBOT": 0
+            },
+            "god_of_wealth_rounds": 0
+          }
+        ],
+        "properties": [],
+        "map_items": [],
+        "dice_sequence": []
+      },
+      "actions": [
+        {
+          "command": "STEP",
+          "params": {
+            "steps": 10
+          }
+        }
+      ],
+      "expected": {
+        "players": [
+          {
+            "id": "A",
+            "position": 3
+          }
+        ]
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "case_id": "TC-ADDED-080",
+      "case_name": "新增步数覆盖测试80：从0移动11步",
+      "map_file": "map.json",
+      "preset": {
+        "users": [
+          "A",
+          "Q"
+        ],
+        "current_user": "A",
+        "phase": "COMMAND",
+        "game_status": "RUNNING",
+        "players": [
+          {
+            "id": "A",
+            "fund": 1000,
+            "credit": 0,
+            "position": 0,
+            "status": "NORMAL",
+            "remaining_rounds": 0,
+            "items": {
+              "BLOCK": 0,
+              "BOMB": 0,
+              "ROBOT": 0
+            },
+            "god_of_wealth_rounds": 0
+          },
+          {
+            "id": "Q",
+            "fund": 1000,
+            "credit": 0,
+            "position": 10,
+            "status": "NORMAL",
+            "remaining_rounds": 0,
+            "items": {
+              "BLOCK": 0,
+              "BOMB": 0,
+              "ROBOT": 0
+            },
+            "god_of_wealth_rounds": 0
+          }
+        ],
+        "properties": [],
+        "map_items": [],
+        "dice_sequence": []
+      },
+      "actions": [
+        {
+          "command": "STEP",
+          "params": {
+            "steps": 11
+          }
+        }
+      ],
+      "expected": {
+        "players": [
+          {
+            "id": "A",
+            "position": 11
+          }
+        ]
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "case_id": "TC-ADDED-081",
+      "case_name": "新增步数覆盖测试81：从7移动12步",
+      "map_file": "map.json",
+      "preset": {
+        "users": [
+          "A",
+          "Q"
+        ],
+        "current_user": "A",
+        "phase": "COMMAND",
+        "game_status": "RUNNING",
+        "players": [
+          {
+            "id": "A",
+            "fund": 1000,
+            "credit": 0,
+            "position": 7,
+            "status": "NORMAL",
+            "remaining_rounds": 0,
+            "items": {
+              "BLOCK": 0,
+              "BOMB": 0,
+              "ROBOT": 0
+            },
+            "god_of_wealth_rounds": 0
+          },
+          {
+            "id": "Q",
+            "fund": 1000,
+            "credit": 0,
+            "position": 17,
+            "status": "NORMAL",
+            "remaining_rounds": 0,
+            "items": {
+              "BLOCK": 0,
+              "BOMB": 0,
+              "ROBOT": 0
+            },
+            "god_of_wealth_rounds": 0
+          }
+        ],
+        "properties": [],
+        "map_items": [],
+        "dice_sequence": []
+      },
+      "actions": [
+        {
+          "command": "STEP",
+          "params": {
+            "steps": 12
+          }
+        }
+      ],
+      "expected": {
+        "players": [
+          {
+            "id": "A",
+            "position": 19
+          }
+        ]
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "case_id": "TC-ADDED-082",
+      "case_name": "新增步数覆盖测试82：从14移动13步",
+      "map_file": "map.json",
+      "preset": {
+        "users": [
+          "A",
+          "Q"
+        ],
+        "current_user": "A",
+        "phase": "COMMAND",
+        "game_status": "RUNNING",
+        "players": [
+          {
+            "id": "A",
+            "fund": 1000,
+            "credit": 0,
+            "position": 14,
+            "status": "NORMAL",
+            "remaining_rounds": 0,
+            "items": {
+              "BLOCK": 0,
+              "BOMB": 0,
+              "ROBOT": 0
+            },
+            "god_of_wealth_rounds": 0
+          },
+          {
+            "id": "Q",
+            "fund": 1000,
+            "credit": 0,
+            "position": 24,
+            "status": "NORMAL",
+            "remaining_rounds": 0,
+            "items": {
+              "BLOCK": 0,
+              "BOMB": 0,
+              "ROBOT": 0
+            },
+            "god_of_wealth_rounds": 0
+          }
+        ],
+        "properties": [],
+        "map_items": [],
+        "dice_sequence": []
+      },
+      "actions": [
+        {
+          "command": "STEP",
+          "params": {
+            "steps": 13
+          }
+        }
+      ],
+      "expected": {
+        "players": [
+          {
+            "id": "A",
+            "position": 27
+          }
+        ]
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "case_id": "TC-ADDED-083",
+      "case_name": "新增步数覆盖测试83：从21移动14步",
+      "map_file": "map.json",
+      "preset": {
+        "users": [
+          "A",
+          "Q"
+        ],
+        "current_user": "A",
+        "phase": "COMMAND",
+        "game_status": "RUNNING",
+        "players": [
+          {
+            "id": "A",
+            "fund": 1000,
+            "credit": 0,
+            "position": 21,
+            "status": "NORMAL",
+            "remaining_rounds": 0,
+            "items": {
+              "BLOCK": 0,
+              "BOMB": 0,
+              "ROBOT": 0
+            },
+            "god_of_wealth_rounds": 0
+          },
+          {
+            "id": "Q",
+            "fund": 1000,
+            "credit": 0,
+            "position": 31,
+            "status": "NORMAL",
+            "remaining_rounds": 0,
+            "items": {
+              "BLOCK": 0,
+              "BOMB": 0,
+              "ROBOT": 0
+            },
+            "god_of_wealth_rounds": 0
+          }
+        ],
+        "properties": [],
+        "map_items": [],
+        "dice_sequence": []
+      },
+      "actions": [
+        {
+          "command": "STEP",
+          "params": {
+            "steps": 14
+          }
+        }
+      ],
+      "expected": {
+        "players": [
+          {
+            "id": "A",
+            "position": 35
+          }
+        ]
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "case_id": "TC-ADDED-084",
+      "case_name": "新增步数覆盖测试84：从28移动15步",
+      "map_file": "map.json",
+      "preset": {
+        "users": [
+          "A",
+          "Q"
+        ],
+        "current_user": "A",
+        "phase": "COMMAND",
+        "game_status": "RUNNING",
+        "players": [
+          {
+            "id": "A",
+            "fund": 1000,
+            "credit": 0,
+            "position": 28,
+            "status": "NORMAL",
+            "remaining_rounds": 0,
+            "items": {
+              "BLOCK": 0,
+              "BOMB": 0,
+              "ROBOT": 0
+            },
+            "god_of_wealth_rounds": 0
+          },
+          {
+            "id": "Q",
+            "fund": 1000,
+            "credit": 0,
+            "position": 38,
+            "status": "NORMAL",
+            "remaining_rounds": 0,
+            "items": {
+              "BLOCK": 0,
+              "BOMB": 0,
+              "ROBOT": 0
+            },
+            "god_of_wealth_rounds": 0
+          }
+        ],
+        "properties": [],
+        "map_items": [],
+        "dice_sequence": []
+      },
+      "actions": [
+        {
+          "command": "STEP",
+          "params": {
+            "steps": 15
+          }
+        }
+      ],
+      "expected": {
+        "players": [
+          {
+            "id": "A",
+            "position": 43
+          }
+        ]
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "case_id": "TC-ADDED-085",
+      "case_name": "新增步数覆盖测试85：从35移动16步",
+      "map_file": "map.json",
+      "preset": {
+        "users": [
+          "A",
+          "Q"
+        ],
+        "current_user": "A",
+        "phase": "COMMAND",
+        "game_status": "RUNNING",
+        "players": [
+          {
+            "id": "A",
+            "fund": 1000,
+            "credit": 0,
+            "position": 35,
+            "status": "NORMAL",
+            "remaining_rounds": 0,
+            "items": {
+              "BLOCK": 0,
+              "BOMB": 0,
+              "ROBOT": 0
+            },
+            "god_of_wealth_rounds": 0
+          },
+          {
+            "id": "Q",
+            "fund": 1000,
+            "credit": 0,
+            "position": 45,
+            "status": "NORMAL",
+            "remaining_rounds": 0,
+            "items": {
+              "BLOCK": 0,
+              "BOMB": 0,
+              "ROBOT": 0
+            },
+            "god_of_wealth_rounds": 0
+          }
+        ],
+        "properties": [],
+        "map_items": [],
+        "dice_sequence": []
+      },
+      "actions": [
+        {
+          "command": "STEP",
+          "params": {
+            "steps": 16
+          }
+        }
+      ],
+      "expected": {
+        "players": [
+          {
+            "id": "A",
+            "position": 51
+          }
+        ]
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "case_id": "TC-ADDED-086",
+      "case_name": "新增步数覆盖测试86：从42移动17步",
+      "map_file": "map.json",
+      "preset": {
+        "users": [
+          "A",
+          "Q"
+        ],
+        "current_user": "A",
+        "phase": "COMMAND",
+        "game_status": "RUNNING",
+        "players": [
+          {
+            "id": "A",
+            "fund": 1000,
+            "credit": 0,
+            "position": 42,
+            "status": "NORMAL",
+            "remaining_rounds": 0,
+            "items": {
+              "BLOCK": 0,
+              "BOMB": 0,
+              "ROBOT": 0
+            },
+            "god_of_wealth_rounds": 0
+          },
+          {
+            "id": "Q",
+            "fund": 1000,
+            "credit": 0,
+            "position": 52,
+            "status": "NORMAL",
+            "remaining_rounds": 0,
+            "items": {
+              "BLOCK": 0,
+              "BOMB": 0,
+              "ROBOT": 0
+            },
+            "god_of_wealth_rounds": 0
+          }
+        ],
+        "properties": [],
+        "map_items": [],
+        "dice_sequence": []
+      },
+      "actions": [
+        {
+          "command": "STEP",
+          "params": {
+            "steps": 17
+          }
+        }
+      ],
+      "expected": {
+        "players": [
+          {
+            "id": "A",
+            "position": 59
+          }
+        ]
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "case_id": "TC-ADDED-087",
+      "case_name": "新增步数覆盖测试87：从49移动18步",
+      "map_file": "map.json",
+      "preset": {
+        "users": [
+          "A",
+          "Q"
+        ],
+        "current_user": "A",
+        "phase": "COMMAND",
+        "game_status": "RUNNING",
+        "players": [
+          {
+            "id": "A",
+            "fund": 1000,
+            "credit": 0,
+            "position": 49,
+            "status": "NORMAL",
+            "remaining_rounds": 0,
+            "items": {
+              "BLOCK": 0,
+              "BOMB": 0,
+              "ROBOT": 0
+            },
+            "god_of_wealth_rounds": 0
+          },
+          {
+            "id": "Q",
+            "fund": 1000,
+            "credit": 0,
+            "position": 59,
+            "status": "NORMAL",
+            "remaining_rounds": 0,
+            "items": {
+              "BLOCK": 0,
+              "BOMB": 0,
+              "ROBOT": 0
+            },
+            "god_of_wealth_rounds": 0
+          }
+        ],
+        "properties": [],
+        "map_items": [],
+        "dice_sequence": []
+      },
+      "actions": [
+        {
+          "command": "STEP",
+          "params": {
+            "steps": 18
+          }
+        }
+      ],
+      "expected": {
+        "players": [
+          {
+            "id": "A",
+            "position": 67
+          }
+        ]
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "case_id": "TC-ADDED-088",
+      "case_name": "新增步数覆盖测试88：从56移动19步",
+      "map_file": "map.json",
+      "preset": {
+        "users": [
+          "A",
+          "Q"
+        ],
+        "current_user": "A",
+        "phase": "COMMAND",
+        "game_status": "RUNNING",
+        "players": [
+          {
+            "id": "A",
+            "fund": 1000,
+            "credit": 0,
+            "position": 56,
+            "status": "NORMAL",
+            "remaining_rounds": 0,
+            "items": {
+              "BLOCK": 0,
+              "BOMB": 0,
+              "ROBOT": 0
+            },
+            "god_of_wealth_rounds": 0
+          },
+          {
+            "id": "Q",
+            "fund": 1000,
+            "credit": 0,
+            "position": 66,
+            "status": "NORMAL",
+            "remaining_rounds": 0,
+            "items": {
+              "BLOCK": 0,
+              "BOMB": 0,
+              "ROBOT": 0
+            },
+            "god_of_wealth_rounds": 0
+          }
+        ],
+        "properties": [],
+        "map_items": [],
+        "dice_sequence": []
+      },
+      "actions": [
+        {
+          "command": "STEP",
+          "params": {
+            "steps": 19
+          }
+        }
+      ],
+      "expected": {
+        "players": [
+          {
+            "id": "A",
+            "position": 5
+          }
+        ]
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "case_id": "TC-ADDED-089",
+      "case_name": "新增步数覆盖测试89：从63移动20步",
+      "map_file": "map.json",
+      "preset": {
+        "users": [
+          "A",
+          "Q"
+        ],
+        "current_user": "A",
+        "phase": "COMMAND",
+        "game_status": "RUNNING",
+        "players": [
+          {
+            "id": "A",
+            "fund": 1000,
+            "credit": 0,
+            "position": 63,
+            "status": "NORMAL",
+            "remaining_rounds": 0,
+            "items": {
+              "BLOCK": 0,
+              "BOMB": 0,
+              "ROBOT": 0
+            },
+            "god_of_wealth_rounds": 0
+          },
+          {
+            "id": "Q",
+            "fund": 1000,
+            "credit": 0,
+            "position": 3,
+            "status": "NORMAL",
+            "remaining_rounds": 0,
+            "items": {
+              "BLOCK": 0,
+              "BOMB": 0,
+              "ROBOT": 0
+            },
+            "god_of_wealth_rounds": 0
+          }
+        ],
+        "properties": [],
+        "map_items": [],
+        "dice_sequence": []
+      },
+      "actions": [
+        {
+          "command": "STEP",
+          "params": {
+            "steps": 20
+          }
+        }
+      ],
+      "expected": {
+        "players": [
+          {
+            "id": "A",
+            "position": 13
+          }
+        ]
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "case_id": "TC-ADDED-090",
+      "case_name": "新增步数覆盖测试90：从0移动21步",
+      "map_file": "map.json",
+      "preset": {
+        "users": [
+          "A",
+          "Q"
+        ],
+        "current_user": "A",
+        "phase": "COMMAND",
+        "game_status": "RUNNING",
+        "players": [
+          {
+            "id": "A",
+            "fund": 1000,
+            "credit": 0,
+            "position": 0,
+            "status": "NORMAL",
+            "remaining_rounds": 0,
+            "items": {
+              "BLOCK": 0,
+              "BOMB": 0,
+              "ROBOT": 0
+            },
+            "god_of_wealth_rounds": 0
+          },
+          {
+            "id": "Q",
+            "fund": 1000,
+            "credit": 0,
+            "position": 10,
+            "status": "NORMAL",
+            "remaining_rounds": 0,
+            "items": {
+              "BLOCK": 0,
+              "BOMB": 0,
+              "ROBOT": 0
+            },
+            "god_of_wealth_rounds": 0
+          }
+        ],
+        "properties": [],
+        "map_items": [],
+        "dice_sequence": []
+      },
+      "actions": [
+        {
+          "command": "STEP",
+          "params": {
+            "steps": 21
+          }
+        }
+      ],
+      "expected": {
+        "players": [
+          {
+            "id": "A",
+            "position": 21
+          }
+        ]
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "case_id": "TC-ADDED-091",
+      "case_name": "新增步数覆盖测试91：从7移动22步",
+      "map_file": "map.json",
+      "preset": {
+        "users": [
+          "A",
+          "Q"
+        ],
+        "current_user": "A",
+        "phase": "COMMAND",
+        "game_status": "RUNNING",
+        "players": [
+          {
+            "id": "A",
+            "fund": 1000,
+            "credit": 0,
+            "position": 7,
+            "status": "NORMAL",
+            "remaining_rounds": 0,
+            "items": {
+              "BLOCK": 0,
+              "BOMB": 0,
+              "ROBOT": 0
+            },
+            "god_of_wealth_rounds": 0
+          },
+          {
+            "id": "Q",
+            "fund": 1000,
+            "credit": 0,
+            "position": 17,
+            "status": "NORMAL",
+            "remaining_rounds": 0,
+            "items": {
+              "BLOCK": 0,
+              "BOMB": 0,
+              "ROBOT": 0
+            },
+            "god_of_wealth_rounds": 0
+          }
+        ],
+        "properties": [],
+        "map_items": [],
+        "dice_sequence": []
+      },
+      "actions": [
+        {
+          "command": "STEP",
+          "params": {
+            "steps": 22
+          }
+        }
+      ],
+      "expected": {
+        "players": [
+          {
+            "id": "A",
+            "position": 29
+          }
+        ]
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "case_id": "TC-ADDED-092",
+      "case_name": "新增步数覆盖测试92：从14移动23步",
+      "map_file": "map.json",
+      "preset": {
+        "users": [
+          "A",
+          "Q"
+        ],
+        "current_user": "A",
+        "phase": "COMMAND",
+        "game_status": "RUNNING",
+        "players": [
+          {
+            "id": "A",
+            "fund": 1000,
+            "credit": 0,
+            "position": 14,
+            "status": "NORMAL",
+            "remaining_rounds": 0,
+            "items": {
+              "BLOCK": 0,
+              "BOMB": 0,
+              "ROBOT": 0
+            },
+            "god_of_wealth_rounds": 0
+          },
+          {
+            "id": "Q",
+            "fund": 1000,
+            "credit": 0,
+            "position": 24,
+            "status": "NORMAL",
+            "remaining_rounds": 0,
+            "items": {
+              "BLOCK": 0,
+              "BOMB": 0,
+              "ROBOT": 0
+            },
+            "god_of_wealth_rounds": 0
+          }
+        ],
+        "properties": [],
+        "map_items": [],
+        "dice_sequence": []
+      },
+      "actions": [
+        {
+          "command": "STEP",
+          "params": {
+            "steps": 23
+          }
+        }
+      ],
+      "expected": {
+        "players": [
+          {
+            "id": "A",
+            "position": 37
+          }
+        ]
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "case_id": "TC-ADDED-093",
+      "case_name": "新增步数覆盖测试93：从21移动24步",
+      "map_file": "map.json",
+      "preset": {
+        "users": [
+          "A",
+          "Q"
+        ],
+        "current_user": "A",
+        "phase": "COMMAND",
+        "game_status": "RUNNING",
+        "players": [
+          {
+            "id": "A",
+            "fund": 1000,
+            "credit": 0,
+            "position": 21,
+            "status": "NORMAL",
+            "remaining_rounds": 0,
+            "items": {
+              "BLOCK": 0,
+              "BOMB": 0,
+              "ROBOT": 0
+            },
+            "god_of_wealth_rounds": 0
+          },
+          {
+            "id": "Q",
+            "fund": 1000,
+            "credit": 0,
+            "position": 31,
+            "status": "NORMAL",
+            "remaining_rounds": 0,
+            "items": {
+              "BLOCK": 0,
+              "BOMB": 0,
+              "ROBOT": 0
+            },
+            "god_of_wealth_rounds": 0
+          }
+        ],
+        "properties": [],
+        "map_items": [],
+        "dice_sequence": []
+      },
+      "actions": [
+        {
+          "command": "STEP",
+          "params": {
+            "steps": 24
+          }
+        }
+      ],
+      "expected": {
+        "players": [
+          {
+            "id": "A",
+            "position": 45
+          }
+        ]
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "case_id": "TC-ADDED-094",
+      "case_name": "新增步数覆盖测试94：从28移动25步",
+      "map_file": "map.json",
+      "preset": {
+        "users": [
+          "A",
+          "Q"
+        ],
+        "current_user": "A",
+        "phase": "COMMAND",
+        "game_status": "RUNNING",
+        "players": [
+          {
+            "id": "A",
+            "fund": 1000,
+            "credit": 0,
+            "position": 28,
+            "status": "NORMAL",
+            "remaining_rounds": 0,
+            "items": {
+              "BLOCK": 0,
+              "BOMB": 0,
+              "ROBOT": 0
+            },
+            "god_of_wealth_rounds": 0
+          },
+          {
+            "id": "Q",
+            "fund": 1000,
+            "credit": 0,
+            "position": 38,
+            "status": "NORMAL",
+            "remaining_rounds": 0,
+            "items": {
+              "BLOCK": 0,
+              "BOMB": 0,
+              "ROBOT": 0
+            },
+            "god_of_wealth_rounds": 0
+          }
+        ],
+        "properties": [],
+        "map_items": [],
+        "dice_sequence": []
+      },
+      "actions": [
+        {
+          "command": "STEP",
+          "params": {
+            "steps": 25
+          }
+        }
+      ],
+      "expected": {
+        "players": [
+          {
+            "id": "A",
+            "position": 53
+          }
+        ]
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "case_id": "TC-ADDED-095",
+      "case_name": "新增步数覆盖测试95：从35移动26步",
+      "map_file": "map.json",
+      "preset": {
+        "users": [
+          "A",
+          "Q"
+        ],
+        "current_user": "A",
+        "phase": "COMMAND",
+        "game_status": "RUNNING",
+        "players": [
+          {
+            "id": "A",
+            "fund": 1000,
+            "credit": 0,
+            "position": 35,
+            "status": "NORMAL",
+            "remaining_rounds": 0,
+            "items": {
+              "BLOCK": 0,
+              "BOMB": 0,
+              "ROBOT": 0
+            },
+            "god_of_wealth_rounds": 0
+          },
+          {
+            "id": "Q",
+            "fund": 1000,
+            "credit": 0,
+            "position": 45,
+            "status": "NORMAL",
+            "remaining_rounds": 0,
+            "items": {
+              "BLOCK": 0,
+              "BOMB": 0,
+              "ROBOT": 0
+            },
+            "god_of_wealth_rounds": 0
+          }
+        ],
+        "properties": [],
+        "map_items": [],
+        "dice_sequence": []
+      },
+      "actions": [
+        {
+          "command": "STEP",
+          "params": {
+            "steps": 26
+          }
+        }
+      ],
+      "expected": {
+        "players": [
+          {
+            "id": "A",
+            "position": 61
+          }
+        ]
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "case_id": "TC-ADDED-096",
+      "case_name": "新增步数覆盖测试96：从42移动27步",
+      "map_file": "map.json",
+      "preset": {
+        "users": [
+          "A",
+          "Q"
+        ],
+        "current_user": "A",
+        "phase": "COMMAND",
+        "game_status": "RUNNING",
+        "players": [
+          {
+            "id": "A",
+            "fund": 1000,
+            "credit": 0,
+            "position": 42,
+            "status": "NORMAL",
+            "remaining_rounds": 0,
+            "items": {
+              "BLOCK": 0,
+              "BOMB": 0,
+              "ROBOT": 0
+            },
+            "god_of_wealth_rounds": 0
+          },
+          {
+            "id": "Q",
+            "fund": 1000,
+            "credit": 0,
+            "position": 52,
+            "status": "NORMAL",
+            "remaining_rounds": 0,
+            "items": {
+              "BLOCK": 0,
+              "BOMB": 0,
+              "ROBOT": 0
+            },
+            "god_of_wealth_rounds": 0
+          }
+        ],
+        "properties": [],
+        "map_items": [],
+        "dice_sequence": []
+      },
+      "actions": [
+        {
+          "command": "STEP",
+          "params": {
+            "steps": 27
+          }
+        }
+      ],
+      "expected": {
+        "players": [
+          {
+            "id": "A",
+            "position": 69
+          }
+        ]
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "case_id": "TC-ADDED-097",
+      "case_name": "新增步数覆盖测试97：从49移动28步",
+      "map_file": "map.json",
+      "preset": {
+        "users": [
+          "A",
+          "Q"
+        ],
+        "current_user": "A",
+        "phase": "COMMAND",
+        "game_status": "RUNNING",
+        "players": [
+          {
+            "id": "A",
+            "fund": 1000,
+            "credit": 0,
+            "position": 49,
+            "status": "NORMAL",
+            "remaining_rounds": 0,
+            "items": {
+              "BLOCK": 0,
+              "BOMB": 0,
+              "ROBOT": 0
+            },
+            "god_of_wealth_rounds": 0
+          },
+          {
+            "id": "Q",
+            "fund": 1000,
+            "credit": 0,
+            "position": 59,
+            "status": "NORMAL",
+            "remaining_rounds": 0,
+            "items": {
+              "BLOCK": 0,
+              "BOMB": 0,
+              "ROBOT": 0
+            },
+            "god_of_wealth_rounds": 0
+          }
+        ],
+        "properties": [],
+        "map_items": [],
+        "dice_sequence": []
+      },
+      "actions": [
+        {
+          "command": "STEP",
+          "params": {
+            "steps": 28
+          }
+        }
+      ],
+      "expected": {
+        "players": [
+          {
+            "id": "A",
+            "position": 7
+          }
+        ]
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "case_id": "TC-ADDED-098",
+      "case_name": "新增步数覆盖测试98：从56移动29步",
+      "map_file": "map.json",
+      "preset": {
+        "users": [
+          "A",
+          "Q"
+        ],
+        "current_user": "A",
+        "phase": "COMMAND",
+        "game_status": "RUNNING",
+        "players": [
+          {
+            "id": "A",
+            "fund": 1000,
+            "credit": 0,
+            "position": 56,
+            "status": "NORMAL",
+            "remaining_rounds": 0,
+            "items": {
+              "BLOCK": 0,
+              "BOMB": 0,
+              "ROBOT": 0
+            },
+            "god_of_wealth_rounds": 0
+          },
+          {
+            "id": "Q",
+            "fund": 1000,
+            "credit": 0,
+            "position": 66,
+            "status": "NORMAL",
+            "remaining_rounds": 0,
+            "items": {
+              "BLOCK": 0,
+              "BOMB": 0,
+              "ROBOT": 0
+            },
+            "god_of_wealth_rounds": 0
+          }
+        ],
+        "properties": [],
+        "map_items": [],
+        "dice_sequence": []
+      },
+      "actions": [
+        {
+          "command": "STEP",
+          "params": {
+            "steps": 29
+          }
+        }
+      ],
+      "expected": {
+        "players": [
+          {
+            "id": "A",
+            "position": 15
+          }
+        ]
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "case_id": "TC-ADDED-099",
+      "case_name": "新增步数覆盖测试99：从63移动30步",
+      "map_file": "map.json",
+      "preset": {
+        "users": [
+          "A",
+          "Q"
+        ],
+        "current_user": "A",
+        "phase": "COMMAND",
+        "game_status": "RUNNING",
+        "players": [
+          {
+            "id": "A",
+            "fund": 1000,
+            "credit": 0,
+            "position": 63,
+            "status": "NORMAL",
+            "remaining_rounds": 0,
+            "items": {
+              "BLOCK": 0,
+              "BOMB": 0,
+              "ROBOT": 0
+            },
+            "god_of_wealth_rounds": 0
+          },
+          {
+            "id": "Q",
+            "fund": 1000,
+            "credit": 0,
+            "position": 3,
+            "status": "NORMAL",
+            "remaining_rounds": 0,
+            "items": {
+              "BLOCK": 0,
+              "BOMB": 0,
+              "ROBOT": 0
+            },
+            "god_of_wealth_rounds": 0
+          }
+        ],
+        "properties": [],
+        "map_items": [],
+        "dice_sequence": []
+      },
+      "actions": [
+        {
+          "command": "STEP",
+          "params": {
+            "steps": 30
+          }
+        }
+      ],
+      "expected": {
+        "players": [
+          {
+            "id": "A",
+            "position": 23
+          }
+        ]
+      }
+    },
+    {
+      "schema_version": "1.0",
+      "case_id": "TC-ADDED-100",
+      "case_name": "新增步数覆盖测试100：从0移动31步",
+      "map_file": "map.json",
+      "preset": {
+        "users": [
+          "A",
+          "Q"
+        ],
+        "current_user": "A",
+        "phase": "COMMAND",
+        "game_status": "RUNNING",
+        "players": [
+          {
+            "id": "A",
+            "fund": 1000,
+            "credit": 0,
+            "position": 0,
+            "status": "NORMAL",
+            "remaining_rounds": 0,
+            "items": {
+              "BLOCK": 0,
+              "BOMB": 0,
+              "ROBOT": 0
+            },
+            "god_of_wealth_rounds": 0
+          },
+          {
+            "id": "Q",
+            "fund": 1000,
+            "credit": 0,
+            "position": 10,
+            "status": "NORMAL",
+            "remaining_rounds": 0,
+            "items": {
+              "BLOCK": 0,
+              "BOMB": 0,
+              "ROBOT": 0
+            },
+            "god_of_wealth_rounds": 0
+          }
+        ],
+        "properties": [],
+        "map_items": [],
+        "dice_sequence": []
+      },
+      "actions": [
+        {
+          "command": "STEP",
+          "params": {
+            "steps": 31
+          }
+        }
+      ],
+      "expected": {
+        "players": [
+          {
+            "id": "A",
+            "position": 31
+          }
+        ]
+      }
+    }
+  ]
+}

@@ -244,15 +244,18 @@ def main() -> int:
             except (OSError, json.JSONDecodeError):
                 parsed = None
             cases = parsed.get("tests") if isinstance(parsed, dict) else None
+            is_bundle = isinstance(cases, list)
             if not isinstance(cases, list):
                 cases = [parsed]
             for index, case in enumerate(cases):
-                if case_file.name == "Group3_Testcases.json":
-                    input_file = temp_dir_path / f"group3_{index:03d}.json"
+                if is_bundle:
+                    input_file = temp_dir_path / (
+                        f"{case_file.stem.lower()}_{index:03d}.json"
+                    )
                     input_file.write_text(
                         json.dumps(case, ensure_ascii=False), encoding="utf-8"
                     )
-                    output_file = output_dir / f"Group3_{index:03d}.json"
+                    output_file = output_dir / f"{case_file.stem}_{index:03d}.json"
                 else:
                     input_file = case_file
                     output_file = output_dir / case_file.name
