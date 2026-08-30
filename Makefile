@@ -1,4 +1,4 @@
-CC ?= cc
+CC = gcc
 CFLAGS ?= -std=c11 -Wall -Wextra -Wpedantic -finput-charset=UTF-8 -fexec-charset=UTF-8
 CPPFLAGS ?= -Iinclude
 
