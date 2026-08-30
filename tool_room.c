@@ -42,8 +42,10 @@ void Enter_Tool_Room_With_Refresh(
     Player *player, InputRefreshCallback refresh, void *context)
 {
     char input[32];
+    char detail[128];
     const char *message = NULL;
     bool first_frame = true;
+    bool purchased_any = false;
     if (player == NULL) return;
     for (;;) {
         ToolRoomItem item;
@@ -61,7 +63,7 @@ void Enter_Tool_Room_With_Refresh(
             puts("道具屋已关闭：道具数量已达到上限。");
             return;
         }
-        if (player->points < 30) {
+        if (player->points < 30 && !purchased_any) {
             puts("道具屋已关闭：点数不足以购买任何道具。");
             return;
         }
@@ -79,8 +81,15 @@ void Enter_Tool_Room_With_Refresh(
         }
         item = (ToolRoomItem)(input[0] - '1');
         result = Tool_Room_Buy(player, item);
-        if (result == TOOL_ROOM_BUY_OK) message = "道具购买成功。（Item purchased.）";
-        else if (result == TOOL_ROOM_BUY_NOT_ENOUGH_POINTS) message = "操作失败：点数不足。";
+        if (result == TOOL_ROOM_BUY_OK) {
+            purchased_any = true;
+            message = "道具购买成功。（Item purchased.）";
+        } else if (result == TOOL_ROOM_BUY_NOT_ENOUGH_POINTS) {
+            snprintf(detail, sizeof(detail),
+                     "操作失败：点数不足，购买该道具需要%d点，你当前有%d点。",
+                     item_price(item), player->points);
+            message = detail;
+        }
         else message = "输入无效（Invalid Input）：无法购买该道具。";
     }
 }

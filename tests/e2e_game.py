@@ -55,6 +55,7 @@ try:
             "step 69\n"
             "step 34\n"
             "3\n"
+            "F\n"
             "query 1\n"
             "quit\n"
     )
@@ -131,6 +132,7 @@ try:
         "x\n"
         "k\n"
         "1\n"
+        "F\n"
         "step 1\n"
         "N\n"
         "block 2\n"
