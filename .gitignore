@@ -1,9 +1,12 @@
 *.o
 *.obj
 *.exe
+.monopoly_state.json
 test_movement
 movement_cli
 game_engine
+command_test
+tutorial_test
 tests/json_runner
 tests/output/
 tests/__pycache__/

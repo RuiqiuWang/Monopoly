@@ -2,13 +2,31 @@
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
+#ifdef _WIN32
+#include <fcntl.h>
+#include <io.h>
+#include <windows.h>
+#endif
+
 
 #include "map.h"
 #include "movement.h"
 #include "tui.h"
+#include "command.h"
+#include "tutorial.h"
 
 #define MAX_PLAYERS 4
 #define INITIAL_PLAYER_MONEY 1000
+
+static void configure_console_encoding(void)
+{
+#ifdef _WIN32
+    SetConsoleOutputCP(CP_UTF8);
+    SetConsoleCP(CP_UTF8);
+    _setmode(_fileno(stdout), _O_BINARY);
+    _setmode(_fileno(stdin), _O_BINARY);
+#endif
+}
 
 void Check_Player_in_Mine(Player *someone)
 {
@@ -161,6 +179,14 @@ static void render_game_state(
     tui_render_game(map, views, (size_t)player_count);
 }
 
+static int find_player_index(const Player players[], int player_count, int player_id)
+{
+    for (int i = 0; i < player_count; ++i) {
+        if (players[i].id == player_id) return i;
+    }
+    return -1;
+}
+
 int main(void)
 {
     Map map;
@@ -172,18 +198,29 @@ int main(void)
     int have_action = 0;
     unsigned long arrival_order[MAX_PLAYERS] = {1, 2, 3, 4};
     unsigned long arrival_counter = 4;
+    TutorialState tutorial_state;
 
+    configure_console_encoding();
     srand((unsigned int)time(NULL));
+    map_init(&map);
+    tutorial_state_load(&tutorial_state, MONOPOLY_STATE_FILE);
+    if (!tutorial_state.has_run) {
+        tutorial_state.has_run = true;
+        tutorial_state_save(&tutorial_state, MONOPOLY_STATE_FILE);
+        if (tutorial_prompt_first_run()) {
+            tutorial_run(&map);
+        }
+    }
     player_count = read_player_count();
     initialize_players(players, player_count);
-    map_init(&map);
-
     render_game_state(&map, players, player_count, arrival_order, current_index,
                       property_focus_index, round, "游戏初始化完成。");
 
     for (;;) {
-        char input[32];
+        char input[128];
         char message[256];
+        Command command;
+        CommandResult command_result;
         PlayerMoveResult move_result;
         int step;
 
@@ -197,17 +234,30 @@ int main(void)
             break;
         }
         if (input[0] != '\n' && input[0] != '\r' && input[0] != '\0') {
-            snprintf(message, sizeof(message), "请输入 Enter 执行回合，或输入 q 退出。");
-            render_game_state(&map, players, player_count, arrival_order, current_index,
-                              property_focus_index, round, message);
-            continue;
+            command_result = Parse_Command(input, &command);
+            if (command_result != COMMAND_OK) {
+                render_game_state(&map, players, player_count, arrival_order, current_index,
+                                  property_focus_index, round,
+                                  Command_Result_Message(command_result));
+                continue;
+            }
+            if (command.type == COMMAND_QUIT) {
+                break;
+            }
+            current_index = find_player_index(players, player_count, command.player_id);
+            if (current_index < 0 || !players[current_index].active) {
+                snprintf(message, sizeof(message), "错误：玩家 id 不存在或玩家已退出。");
+                render_game_state(&map, players, player_count, arrival_order, current_index,
+                                  property_focus_index, round, message);
+                continue;
+            }
+            step = command.steps;
+        } else {
+            while (!players[current_index].active) {
+                current_index = (current_index + 1) % player_count;
+            }
+            step = Get_Random_Step();
         }
-
-        while (!players[current_index].active) {
-            current_index = (current_index + 1) % player_count;
-        }
-
-        step = Get_Random_Step();
         move_result = Move_Player(&players[current_index], step);
         arrival_order[current_index] = ++arrival_counter;
         if (move_result != PLAYER_MOVE_OK) {
@@ -232,7 +282,6 @@ int main(void)
         render_game_state(&map, players, player_count, arrival_order, current_index,
                           property_focus_index, round, message);
     }
-
     tui_clear_screen();
     puts("MONOPOLY 已退出。");
     return 0;

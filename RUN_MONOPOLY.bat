@@ -1,5 +1,6 @@
 @echo off
 setlocal
+chcp 65001 >nul
 set "ROOT=%~dp0"
 
 where powershell >nul 2>nul

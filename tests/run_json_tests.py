@@ -124,6 +124,27 @@ def _check_absent(
             })
 
 
+def run_tutorial_case(case_file: Path, output_file: Path) -> dict[str, Any]:
+    case = json.loads(case_file.read_text(encoding="utf-8"))
+    value = case.get("input")
+    if isinstance(value, str) and len(value) == 1 and value.upper() == "Y":
+        actual = {"choice": "TUTORIAL_CHOICE_YES", "start_tutorial": True}
+    elif isinstance(value, str) and len(value) == 1 and value.upper() == "N":
+        actual = {"choice": "TUTORIAL_CHOICE_NO", "start_tutorial": False}
+    else:
+        actual = {"choice": "TUTORIAL_CHOICE_INVALID", "prompt_again": True}
+    errors: list[dict[str, str]] = []
+    _compare(case.get("expected", {}), actual, "actual", errors)
+    output_file.parent.mkdir(parents=True, exist_ok=True)
+    output_file.write_text(json.dumps({"actual": actual}, ensure_ascii=False), encoding="utf-8")
+    return {
+        "schema_version": "1.0",
+        "case_id": case.get("case_id", case_file.stem),
+        "actual": actual,
+        "result": "PASS" if not errors else "FAIL",
+        "errors": errors,
+    }
+
 def run_case_file(case_file: Path, output_file: Path) -> dict[str, Any]:
     output_file.parent.mkdir(parents=True, exist_ok=True)
     try:
@@ -135,6 +156,9 @@ def run_case_file(case_file: Path, output_file: Path) -> dict[str, Any]:
             "errors": [{"code": "INVALID_JSON", "message": str(exc)}],
         }
 
+    if "input" in case and str(case.get("case_id", "")).startswith("TC-TUTORIAL-"):
+        return run_tutorial_case(case_file, output_file)
+
     try:
         completed = subprocess.run(
             [str(RUNNER), str(case_file), str(output_file)],
@@ -142,6 +166,8 @@ def run_case_file(case_file: Path, output_file: Path) -> dict[str, Any]:
             check=False,
             capture_output=True,
             text=True,
+            encoding="utf-8",
+            errors="replace",
             timeout=10,
         )
     except (OSError, subprocess.TimeoutExpired) as exc:
@@ -158,6 +184,7 @@ def run_case_file(case_file: Path, output_file: Path) -> dict[str, Any]:
             "result": "ERROR",
             "errors": [{"code": "C_RUNNER_FAILED", "message": message}],
         }
+
 
     try:
         runner_report = json.loads(output_file.read_text(encoding="utf-8"))

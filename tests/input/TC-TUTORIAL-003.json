@@ -1,0 +1,7 @@
+{
+  "schema_version": "1.0",
+  "case_id": "TC-TUTORIAL-003",
+  "case_name": "reject invalid tutorial choice",
+  "input": "X",
+  "expected": { "choice": "TUTORIAL_CHOICE_INVALID", "prompt_again": true }
+}
