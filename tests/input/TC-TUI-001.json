@@ -1,0 +1,30 @@
+{
+  "schema_version": "1.0",
+  "case_id": "TC-TUI-001",
+  "case_name": "tui current player marked and bankrupt player hidden from display",
+  "map_file": "map.json",
+  "preset": {
+    "users": ["A", "Q", "S"],
+    "current_user": "Q",
+    "phase": "COMMAND",
+    "game_status": "RUNNING",
+    "players": [
+      {"id": "A", "fund": 1000, "credit": 0, "position": 10, "status": "NORMAL", "remaining_rounds": 0, "items": {"BLOCK": 0, "BOMB": 0, "ROBOT": 0}, "god_of_wealth_rounds": 0},
+      {"id": "Q", "fund": 1000, "credit": 0, "position": 20, "status": "NORMAL", "remaining_rounds": 0, "items": {"BLOCK": 0, "BOMB": 0, "ROBOT": 0}, "god_of_wealth_rounds": 0},
+      {"id": "S", "fund": 0, "credit": 0, "position": 30, "status": "BANKRUPT", "remaining_rounds": 0, "items": {"BLOCK": 0, "BOMB": 0, "ROBOT": 0}, "god_of_wealth_rounds": 0}
+    ],
+    "properties": [],
+    "map_items": [],
+    "dice_sequence": []
+  },
+  "actions": [
+    {"command": "QUERY"}
+  ],
+  "expected": {
+    "current_user": "Q",
+    "display_players": [
+      {"position": 10, "visible_user": "A"},
+      {"position": 20, "visible_user": "Q"}
+    ]
+  }
+}

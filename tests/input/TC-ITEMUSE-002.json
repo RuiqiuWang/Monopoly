@@ -1,0 +1,29 @@
+{
+  "schema_version": "1.0",
+  "case_id": "TC-ITEMUSE-002",
+  "case_name": "item_usage Use_Bomb backward wraps around map boundary",
+  "map_file": "map.json",
+  "preset": {
+    "users": ["A"],
+    "current_user": "A",
+    "phase": "COMMAND",
+    "game_status": "RUNNING",
+    "players": [
+      {"id": "A", "fund": 1000, "credit": 0, "position": 5, "status": "NORMAL", "remaining_rounds": 0, "items": {"BLOCK": 0, "BOMB": 1, "ROBOT": 0}, "god_of_wealth_rounds": 0}
+    ],
+    "properties": [],
+    "map_items": [],
+    "dice_sequence": []
+  },
+  "actions": [
+    {"command": "ITEM_USE", "params": {"item_type": 1, "offset": -8}}
+  ],
+  "expected": {
+    "players": [
+      {"id": "A", "position": 5, "items": {"BOMB": 0}}
+    ],
+    "map_items": [
+      {"position": 67, "type": "BOMB"}
+    ]
+  }
+}
