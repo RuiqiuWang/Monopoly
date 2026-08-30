@@ -146,6 +146,8 @@ function Build-Target {
                 "test_movement.exe",
                 "movement_cli",
                 "movement_cli.exe",
+                "character_select_cli",
+                "character_select_cli.exe",
                 "game_engine",
                 "game_engine.exe",
                 "tutorial_test",
@@ -158,6 +160,10 @@ function Build-Target {
                 "tool_room_test.exe",
                 "assets_test",
                 "assets_test.exe",
+                "character_select_test",
+                "character_select_test.exe",
+                "map_test",
+                "map_test.exe",
                 "tests\json_runner",
                 "tests\json_runner.exe"
             )
@@ -168,11 +174,14 @@ function Build-Target {
         "movement_cli" {
             Invoke-Compiler ($commonFlags + @("movement.c", "tests\movement_cli.c", "-o", "movement_cli.exe"))
         }
+        "character_select_cli" {
+            Invoke-Compiler ($commonFlags + @("character_select.c", "input.c", "character_select_cli.c", "-o", "character_select_cli.exe"))
+        }
         "game_engine" {
-            Invoke-Compiler ($commonFlags + @("game_engine.c", "command.c", "tutorial.c", "map.c", "tui.c", "movement.c", "mine.c", "tool_room.c", "assets.c", "player.c", "-o", "game_engine.exe"))
+            Invoke-Compiler ($commonFlags + @("game_engine.c", "command.c", "tutorial.c", "map.c", "tui.c", "movement.c", "mine.c", "tool_room.c", "assets.c", "player.c", "character_select.c", "input.c", "-o", "game_engine.exe"))
         }
         "tutorial_test" {
-            Invoke-Compiler ($commonFlags + @("tutorial.c", "tui.c", "map.c", "movement.c", "tests\test_tutorial.c", "-o", "tutorial_test.exe"))
+            Invoke-Compiler ($commonFlags + @("tutorial.c", "input.c", "tui.c", "map.c", "movement.c", "tests\test_tutorial.c", "-o", "tutorial_test.exe"))
         }
         "command_test" {
             Invoke-Compiler ($commonFlags + @("command.c", "tests\test_command.c", "-o", "command_test.exe"))
@@ -181,10 +190,16 @@ function Build-Target {
             Invoke-Compiler ($commonFlags + @("mine.c", "map.c", "player.c", "tests\test_mine.c", "-o", "mine_test.exe"))
         }
         "tool_room_test" {
-            Invoke-Compiler ($commonFlags + @("tool_room.c", "player.c", "tests\test_tool_room.c", "-o", "tool_room_test.exe"))
+            Invoke-Compiler ($commonFlags + @("tool_room.c", "input.c", "player.c", "tests\test_tool_room.c", "-o", "tool_room_test.exe"))
         }
         "assets_test" {
             Invoke-Compiler ($commonFlags + @("assets.c", "map.c", "player.c", "tests\test_assets.c", "-o", "assets_test.exe"))
+        }
+        "character_select_test" {
+            Invoke-Compiler ($commonFlags + @("character_select.c", "input.c", "tests\test_character_select.c", "-o", "character_select_test.exe"))
+        }
+        "map_test" {
+            Invoke-Compiler ($commonFlags + @("map.c", "tests\test_map.c", "-o", "map_test.exe"))
         }
         "tests/json_runner" {
             Invoke-Compiler ($commonFlags + @("movement.c", "tests\json_engine.c", "tests\json_runner.c", "-o", "tests\json_runner.exe"))
@@ -254,11 +269,14 @@ $buildSteps = @(
     "clean",
     "test_movement",
     "movement_cli",
+    "character_select_cli",
     "tutorial_test",
     "command_test",
     "mine_test",
     "tool_room_test",
     "assets_test",
+    "character_select_test",
+    "map_test",
     "game_engine",
     "tests/json_runner"
 )
@@ -284,7 +302,9 @@ $unitTests = @(
     @{ Name = "command unit"; Path = "command_test" },
     @{ Name = "mine unit"; Path = "mine_test" },
     @{ Name = "tool room unit"; Path = "tool_room_test" },
-    @{ Name = "assets unit"; Path = "assets_test" }
+    @{ Name = "assets unit"; Path = "assets_test" },
+    @{ Name = "character select unit"; Path = "character_select_test" },
+    @{ Name = "map property unit"; Path = "map_test" }
 )
 for ($i = 0; $i -lt $unitTests.Count; $i++) {
     $unitExe = Resolve-Executable (Join-Path $root $unitTests[$i].Path)
