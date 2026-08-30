@@ -126,17 +126,42 @@ static const char *tui_player_mark(
     return "@";
 }
 
+static PlayerColor tui_property_owner_color(
+    const Map *map, const TuiPlayerView *players, size_t player_count,
+    size_t index)
+{
+    int owner_id;
+
+    if (map == NULL || players == NULL || index >= MAP_BLOCK_COUNT ||
+        !map_block_is_purchasable(map_get_block(map, index))) {
+        return (PlayerColor)-1;
+    }
+    owner_id = map_get_property_owner(map, index);
+    if (owner_id == MAP_PROPERTY_UNOWNED) return (PlayerColor)-1;
+    for (size_t i = 0; i < player_count; ++i) {
+        if (players[i].id == owner_id) return players[i].color;
+    }
+    return (PlayerColor)-1;
+}
+
 static void tui_print_board(
     char board[TUI_ROWS][TUI_COLS][4],
     PlayerColor board_colors[TUI_ROWS][TUI_COLS],
+    const Map *map,
     const TuiPlayerView *players,
     size_t player_count)
 {
     for (int r = 0; r < TUI_ROWS; ++r) {
         for (int c = 0; c < TUI_COLS; ++c) {
             size_t index = tui_index_at_coord(r, c);
+            PlayerColor property_color = tui_property_owner_color(
+                map, players, player_count, index);
             PlayerColor player_color = COLOR_GREEN;
             const char *mark = tui_player_mark(players, player_count, index, &player_color);
+
+            if (property_color >= COLOR_GREEN && property_color <= COLOR_YELLOW) {
+                board_colors[r][c] = property_color;
+            }
 
             if (mark != NULL) {
                 snprintf(board[r][c], sizeof(board[r][c]), "%s", mark);
@@ -260,7 +285,7 @@ void tui_render_map(const Map *map)
             board_colors[r][c] = (PlayerColor)-1;
         }
     }
-    tui_print_board(board, board_colors, NULL, 0);
+    tui_print_board(board, board_colors, map, NULL, 0);
 }
 
 void tui_render_game(const Map *map, const TuiPlayerView *players, size_t player_count)
@@ -274,7 +299,7 @@ void tui_render_game(const Map *map, const TuiPlayerView *players, size_t player
             board_colors[r][c] = (PlayerColor)-1;
         }
     }
-    tui_print_board(board, board_colors, players, player_count);
+    tui_print_board(board, board_colors, map, players, player_count);
 
     puts("");
     puts("图例：S=起点 T=道具屋 G=礼品屋 M=魔法屋 H=医院 P=监狱 $=矿地 0=地产");
