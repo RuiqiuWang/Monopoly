@@ -277,6 +277,7 @@ int main(void)
         int steps;
 
         if (!input_read_line("Command (Enter=roll): ", input, sizeof(input))) break;
+        if ((input[0] == 'q' || input[0] == 'Q') && input[1] == '\0') break;
         if (input[0] == '\0') {
             command.type = COMMAND_ROLL;
         } else {
