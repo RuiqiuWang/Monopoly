@@ -191,7 +191,7 @@ static void render_game_state(
     tui_render_game(map, views, (size_t)player_count);
     puts("");
     if (g_last_command[0] != '\0') {
-        printf("命令（回车=掷骰）：%s\n", g_last_command);
+        printf("命令：%s\n", g_last_command);
     }
     if (message != NULL && message[0] != '\0') {
         printf("提示：%s\n", message);
@@ -399,18 +399,13 @@ int main(void)
         ItemEffectReport movement_report;
         ItemEffectMoveResult movement_result;
 
-        if (!input_read_line("命令（回车=掷骰）：", input, sizeof(input))) break;
+        if (!input_read_line("命令：", input, sizeof(input))) break;
         remember_command(input);
-        if ((input[0] == 'q' || input[0] == 'Q') && input[1] == '\0') break;
-        if (input[0] == '\0') {
-            command.type = COMMAND_ROLL;
-        } else {
-            result = Parse_Command(input, &command);
-            if (result != COMMAND_OK) {
-                render_game_state(&map, players, player_count, arrivals, current_index,
-                                  focus_index, round, localized_command_error(result));
-                continue;
-            }
+        result = Parse_Command(input, &command);
+        if (result != COMMAND_OK) {
+            render_game_state(&map, players, player_count, arrivals, current_index,
+                              focus_index, round, localized_command_error(result));
+            continue;
         }
         if (command.type == COMMAND_QUIT) break;
         if (command.type == COMMAND_HELP) {
@@ -426,16 +421,9 @@ int main(void)
             continue;
         }
         if (command.type == COMMAND_QUERY) {
-            int queried = command.player_id > 0
-                ? find_player_index(players, player_count, command.player_id)
-                : current_index;
-            if (queried < 0) {
-                render_game_state(&map, players, player_count, arrivals, current_index,
-                                  focus_index, round, "操作失败：玩家不存在。");
-            } else {
-                query_assets(&players[queried], &map);
-                (void)query_assets_to_json(&players[queried], &map, "player_assets.json");
-            }
+            query_assets(&players[current_index], &map);
+            (void)query_assets_to_json(
+                &players[current_index], &map, "player_assets.json");
             continue;
         }
         if (command.type == COMMAND_BLOCK) {

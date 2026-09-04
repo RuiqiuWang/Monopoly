@@ -2,7 +2,7 @@
 
 主程序启动流程：设置初始资金、选择 2～4 名角色、按需显示首次教程，然后进入地图和命令循环。
 
-当前命令包括 `roll`、`step`、`query`、`sell`、`block`、`robot`、`reset`、`help` 和 `q`。`quit`、`bomb` 已删除。
+当前命令包括 `roll`、`step`、`query`、`sell`、`block`、`robot`、`reset`、`help` 和 `quit`。空输入不会自动掷骰，`query` 只查询当前玩家，`q` 和 `bomb` 已删除。
 
 当前地图将原魔法屋、医院和监狱统一为无事件公园 `P`。财神由 `fortune.c` 管理，在第 10 回合后出现，地图寿命为 5 回合，领取后立即提供 5 个玩家行动回合的免租效果。
 

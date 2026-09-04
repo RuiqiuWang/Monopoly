@@ -26,7 +26,6 @@ typedef enum {
 
 typedef struct {
     CommandType type;
-    int player_id;
     int steps;
     int argument;
 } Command;

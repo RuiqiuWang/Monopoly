@@ -71,7 +71,6 @@ CommandResult Parse_Command(const char *input, Command *command)
 
     if (input == NULL || command == NULL) return COMMAND_INVALID_ARGUMENT;
     command->type = COMMAND_INVALID;
-    command->player_id = 0;
     command->steps = 0;
     command->argument = 0;
 
@@ -81,7 +80,7 @@ CommandResult Parse_Command(const char *input, Command *command)
     word_length = (size_t)(cursor - word_start);
     if (word_length == 0) return COMMAND_UNKNOWN;
 
-    if (word_equals(word_start, word_length, "q")) {
+    if (word_equals(word_start, word_length, "quit")) {
         command->type = COMMAND_QUIT;
         return *skip_spaces(cursor) == '\0' ? COMMAND_OK : COMMAND_EXTRA_ARGUMENT;
     }
@@ -99,10 +98,6 @@ CommandResult Parse_Command(const char *input, Command *command)
     }
     if (word_equals(word_start, word_length, "query")) {
         command->type = COMMAND_QUERY;
-        cursor = skip_spaces(cursor);
-        if (*cursor == '\0') return COMMAND_OK;
-        result = parse_integer(&cursor, &command->player_id, 1);
-        if (result != COMMAND_OK) return result;
         return *skip_spaces(cursor) == '\0' ? COMMAND_OK : COMMAND_EXTRA_ARGUMENT;
     }
     if (word_equals(word_start, word_length, "robot")) {
@@ -148,7 +143,7 @@ const char *Command_Type_Name(CommandType type)
     case COMMAND_ROBOT: return "robot";
     case COMMAND_RESET: return "reset";
     case COMMAND_HELP: return "help";
-    case COMMAND_QUIT: return "q";
+    case COMMAND_QUIT: return "quit";
     default: return "invalid";
     }
 }

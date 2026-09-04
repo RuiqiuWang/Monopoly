@@ -14,6 +14,7 @@ int main(void)
     assert(strstr(text, "rent is half the total investment") != NULL);
     assert(strstr(text, "Parks have no effect") != NULL);
     assert(strstr(text, "bomb") == NULL);
-    assert(strstr(text, "quit") == NULL);
+    assert(strstr(text, "  q ") == NULL);
+    assert(strstr(text, "quit") != NULL);
     return 0;
 }

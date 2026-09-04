@@ -33,12 +33,12 @@ try:
     assert not STATE.exists()
 
     STATE.write_text('{"has_run": 0}\n', encoding="utf-8")
-    first_run = run_game("\n12\nN\nq\n")
+    first_run = run_game("\n12\nN\nquit\n")
     assert "Choose 2-4 characters" in first_run
     assert "是否进行新手教程" in first_run
     assert json.loads(STATE.read_text(encoding="utf-8"))["has_run"] == 1
 
-    invalid_money = run_game("999\n50001\n10000\n12\nq\n")
+    invalid_money = run_game("999\n50001\n10000\n12\nquit\n")
     assert invalid_money.count("Initial money must be an integer") == 2
 
     STATE.write_text('{"has_run": 1}\n', encoding="utf-8")
@@ -48,16 +48,16 @@ try:
         "help\n"
         "step 1\n"
         "Y\n"
-        "query 1\n"
         "step 1\n"
-        "q\n"
+        "query\n"
+        "quit\n"
     )
     assert "MONOPOLY command help" in property_flow
     assert "Property purchased at level 0." in property_flow
     assert "Paid rent 100 to Q." in property_flow
     payload = json.loads(ASSETS.read_text(encoding="utf-8"))
     assert payload["id"] == 1
-    assert payload["money"] == 800
+    assert payload["money"] == 900
     assert payload["items"] == {"barrier": 0, "robot": 0}
     assert payload["properties"] == [{"position": 1, "level": 0}]
 
@@ -70,13 +70,13 @@ try:
         "step 0\n"
         "step 0\n"
         "Y\n"
-        "q\n"
+        "quit\n"
     )
     assert zero_step.count("moved 0 of 0 steps") >= 2
     assert "Property upgraded to level 1." in zero_step
 
     STATE.write_text('{"has_run": 1}\n', encoding="utf-8")
-    park_flow = run_game("1000\n12\nstep 14\nstep 49\nstep 49\nq\n")
+    park_flow = run_game("1000\n12\nstep 14\nstep 49\nstep 49\nquit\n")
     assert "到达14号位置" in park_flow
     assert "到达49号位置" in park_flow
     assert "到达63号位置" in park_flow
@@ -89,8 +89,8 @@ try:
         "step 35\n"
         "3\n"
         "step 0\n"
-        "query 1\n"
-        "q\n"
+        "query\n"
+        "quit\n"
     )
     assert "Gift house:" in gift_flow
     assert "god_of_wealth_rounds=5" in gift_flow
@@ -103,21 +103,22 @@ try:
         "step 0\n"
         "step 34\n"
         "1\n"
-        "q\n"
+        "quit\n"
     )
     assert "Item purchased." in tool_room_balance
     assert "当前点数10，低于最便宜道具所需的30点" in tool_room_balance
 
     STATE.write_text('{"has_run": 1}\n', encoding="utf-8")
-    tool_room_entry = run_game("1000\n12\nstep 28\nq\n")
+    tool_room_entry = run_game("1000\n12\nstep 28\nquit\n")
     assert "当前点数0，低于最便宜道具所需的30点" in tool_room_entry
 
     STATE.write_text('{"has_run": 1}\n', encoding="utf-8")
-    quit_removed = run_game("1000\n12\nquit\nq\n")
-    assert "未知命令" in quit_removed
+    explicit_commands = run_game("1000\n12\n\nq\nquit\n")
+    assert explicit_commands.count("未知命令") == 2
+    assert "moved" not in explicit_commands
 
     STATE.write_text('{"has_run": 1}\n', encoding="utf-8")
-    reset_output = run_game("1000\n12\nreset\nq\n")
+    reset_output = run_game("1000\n12\nreset\nquit\n")
     assert "Play record cleared" in reset_output
     assert not STATE.exists()
 
