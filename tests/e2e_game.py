@@ -96,6 +96,23 @@ try:
     assert "god_of_wealth_rounds=5" in gift_flow
 
     STATE.write_text('{"has_run": 1}\n', encoding="utf-8")
+    tool_room_balance = run_game(
+        "1000\n"
+        "12\n"
+        "step 64\n"
+        "step 0\n"
+        "step 34\n"
+        "1\n"
+        "q\n"
+    )
+    assert "Item purchased." in tool_room_balance
+    assert "当前点数10，低于最便宜道具所需的30点" in tool_room_balance
+
+    STATE.write_text('{"has_run": 1}\n', encoding="utf-8")
+    tool_room_entry = run_game("1000\n12\nstep 28\nq\n")
+    assert "当前点数0，低于最便宜道具所需的30点" in tool_room_entry
+
+    STATE.write_text('{"has_run": 1}\n', encoding="utf-8")
     quit_removed = run_game("1000\n12\nquit\nq\n")
     assert "未知命令" in quit_removed
 

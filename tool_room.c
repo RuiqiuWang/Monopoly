@@ -6,6 +6,7 @@
 #include <string.h>
 
 #define TOOL_ROOM_ITEM_LIMIT 10
+#define TOOL_ROOM_MIN_ITEM_PRICE 30
 
 static int item_price(ToolRoomItem item)
 {
@@ -19,6 +20,14 @@ static int item_price(ToolRoomItem item)
 static int item_count(const Player *player)
 {
     return player->items[ITEM_BARRIER] + player->items[ITEM_ROBOT];
+}
+
+static bool exit_if_points_too_low(const Player *player)
+{
+    if (player->points >= TOOL_ROOM_MIN_ITEM_PRICE) return false;
+    printf("道具屋已自动退出：当前点数%d，低于最便宜道具所需的%d点。\n",
+           player->points, TOOL_ROOM_MIN_ITEM_PRICE);
+    return true;
 }
 
 ToolRoomBuyResult Tool_Room_Buy(Player *player, ToolRoomItem item)
@@ -43,7 +52,6 @@ void Enter_Tool_Room_With_Refresh(
     char detail[128];
     const char *message = NULL;
     bool first_frame = true;
-    bool purchased_any = false;
     if (player == NULL) return;
     for (;;) {
         ToolRoomItem item;
@@ -58,12 +66,9 @@ void Enter_Tool_Room_With_Refresh(
         }
         first_frame = false;
         message = NULL;
+        if (exit_if_points_too_low(player)) return;
         if (item_count(player) >= TOOL_ROOM_ITEM_LIMIT) {
             puts("道具屋已关闭：道具数量已达到上限。");
-            return;
-        }
-        if (player->points < 30 && !purchased_any) {
-            puts("道具屋已关闭：点数不足以购买任何道具。");
             return;
         }
         puts("你已到达道具屋，可以用点数购买道具。每次输入一个编号后按回车确认：");
@@ -84,7 +89,6 @@ void Enter_Tool_Room_With_Refresh(
         item = (ToolRoomItem)(input[0] - '1');
         result = Tool_Room_Buy(player, item);
         if (result == TOOL_ROOM_BUY_OK) {
-            purchased_any = true;
             message = "道具购买成功。（Item purchased.）";
         } else if (result == TOOL_ROOM_BUY_NOT_ENOUGH_POINTS) {
             snprintf(detail, sizeof(detail),
@@ -94,9 +98,12 @@ void Enter_Tool_Room_With_Refresh(
         }
         else message = "输入无效（Invalid Input）：无法购买该道具。";
         puts(message);
-        if (result == TOOL_ROOM_BUY_OK && item_count(player) >= TOOL_ROOM_ITEM_LIMIT) {
-            puts("道具屋已关闭：道具数量已达到上限。");
-            return;
+        if (result == TOOL_ROOM_BUY_OK) {
+            if (exit_if_points_too_low(player)) return;
+            if (item_count(player) >= TOOL_ROOM_ITEM_LIMIT) {
+                puts("道具屋已关闭：道具数量已达到上限。");
+                return;
+            }
         }
     }
 }
