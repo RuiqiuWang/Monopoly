@@ -1,68 +1,95 @@
 {
-  "schema_version": "1.0",
-  "case_id": "TC-STEP-001",
-  "case_name": "STEP move basic",
+  "schema_version": "2.0",
+  "suite": "TC-STEP-001-v2",
   "map_file": "map.json",
-  "preset": {
-    "users": ["A", "Q"],
-    "current_user": "A",
-    "phase": "COMMAND",
-    "game_status": "RUNNING",
-    "players": [
-      {
-        "id": "A",
-        "fund": 1000,
-        "credit": 0,
-        "position": 0,
-        "status": "NORMAL",
-        "remaining_rounds": 0,
-        "items": {"BLOCK": 0, "BOMB": 0, "ROBOT": 0},
-        "god_of_wealth_rounds": 0
-      },
-      {
-        "id": "Q",
-        "fund": 1000,
-        "credit": 0,
-        "position": 10,
-        "status": "NORMAL",
-        "remaining_rounds": 0,
-        "items": {"BLOCK": 0, "BOMB": 0, "ROBOT": 0},
-        "god_of_wealth_rounds": 0
-      }
-    ],
-    "properties": [],
-    "map_items": [],
-    "dice_sequence": []
-  },
-  "actions": [
+  "tests": [
     {
-      "command": "STEP",
-      "params": {"steps": 3}
+      "case_id": "TC-STEP-001",
+      "case_name": "STEP move basic",
+      "map_file": "map.json",
+      "preset": {
+        "users": [
+          "A",
+          "Q"
+        ],
+        "current_user": "A",
+        "phase": "COMMAND",
+        "game_status": "RUNNING",
+        "players": [
+          {
+            "id": "A",
+            "fund": 1000,
+            "credit": 0,
+            "position": 0,
+            "status": "NORMAL",
+            "items": {
+              "BLOCK": 0,
+              "ROBOT": 0
+            },
+            "god_of_wealth_rounds": 0
+          },
+          {
+            "id": "Q",
+            "fund": 1000,
+            "credit": 0,
+            "position": 10,
+            "status": "NORMAL",
+            "items": {
+              "BLOCK": 0,
+              "ROBOT": 0
+            },
+            "god_of_wealth_rounds": 0
+          }
+        ],
+        "properties": [],
+        "map_items": [],
+        "turn_number": 1,
+        "fortune": {
+          "position": null,
+          "spawned_after_turn": null,
+          "remaining_map_turns": 0,
+          "next_spawn_after_turn": null
+        }
+      },
+      "actions": [
+        {
+          "command": "STEP",
+          "params": {
+            "steps": 3
+          }
+        },
+        {
+          "command": "ANSWER",
+          "params": {
+            "value": "N"
+          }
+        }
+      ],
+      "expected": {
+        "current_user": "Q",
+        "phase": "COMMAND",
+        "game_status": "RUNNING",
+        "players": [
+          {
+            "id": "A",
+            "position": 3
+          },
+          {
+            "id": "Q",
+            "position": 10
+          }
+        ],
+        "display_players": [
+          {
+            "position": 3,
+            "visible_user": "A"
+          },
+          {
+            "position": 10,
+            "visible_user": "Q"
+          }
+        ]
+      }
     }
-  ],
-  "expected": {
-    "current_user": "Q",
-    "phase": "COMMAND",
-    "game_status": "RUNNING",
-    "players": [
-      {
-        "id": "A",
-        "position": 3
-      },
-      {
-        "id": "Q",
-        "position": 10
-      }
-    ],
-    "display_players": [
-      {
-        "position": 3,
-        "visible_user": "A"
-      },
-      {
-        "position": 10,
-        "visible_user": "Q"
-      }
-    ]
-  }
+  ]
 }

@@ -1,34 +1,88 @@
 {
-  "schema_version": "1.0",
-  "case_id": "TC-LAND-001",
-  "case_name": "sell land level0 base200 gain double cost",
+  "schema_version": "2.0",
+  "suite": "TC-LAND-001-v2",
   "map_file": "map.json",
-  "preset": {
-    "users": ["A", "Q"],
-    "current_user": "A",
-    "phase": "COMMAND",
-    "game_status": "RUNNING",
-    "players": [
-      {"id": "A", "fund": 1000, "credit": 0, "position": 0, "status": "NORMAL", "remaining_rounds": 0, "items": {"BLOCK": 0, "BOMB": 0, "ROBOT": 0}, "god_of_wealth_rounds": 0},
-      {"id": "Q", "fund": 1000, "credit": 0, "position": 7, "status": "NORMAL", "remaining_rounds": 0, "items": {"BLOCK": 0, "BOMB": 0, "ROBOT": 0}, "god_of_wealth_rounds": 0}
-    ],
-    "properties": [
-      {"position": 3, "owner": "A", "level": 0}
-    ],
-    "map_items": [],
-    "dice_sequence": []
-  },
-  "actions": [
-    {"command": "SELL", "params": {"position": 3}}
-  ],
-  "expected": {
-    "current_user": "A",
-    "phase": "COMMAND",
-    "game_status": "RUNNING",
-    "players": [
-      {"id": "A", "fund": 1400},
-      {"id": "Q", "fund": 1000}
-    ],
-    "properties_absent": [3]
-  }
+  "tests": [
+    {
+      "case_id": "TC-LAND-001",
+      "case_name": "sell land level0 base200 gain double cost",
+      "map_file": "map.json",
+      "preset": {
+        "users": [
+          "A",
+          "Q"
+        ],
+        "current_user": "A",
+        "phase": "COMMAND",
+        "game_status": "RUNNING",
+        "players": [
+          {
+            "id": "A",
+            "fund": 1000,
+            "credit": 0,
+            "position": 0,
+            "status": "NORMAL",
+            "items": {
+              "BLOCK": 0,
+              "ROBOT": 0
+            },
+            "god_of_wealth_rounds": 0
+          },
+          {
+            "id": "Q",
+            "fund": 1000,
+            "credit": 0,
+            "position": 7,
+            "status": "NORMAL",
+            "items": {
+              "BLOCK": 0,
+              "ROBOT": 0
+            },
+            "god_of_wealth_rounds": 0
+          }
+        ],
+        "properties": [
+          {
+            "position": 3,
+            "owner": "A",
+            "level": 0
+          }
+        ],
+        "map_items": [],
+        "turn_number": 1,
+        "fortune": {
+          "position": null,
+          "spawned_after_turn": null,
+          "remaining_map_turns": 0,
+          "next_spawn_after_turn": null
+        }
+      },
+      "actions": [
+        {
+          "command": "SELL",
+          "params": {
+            "position": 3
+          }
+        }
+      ],
+      "expected": {
+        "current_user": "A",
+        "phase": "COMMAND",
+        "game_status": "RUNNING",
+        "players": [
+          {
+            "id": "A",
+            "fund": 1400
+          },
+          {
+            "id": "Q",
+            "fund": 1000
+          }
+        ],
+        "properties_absent": [
+          3
+        ]
+      }
+    }
+  ]
 }

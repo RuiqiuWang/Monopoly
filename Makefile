@@ -79,7 +79,7 @@ engine: game_engine
 	./game_engine
 
 json_test:
-	$(MAKE) tests/json_runner
+	$(PYTHON) tests/validate_json_testcases.py
 	$(PYTHON) tests/run_json_tests.py
 
 tests/json_runner: tests/json_runner.c movement.c include/movement.h include/player.h

@@ -1,28 +1,73 @@
 {
-  "schema_version": "1.0",
-  "case_id": "TC-BOUNDARY-003",
-  "case_name": "roll with empty dice sequence does nothing",
+  "schema_version": "2.0",
+  "suite": "TC-BOUNDARY-003-v2",
   "map_file": "map.json",
-  "preset": {
-    "users": ["A", "Q"],
-    "current_user": "A",
-    "phase": "COMMAND",
-    "game_status": "RUNNING",
-    "players": [
-      {"id": "A", "fund": 1000, "credit": 0, "position": 10, "status": "NORMAL", "remaining_rounds": 0, "items": {"BLOCK": 0, "BOMB": 0, "ROBOT": 0}, "god_of_wealth_rounds": 0},
-      {"id": "Q", "fund": 1000, "credit": 0, "position": 20, "status": "NORMAL", "remaining_rounds": 0, "items": {"BLOCK": 0, "BOMB": 0, "ROBOT": 0}, "god_of_wealth_rounds": 0}
-    ],
-    "properties": [],
-    "map_items": [],
-    "dice_sequence": []
-  },
-  "actions": [
-    {"command": "ROLL"}
-  ],
-  "expected": {
-    "current_user": "A",
-    "players": [
-      {"id": "A", "position": 10}
-    ]
-  }
+  "tests": [
+    {
+      "case_id": "TC-BOUNDARY-003",
+      "case_name": "ROLL随机序列耗尽返回RANDOM_SEQUENCE_EMPTY",
+      "map_file": "map.json",
+      "preset": {
+        "users": [
+          "A",
+          "Q"
+        ],
+        "current_user": "A",
+        "phase": "COMMAND",
+        "game_status": "RUNNING",
+        "players": [
+          {
+            "id": "A",
+            "fund": 1000,
+            "credit": 0,
+            "position": 10,
+            "status": "NORMAL",
+            "items": {
+              "BLOCK": 0,
+              "ROBOT": 0
+            },
+            "god_of_wealth_rounds": 0
+          },
+          {
+            "id": "Q",
+            "fund": 1000,
+            "credit": 0,
+            "position": 20,
+            "status": "NORMAL",
+            "items": {
+              "BLOCK": 0,
+              "ROBOT": 0
+            },
+            "god_of_wealth_rounds": 0
+          }
+        ],
+        "properties": [],
+        "map_items": [],
+        "turn_number": 1,
+        "random_control": {
+          "mode": "SEQUENCE",
+          "streams": {
+            "DICE": []
+          }
+        },
+        "fortune": {
+          "position": null,
+          "spawned_after_turn": null,
+          "remaining_map_turns": 0,
+          "next_spawn_after_turn": null
+        }
+      },
+      "actions": [
+        {
+          "command": "ROLL"
+        }
+      ],
+      "expected": {},
+      "expected_outcome": "ERROR",
+      "expected_error": {
+        "code": "RANDOM_SEQUENCE_EMPTY",
+        "action_index": 0
+      }
+    }
+  ]
 }

@@ -1,32 +1,84 @@
 {
-  "schema_version": "1.0",
-  "case_id": "TC-CTRL-003",
-  "case_name": "help does not change game state",
+  "schema_version": "2.0",
+  "suite": "TC-CTRL-003-v2",
   "map_file": "map.json",
-  "preset": {
-    "users": ["A", "Q"],
-    "current_user": "A",
-    "phase": "COMMAND",
-    "game_status": "RUNNING",
-    "players": [
-      {"id": "A", "fund": 1234, "credit": 0, "position": 4, "status": "NORMAL", "remaining_rounds": 0, "items": {"BLOCK": 2, "BOMB": 1, "ROBOT": 0}, "god_of_wealth_rounds": 0},
-      {"id": "Q", "fund": 5678, "credit": 0, "position": 9, "status": "NORMAL", "remaining_rounds": 0, "items": {"BLOCK": 0, "BOMB": 0, "ROBOT": 0}, "god_of_wealth_rounds": 0}
-    ],
-    "properties": [],
-    "map_items": [],
-    "dice_sequence": []
-  },
-  "actions": [
-    {"command": "HELP"},
-    {"command": "HELP"}
-  ],
-  "expected": {
-    "current_user": "A",
-    "phase": "COMMAND",
-    "game_status": "RUNNING",
-    "players": [
-      {"id": "A", "fund": 1234, "position": 4, "items": {"BLOCK": 2, "BOMB": 1}},
-      {"id": "Q", "fund": 5678, "position": 9}
-    ]
-  }
+  "tests": [
+    {
+      "case_id": "TC-CTRL-003",
+      "case_name": "help does not change game state",
+      "map_file": "map.json",
+      "preset": {
+        "users": [
+          "A",
+          "Q"
+        ],
+        "current_user": "A",
+        "phase": "COMMAND",
+        "game_status": "RUNNING",
+        "players": [
+          {
+            "id": "A",
+            "fund": 1234,
+            "credit": 0,
+            "position": 4,
+            "status": "NORMAL",
+            "items": {
+              "BLOCK": 2,
+              "ROBOT": 0
+            },
+            "god_of_wealth_rounds": 0
+          },
+          {
+            "id": "Q",
+            "fund": 5678,
+            "credit": 0,
+            "position": 9,
+            "status": "NORMAL",
+            "items": {
+              "BLOCK": 0,
+              "ROBOT": 0
+            },
+            "god_of_wealth_rounds": 0
+          }
+        ],
+        "properties": [],
+        "map_items": [],
+        "turn_number": 1,
+        "fortune": {
+          "position": null,
+          "spawned_after_turn": null,
+          "remaining_map_turns": 0,
+          "next_spawn_after_turn": null
+        }
+      },
+      "actions": [
+        {
+          "command": "HELP"
+        },
+        {
+          "command": "HELP"
+        }
+      ],
+      "expected": {
+        "current_user": "A",
+        "phase": "COMMAND",
+        "game_status": "RUNNING",
+        "players": [
+          {
+            "id": "A",
+            "fund": 1234,
+            "position": 4,
+            "items": {
+              "BLOCK": 2
+            }
+          },
+          {
+            "id": "Q",
+            "fund": 5678,
+            "position": 9
+          }
+        ]
+      }
+    }
+  ]
 }

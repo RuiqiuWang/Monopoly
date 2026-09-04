@@ -1,46 +1,65 @@
 {
-  "schema_version": "1.0",
-  "case_id": "TC-DISPLAY-001",
-  "case_name": "overlap visible player",
+  "schema_version": "2.0",
+  "suite": "TC-DISPLAY-001-v2",
   "map_file": "map.json",
-  "preset": {
-    "users": ["A", "Q"],
-    "current_user": "Q",
-    "phase": "COMMAND",
-    "game_status": "RUNNING",
-    "players": [
-      {
-        "id": "A",
-        "fund": 1000,
-        "credit": 0,
-        "position": 5,
-        "status": "NORMAL",
-        "remaining_rounds": 0,
-        "items": {"BLOCK": 0, "BOMB": 0, "ROBOT": 0},
-        "god_of_wealth_rounds": 0
+  "tests": [
+    {
+      "case_id": "TC-DISPLAY-001",
+      "case_name": "overlap visible player",
+      "map_file": "map.json",
+      "preset": {
+        "users": [
+          "A",
+          "Q"
+        ],
+        "current_user": "Q",
+        "phase": "COMMAND",
+        "game_status": "RUNNING",
+        "players": [
+          {
+            "id": "A",
+            "fund": 1000,
+            "credit": 0,
+            "position": 5,
+            "status": "NORMAL",
+            "items": {
+              "BLOCK": 0,
+              "ROBOT": 0
+            },
+            "god_of_wealth_rounds": 0
+          },
+          {
+            "id": "Q",
+            "fund": 1000,
+            "credit": 0,
+            "position": 5,
+            "status": "NORMAL",
+            "items": {
+              "BLOCK": 0,
+              "ROBOT": 0
+            },
+            "god_of_wealth_rounds": 0
+          }
+        ],
+        "properties": [],
+        "map_items": [],
+        "turn_number": 1,
+        "fortune": {
+          "position": null,
+          "spawned_after_turn": null,
+          "remaining_map_turns": 0,
+          "next_spawn_after_turn": null
+        }
       },
-      {
-        "id": "Q",
-        "fund": 1000,
-        "credit": 0,
-        "position": 5,
-        "status": "NORMAL",
-        "remaining_rounds": 0,
-        "items": {"BLOCK": 0, "BOMB": 0, "ROBOT": 0},
-        "god_of_wealth_rounds": 0
+      "actions": [],
+      "expected": {
+        "display_players": [
+          {
+            "position": 5,
+            "visible_user": "Q"
+          }
+        ]
       }
-    ],
-    "properties": [],
-    "map_items": [],
-    "dice_sequence": []
-  },
-  "actions": [],
-  "expected": {
-    "display_players": [
-      {
-        "position": 5,
-        "visible_user": "Q"
-      }
-    ]
-  }
+    }
+  ]
 }

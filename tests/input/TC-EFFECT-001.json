@@ -1,36 +1,96 @@
 {
-  "schema_version": "1.0",
-  "case_id": "TC-EFFECT-001",
-  "case_name": "robot clears block and bomb within 10 steps",
+  "schema_version": "2.0",
+  "suite": "TC-EFFECT-001-v2",
   "map_file": "map.json",
-  "preset": {
-    "users": ["A", "Q"],
-    "current_user": "A",
-    "phase": "COMMAND",
-    "game_status": "RUNNING",
-    "players": [
-      {"id": "A", "fund": 1000, "credit": 0, "position": 10, "status": "NORMAL", "remaining_rounds": 0, "items": {"BLOCK": 0, "BOMB": 0, "ROBOT": 1}, "god_of_wealth_rounds": 0},
-      {"id": "Q", "fund": 1000, "credit": 0, "position": 30, "status": "NORMAL", "remaining_rounds": 0, "items": {"BLOCK": 0, "BOMB": 0, "ROBOT": 0}, "god_of_wealth_rounds": 0}
-    ],
-    "properties": [],
-    "map_items": [
-      {"position": 12, "type": "BLOCK"},
-      {"position": 18, "type": "BOMB"},
-      {"position": 25, "type": "BLOCK"}
-    ],
-    "dice_sequence": []
-  },
-  "actions": [
-    {"command": "ROBOT"}
-  ],
-  "expected": {
-    "current_user": "A",
-    "players": [
-      {"id": "A", "position": 10, "items": {"ROBOT": 0}}
-    ],
-    "map_items": [
-      {"position": 25, "type": "BLOCK"}
-    ],
-    "map_items_absent": [12, 18]
-  }
+  "tests": [
+    {
+      "case_id": "TC-EFFECT-001",
+      "case_name": "robot clears block and barrier within 10 steps",
+      "map_file": "map.json",
+      "preset": {
+        "users": [
+          "A",
+          "Q"
+        ],
+        "current_user": "A",
+        "phase": "COMMAND",
+        "game_status": "RUNNING",
+        "players": [
+          {
+            "id": "A",
+            "fund": 1000,
+            "credit": 0,
+            "position": 10,
+            "status": "NORMAL",
+            "items": {
+              "BLOCK": 0,
+              "ROBOT": 1
+            },
+            "god_of_wealth_rounds": 0
+          },
+          {
+            "id": "Q",
+            "fund": 1000,
+            "credit": 0,
+            "position": 30,
+            "status": "NORMAL",
+            "items": {
+              "BLOCK": 0,
+              "ROBOT": 0
+            },
+            "god_of_wealth_rounds": 0
+          }
+        ],
+        "properties": [],
+        "map_items": [
+          {
+            "position": 12,
+            "type": "BLOCK"
+          },
+          {
+            "position": 18,
+            "type": "BLOCK"
+          },
+          {
+            "position": 25,
+            "type": "BLOCK"
+          }
+        ],
+        "turn_number": 1,
+        "fortune": {
+          "position": null,
+          "spawned_after_turn": null,
+          "remaining_map_turns": 0,
+          "next_spawn_after_turn": null
+        }
+      },
+      "actions": [
+        {
+          "command": "ROBOT"
+        }
+      ],
+      "expected": {
+        "current_user": "A",
+        "players": [
+          {
+            "id": "A",
+            "position": 10,
+            "items": {
+              "ROBOT": 0
+            }
+          }
+        ],
+        "map_items": [
+          {
+            "position": 25,
+            "type": "BLOCK"
+          }
+        ],
+        "map_items_absent": [
+          12,
+          18
+        ]
+      }
+    }
+  ]
 }

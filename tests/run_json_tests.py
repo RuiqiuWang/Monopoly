@@ -3,20 +3,21 @@
 from __future__ import annotations
 
 import json
-import subprocess
-import tempfile
+import copy
 from pathlib import Path
 from typing import Any
 
+from json_v2_engine import JsonEngineError, execute_case
+
+
 ROOT = Path(__file__).resolve().parents[1]
-RUNNER_BASE = ROOT / "tests" / "json_runner"
-RUNNER = RUNNER_BASE if RUNNER_BASE.exists() else RUNNER_BASE.with_suffix(".exe")
 
 ARRAY_KEYS = {
     "players": "id",
     "properties": "position",
     "map_items": "position",
     "display_players": "position",
+    "display_cells": "position",
 }
 
 
@@ -35,6 +36,12 @@ def _compare(expected: Any, actual: Any, path: str, errors: list[dict[str, str]]
                 continue
             if key == "map_items_absent":
                 _check_absent(actual, expected_value, "map_items", path, errors)
+                continue
+            if key == "fields_absent":
+                _check_fields_absent(actual, expected_value, path, errors)
+                continue
+            if key == "fortune_assert":
+                _check_fortune_assert(actual, expected_value, path, errors)
                 continue
             if key not in actual:
                 errors.append({
@@ -97,6 +104,66 @@ def _compare(expected: Any, actual: Any, path: str, errors: list[dict[str, str]]
         ))
 
 
+def _check_fields_absent(
+    actual: dict[str, Any],
+    expected_fields: Any,
+    path: str,
+    errors: list[dict[str, str]],
+) -> None:
+    if not isinstance(expected_fields, list) or not all(isinstance(field, str) for field in expected_fields):
+        errors.append({
+            "code": "INVALID_EXPECTED",
+            "path": f"{path}.fields_absent",
+            "message": "fields_absent must be an array of strings",
+        })
+        return
+    for field in expected_fields:
+        if field in actual:
+            errors.append({
+                "code": "ASSERT_NOT_ABSENT",
+                "path": f"{path}.{field}",
+                "message": "field should be absent from actual",
+            })
+
+
+def _check_fortune_assert(
+    actual: dict[str, Any],
+    assertion: Any,
+    path: str,
+    errors: list[dict[str, str]],
+) -> None:
+    if not isinstance(assertion, dict):
+        errors.append({
+            "code": "INVALID_EXPECTED",
+            "path": f"{path}.fortune_assert",
+            "message": "fortune_assert must be an object",
+        })
+        return
+    fortune = actual.get("fortune", {})
+    position = fortune.get("position") if isinstance(fortune, dict) else None
+    if assertion.get("present") is True and position is None:
+        errors.append(_error(f"{path}.fortune.position", "fortune should be present"))
+        return
+    bounds = assertion.get("position_between")
+    if isinstance(bounds, list) and len(bounds) == 2 and position is not None:
+        if not bounds[0] <= position <= bounds[1]:
+            errors.append(_error(f"{path}.fortune.position", "fortune position is outside expected bounds"))
+    if position in assertion.get("position_not_in", []):
+        errors.append(_error(f"{path}.fortune.position", "fortune position is excluded"))
+    if assertion.get("unoccupied") is True and any(
+        player.get("position") == position and player.get("status") != "BANKRUPT"
+        for player in actual.get("players", [])
+        if isinstance(player, dict)
+    ):
+        errors.append(_error(f"{path}.fortune.position", "fortune position is occupied by a player"))
+    if assertion.get("without_map_item") is True and any(
+        item.get("position") == position
+        for item in actual.get("map_items", [])
+        if isinstance(item, dict)
+    ):
+        errors.append(_error(f"{path}.fortune.position", "fortune position contains a map item"))
+
+
 def _check_absent(
     actual: dict[str, Any],
     expected_positions: Any,
@@ -125,29 +192,7 @@ def _check_absent(
             })
 
 
-def run_tutorial_case(case_file: Path, output_file: Path) -> dict[str, Any]:
-    case = json.loads(case_file.read_text(encoding="utf-8"))
-    value = case.get("input")
-    if isinstance(value, str) and len(value) == 1 and value.upper() == "Y":
-        actual = {"choice": "TUTORIAL_CHOICE_YES", "start_tutorial": True}
-    elif isinstance(value, str) and len(value) == 1 and value.upper() == "N":
-        actual = {"choice": "TUTORIAL_CHOICE_NO", "start_tutorial": False}
-    else:
-        actual = {"choice": "TUTORIAL_CHOICE_INVALID", "prompt_again": True}
-    errors: list[dict[str, str]] = []
-    _compare(case.get("expected", {}), actual, "actual", errors)
-    output_file.parent.mkdir(parents=True, exist_ok=True)
-    output_file.write_text(json.dumps({"actual": actual}, ensure_ascii=False), encoding="utf-8")
-    return {
-        "schema_version": "1.0",
-        "case_id": case.get("case_id", case_file.stem),
-        "actual": actual,
-        "result": "PASS" if not errors else "FAIL",
-        "errors": errors,
-    }
-
 def run_case_file(case_file: Path, output_file: Path) -> dict[str, Any]:
-    output_file.parent.mkdir(parents=True, exist_ok=True)
     try:
         case = json.loads(case_file.read_text(encoding="utf-8"))
     except (OSError, json.JSONDecodeError) as exc:
@@ -156,72 +201,79 @@ def run_case_file(case_file: Path, output_file: Path) -> dict[str, Any]:
             "result": "ERROR",
             "errors": [{"code": "INVALID_JSON", "message": str(exc)}],
         }
+    if isinstance(case, dict) and isinstance(case.get("tests"), list):
+        tests = case["tests"]
+        if len(tests) != 1 or not isinstance(tests[0], dict):
+            return {
+                "case_id": case_file.stem,
+                "result": "ERROR",
+                "errors": [{
+                    "code": "AMBIGUOUS_BUNDLE",
+                    "message": "single-case runner requires a bundle containing exactly one case",
+                }],
+            }
+        materialized = copy.deepcopy(tests[0])
+        materialized.setdefault("schema_version", case.get("schema_version"))
+        materialized.setdefault("map_file", case.get("map_file"))
+        case = materialized
+    return run_case(case, output_file, case_file.stem)
 
-    if "input" in case and str(case.get("case_id", "")).startswith("TC-TUTORIAL-"):
-        return run_tutorial_case(case_file, output_file)
+
+def run_case(
+    case: dict[str, Any],
+    output_file: Path,
+    fallback_case_id: str,
+) -> dict[str, Any]:
+    output_file.parent.mkdir(parents=True, exist_ok=True)
 
     try:
-        completed = subprocess.run(
-            [str(RUNNER), str(case_file), str(output_file)],
-            cwd=ROOT,
-            check=False,
-            capture_output=True,
-            text=True,
+        actual = execute_case(case, ROOT / "tests")
+    except JsonEngineError as exc:
+        output_file.parent.mkdir(parents=True, exist_ok=True)
+        output_file.write_text(
+            json.dumps({"error": exc.details}, ensure_ascii=False, indent=2) + "\n",
             encoding="utf-8",
-            errors="replace",
-            timeout=10,
         )
-    except (OSError, subprocess.TimeoutExpired) as exc:
+        errors: list[dict[str, str]] = []
+        if case.get("expected_outcome") != "ERROR":
+            errors.append({
+                "code": "UNEXPECTED_ERROR",
+                "path": "error",
+                "message": f"engine returned {exc.details!r}",
+            })
+        else:
+            _compare(case.get("expected_error", {}), exc.details, "error", errors)
         return {
-            "case_id": case.get("case_id", case_file.stem),
-            "result": "ERROR",
-            "errors": [{"code": "C_RUNNER_FAILED", "message": str(exc)}],
-        }
-
-    if completed.returncode != 0:
-        message = completed.stderr.strip() or "C runner returned a non-zero status"
-        return {
-            "case_id": case.get("case_id", case_file.stem),
-            "result": "ERROR",
-            "errors": [{"code": "C_RUNNER_FAILED", "message": message}],
-        }
-
-
-    try:
-        runner_report = json.loads(output_file.read_text(encoding="utf-8"))
-        actual = runner_report["actual"]
-        expected = case["expected"]
-    except (OSError, json.JSONDecodeError, KeyError, TypeError) as exc:
-        return {
-            "case_id": case.get("case_id", case_file.stem),
-            "result": "ERROR",
-            "errors": [{"code": "INVALID_C_OUTPUT", "message": str(exc)}],
-        }
-
-    if case.get("expected_result") == "ERROR":
-        expected_code = case.get("expected_error_code")
-        actual_code = actual.get("error_code")
-        errors = []
-        if actual_code != expected_code:
-            errors.append(_error(
-                "actual.error_code",
-                "error code differs",
-                expected=repr(expected_code),
-                actual=repr(actual_code),
-            ))
-        return {
-            "schema_version": "1.0",
-            "case_id": case.get("case_id", case_file.stem),
-            "actual": actual,
+            "schema_version": "2.0",
+            "case_id": case.get("case_id", fallback_case_id),
+            "error": exc.details,
             "result": "PASS" if not errors else "FAIL",
             "errors": errors,
         }
 
+    output_file.parent.mkdir(parents=True, exist_ok=True)
+    output_file.write_text(
+        json.dumps({"actual": actual}, ensure_ascii=False, indent=2) + "\n",
+        encoding="utf-8",
+    )
+    if case.get("expected_outcome") == "ERROR":
+        return {
+            "schema_version": "2.0",
+            "case_id": case.get("case_id", fallback_case_id),
+            "actual": actual,
+            "result": "FAIL",
+            "errors": [{
+                "code": "EXPECTED_ERROR_NOT_RAISED",
+                "path": "error",
+                "message": f"expected {case.get('expected_error', {})!r}",
+            }],
+        }
+
     errors: list[dict[str, str]] = []
-    _compare(expected, actual, "actual", errors)
+    _compare(case["expected"], actual, "actual", errors)
     return {
-        "schema_version": "1.0",
-        "case_id": case.get("case_id", case_file.stem),
+        "schema_version": "2.0",
+        "case_id": case.get("case_id", fallback_case_id),
         "actual": actual,
         "result": "PASS" if not errors else "FAIL",
         "errors": errors,
@@ -236,38 +288,29 @@ def main() -> int:
     case_files = sorted(input_dir.glob("*.json"))
     total = 0
     passed = 0
-    with tempfile.TemporaryDirectory(prefix="monopoly-json-cases-") as temp_dir:
-        temp_dir_path = Path(temp_dir)
-        for case_file in case_files:
-            try:
-                parsed = json.loads(case_file.read_text(encoding="utf-8"))
-            except (OSError, json.JSONDecodeError):
-                parsed = None
-            cases = parsed.get("tests") if isinstance(parsed, dict) else None
-            is_bundle = isinstance(cases, list)
-            if not isinstance(cases, list):
-                cases = [parsed]
-            for index, case in enumerate(cases):
-                if is_bundle:
-                    input_file = temp_dir_path / (
-                        f"{case_file.stem.lower()}_{index:03d}.json"
-                    )
-                    input_file.write_text(
-                        json.dumps(case, ensure_ascii=False), encoding="utf-8"
-                    )
-                    output_file = output_dir / f"{case_file.stem}_{index:03d}.json"
-                else:
-                    input_file = case_file
-                    output_file = output_dir / case_file.name
-                total += 1
-                report = run_case_file(input_file, output_file)
-                result = report.get("result", "ERROR")
-                case_id = report.get("case_id", input_file.stem)
-                print(f"[{result}] {case_id}")
-                if result == "PASS":
-                    passed += 1
-                elif report.get("errors"):
-                    print(json.dumps(report["errors"], ensure_ascii=False))
+    for case_file in case_files:
+        try:
+            parsed = json.loads(case_file.read_text(encoding="utf-8"))
+        except (OSError, json.JSONDecodeError):
+            parsed = None
+        cases = parsed.get("tests") if isinstance(parsed, dict) else None
+        if not isinstance(cases, list):
+            cases = [parsed]
+        for index, source_case in enumerate(cases):
+            case = copy.deepcopy(source_case)
+            if isinstance(case, dict) and isinstance(parsed, dict):
+                case.setdefault("schema_version", parsed.get("schema_version"))
+                case.setdefault("map_file", parsed.get("map_file"))
+            output_file = output_dir / f"{case_file.stem}_{index:03d}.json"
+            total += 1
+            report = run_case(case, output_file, f"{case_file.stem}_{index:03d}")
+            result = report.get("result", "ERROR")
+            case_id = report.get("case_id", f"{case_file.stem}_{index:03d}")
+            print(f"[{result}] {case_id}")
+            if result == "PASS":
+                passed += 1
+            elif report.get("errors"):
+                print(json.dumps(report["errors"], ensure_ascii=False))
 
     summary = {"total": total, "passed": passed, "failed": total - passed}
     print(json.dumps(summary, ensure_ascii=False))

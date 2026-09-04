@@ -1,52 +1,85 @@
 {
-  "schema_version": "1.0",
-  "case_id": "TC-ROLL-001",
-  "case_name": "ROLL uses dice sequence",
+  "schema_version": "2.0",
+  "suite": "TC-ROLL-001-v2",
   "map_file": "map.json",
-  "preset": {
-    "users": ["A", "Q"],
-    "current_user": "A",
-    "phase": "COMMAND",
-    "game_status": "RUNNING",
-    "players": [
-      {
-        "id": "A",
-        "fund": 1000,
-        "credit": 0,
-        "position": 1,
-        "status": "NORMAL",
-        "remaining_rounds": 0,
-        "items": {"BLOCK": 0, "BOMB": 0, "ROBOT": 0},
-        "god_of_wealth_rounds": 0
-      },
-      {
-        "id": "Q",
-        "fund": 1000,
-        "credit": 0,
-        "position": 4,
-        "status": "NORMAL",
-        "remaining_rounds": 0,
-        "items": {"BLOCK": 0, "BOMB": 0, "ROBOT": 0},
-        "god_of_wealth_rounds": 0
-      }
-    ],
-    "properties": [],
-    "map_items": [],
-    "dice_sequence": [4]
-  },
-  "actions": [
+  "tests": [
     {
-      "command": "ROLL",
-      "params": {}
-    }
-  ],
-  "expected": {
-    "current_user": "Q",
-    "players": [
-      {
-        "id": "A",
-        "position": 5
+      "case_id": "TC-ROLL-001",
+      "case_name": "ROLL uses dice sequence",
+      "map_file": "map.json",
+      "preset": {
+        "users": [
+          "A",
+          "Q"
+        ],
+        "current_user": "A",
+        "phase": "COMMAND",
+        "game_status": "RUNNING",
+        "players": [
+          {
+            "id": "A",
+            "fund": 1000,
+            "credit": 0,
+            "position": 1,
+            "status": "NORMAL",
+            "items": {
+              "BLOCK": 0,
+              "ROBOT": 0
+            },
+            "god_of_wealth_rounds": 0
+          },
+          {
+            "id": "Q",
+            "fund": 1000,
+            "credit": 0,
+            "position": 4,
+            "status": "NORMAL",
+            "items": {
+              "BLOCK": 0,
+              "ROBOT": 0
+            },
+            "god_of_wealth_rounds": 0
+          }
+        ],
+        "properties": [],
+        "map_items": [],
+        "turn_number": 1,
+        "random_control": {
+          "mode": "SEQUENCE",
+          "streams": {
+            "DICE": [
+              4
+            ]
+          }
+        },
+        "fortune": {
+          "position": null,
+          "spawned_after_turn": null,
+          "remaining_map_turns": 0,
+          "next_spawn_after_turn": null
+        }
+      },
+      "actions": [
+        {
+          "command": "ROLL",
+          "params": {}
+        },
+        {
+          "command": "ANSWER",
+          "params": {
+            "value": "N"
+          }
+        }
+      ],
+      "expected": {
+        "current_user": "Q",
+        "players": [
+          {
+            "id": "A",
+            "position": 5
+          }
+        ]
       }
-    ]
-  }
+    }
+  ]
 }

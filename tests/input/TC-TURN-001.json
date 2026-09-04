@@ -1,70 +1,108 @@
 {
-  "schema_version": "1.0",
-  "case_id": "TC-TURN-001",
-  "case_name": "turn order advances",
+  "schema_version": "2.0",
+  "suite": "TC-TURN-001-v2",
   "map_file": "map.json",
-  "preset": {
-    "users": ["A", "Q", "S"],
-    "current_user": "A",
-    "phase": "COMMAND",
-    "game_status": "RUNNING",
-    "players": [
-      {
-        "id": "A",
-        "fund": 1000,
-        "credit": 0,
-        "position": 0,
-        "status": "NORMAL",
-        "remaining_rounds": 0,
-        "items": {"BLOCK": 0, "BOMB": 0, "ROBOT": 0},
-        "god_of_wealth_rounds": 0
+  "tests": [
+    {
+      "case_id": "TC-TURN-001",
+      "case_name": "turn order advances",
+      "map_file": "map.json",
+      "preset": {
+        "users": [
+          "A",
+          "Q",
+          "S"
+        ],
+        "current_user": "A",
+        "phase": "COMMAND",
+        "game_status": "RUNNING",
+        "players": [
+          {
+            "id": "A",
+            "fund": 1000,
+            "credit": 0,
+            "position": 0,
+            "status": "NORMAL",
+            "items": {
+              "BLOCK": 0,
+              "ROBOT": 0
+            },
+            "god_of_wealth_rounds": 0
+          },
+          {
+            "id": "Q",
+            "fund": 1000,
+            "credit": 0,
+            "position": 8,
+            "status": "NORMAL",
+            "items": {
+              "BLOCK": 0,
+              "ROBOT": 0
+            },
+            "god_of_wealth_rounds": 0
+          },
+          {
+            "id": "S",
+            "fund": 1000,
+            "credit": 0,
+            "position": 16,
+            "status": "NORMAL",
+            "items": {
+              "BLOCK": 0,
+              "ROBOT": 0
+            },
+            "god_of_wealth_rounds": 0
+          }
+        ],
+        "properties": [],
+        "map_items": [],
+        "turn_number": 1,
+        "fortune": {
+          "position": null,
+          "spawned_after_turn": null,
+          "remaining_map_turns": 0,
+          "next_spawn_after_turn": null
+        }
       },
-      {
-        "id": "Q",
-        "fund": 1000,
-        "credit": 0,
-        "position": 8,
-        "status": "NORMAL",
-        "remaining_rounds": 0,
-        "items": {"BLOCK": 0, "BOMB": 0, "ROBOT": 0},
-        "god_of_wealth_rounds": 0
-      },
-      {
-        "id": "S",
-        "fund": 1000,
-        "credit": 0,
-        "position": 16,
-        "status": "NORMAL",
-        "remaining_rounds": 0,
-        "items": {"BLOCK": 0, "BOMB": 0, "ROBOT": 0},
-        "god_of_wealth_rounds": 0
+      "actions": [
+        {
+          "command": "STEP",
+          "params": {
+            "steps": 1
+          }
+        },
+        {
+          "command": "ANSWER",
+          "params": {
+            "value": "N"
+          }
+        },
+        {
+          "command": "STEP",
+          "params": {
+            "steps": 2
+          }
+        },
+        {
+          "command": "ANSWER",
+          "params": {
+            "value": "N"
+          }
+        }
+      ],
+      "expected": {
+        "current_user": "S",
+        "players": [
+          {
+            "id": "A",
+            "position": 1
+          },
+          {
+            "id": "Q",
+            "position": 10
+          }
+        ]
       }
-    ],
-    "properties": [],
-    "map_items": [],
-    "dice_sequence": []
-  },
-  "actions": [
-    {
-      "command": "STEP",
-      "params": {"steps": 1}
-    },
-    {
-      "command": "STEP",
-      "params": {"steps": 2}
     }
-  ],
-  "expected": {
-    "current_user": "S",
-    "players": [
-      {
-        "id": "A",
-        "position": 1
-      },
-      {
-        "id": "Q",
-        "position": 10
-      }
-    ]
-  }
+  ]
 }

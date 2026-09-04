@@ -1,21 +1,72 @@
 {
-  "schema_version": "1.0",
-  "case_id": "TC-TEST-STEP-002",
-  "case_name": "指定步数-跨地图循环-从69走到0",
+  "schema_version": "2.0",
+  "suite": "TC-TEST-STEP-002-v2",
   "map_file": "map.json",
-  "preset": {
-    "users": ["A", "Q"],
-    "current_user": "A",
-    "phase": "COMMAND",
-    "game_status": "RUNNING",
-    "players": [
-      {"id": "A", "fund": 1000, "credit": 0, "position": 68, "status": "NORMAL", "remaining_rounds": 0, "items": {"BLOCK": 0, "BOMB": 0, "ROBOT": 0}, "god_of_wealth_rounds": 0},
-      {"id": "Q", "fund": 1000, "credit": 0, "position": 20, "status": "NORMAL", "remaining_rounds": 0, "items": {"BLOCK": 0, "BOMB": 0, "ROBOT": 0}, "god_of_wealth_rounds": 0}
-    ],
-    "properties": [],
-    "map_items": [],
-    "dice_sequence": []
-  },
-  "actions": [{"command": "STEP", "params": {"steps": 3}}],
-  "expected": {"players": [{"id": "A", "position": 1}]}
+  "tests": [
+    {
+      "case_id": "TC-TEST-STEP-002",
+      "case_name": "指定步数-跨地图循环-从69走到0",
+      "map_file": "map.json",
+      "preset": {
+        "users": [
+          "A",
+          "Q"
+        ],
+        "current_user": "A",
+        "phase": "COMMAND",
+        "game_status": "RUNNING",
+        "players": [
+          {
+            "id": "A",
+            "fund": 1000,
+            "credit": 0,
+            "position": 68,
+            "status": "NORMAL",
+            "items": {
+              "BLOCK": 0,
+              "ROBOT": 0
+            },
+            "god_of_wealth_rounds": 0
+          },
+          {
+            "id": "Q",
+            "fund": 1000,
+            "credit": 0,
+            "position": 20,
+            "status": "NORMAL",
+            "items": {
+              "BLOCK": 0,
+              "ROBOT": 0
+            },
+            "god_of_wealth_rounds": 0
+          }
+        ],
+        "properties": [],
+        "map_items": [],
+        "turn_number": 1,
+        "fortune": {
+          "position": null,
+          "spawned_after_turn": null,
+          "remaining_map_turns": 0,
+          "next_spawn_after_turn": null
+        }
+      },
+      "actions": [
+        {
+          "command": "STEP",
+          "params": {
+            "steps": 3
+          }
+        }
+      ],
+      "expected": {
+        "players": [
+          {
+            "id": "A",
+            "position": 1
+          }
+        ]
+      }
+    }
+  ]
 }

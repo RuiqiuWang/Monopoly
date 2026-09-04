@@ -1,25 +1,66 @@
 {
-  "schema_version": "1.0",
-  "case_id": "TC-TUI-003",
-  "case_name": "tui all players bankrupt display empty",
+  "schema_version": "2.0",
+  "suite": "TC-TUI-003-v2",
   "map_file": "map.json",
-  "preset": {
-    "users": ["A", "Q"],
-    "current_user": "A",
-    "phase": "COMMAND",
-    "game_status": "RUNNING",
-    "players": [
-      {"id": "A", "fund": 0, "credit": 0, "position": 10, "status": "BANKRUPT", "remaining_rounds": 0, "items": {"BLOCK": 0, "BOMB": 0, "ROBOT": 0}, "god_of_wealth_rounds": 0},
-      {"id": "Q", "fund": 0, "credit": 0, "position": 20, "status": "BANKRUPT", "remaining_rounds": 0, "items": {"BLOCK": 0, "BOMB": 0, "ROBOT": 0}, "god_of_wealth_rounds": 0}
-    ],
-    "properties": [],
-    "map_items": [],
-    "dice_sequence": []
-  },
-  "actions": [
-    {"command": "QUERY"}
-  ],
-  "expected": {
-    "display_players": []
-  }
+  "tests": [
+    {
+      "case_id": "TC-TUI-003",
+      "case_name": "v2拒绝所有玩家均破产的前置状态",
+      "map_file": "map.json",
+      "preset": {
+        "users": [
+          "A",
+          "Q"
+        ],
+        "current_user": "A",
+        "phase": "COMMAND",
+        "game_status": "RUNNING",
+        "players": [
+          {
+            "id": "A",
+            "fund": 0,
+            "credit": 0,
+            "position": 10,
+            "status": "BANKRUPT",
+            "items": {
+              "BLOCK": 0,
+              "ROBOT": 0
+            },
+            "god_of_wealth_rounds": 0
+          },
+          {
+            "id": "Q",
+            "fund": 0,
+            "credit": 0,
+            "position": 20,
+            "status": "BANKRUPT",
+            "items": {
+              "BLOCK": 0,
+              "ROBOT": 0
+            },
+            "god_of_wealth_rounds": 0
+          }
+        ],
+        "properties": [],
+        "map_items": [],
+        "turn_number": 1,
+        "fortune": {
+          "position": null,
+          "spawned_after_turn": null,
+          "remaining_map_turns": 0,
+          "next_spawn_after_turn": null
+        }
+      },
+      "actions": [
+        {
+          "command": "QUERY"
+        }
+      ],
+      "expected": {},
+      "expected_outcome": "ERROR",
+      "expected_error": {
+        "code": "INVALID_PRESET"
+      }
+    }
+  ]
 }

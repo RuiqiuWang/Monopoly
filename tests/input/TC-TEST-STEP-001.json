@@ -1,21 +1,80 @@
 {
-  "schema_version": "1.0",
-  "case_id": "TC-TEST-STEP-001",
-  "case_name": "指定步数-合法正整数-前进5步",
+  "schema_version": "2.0",
+  "suite": "TC-TEST-STEP-001-v2",
   "map_file": "map.json",
-  "preset": {
-    "users": ["A", "Q"],
-    "current_user": "A",
-    "phase": "COMMAND",
-    "game_status": "RUNNING",
-    "players": [
-      {"id": "A", "fund": 1000, "credit": 0, "position": 0, "status": "NORMAL", "remaining_rounds": 0, "items": {"BLOCK": 0, "BOMB": 0, "ROBOT": 0}, "god_of_wealth_rounds": 0},
-      {"id": "Q", "fund": 1000, "credit": 0, "position": 20, "status": "NORMAL", "remaining_rounds": 0, "items": {"BLOCK": 0, "BOMB": 0, "ROBOT": 0}, "god_of_wealth_rounds": 0}
-    ],
-    "properties": [],
-    "map_items": [],
-    "dice_sequence": []
-  },
-  "actions": [{"command": "STEP", "params": {"steps": 5}}],
-  "expected": {"current_user": "Q", "phase": "COMMAND", "players": [{"id": "A", "position": 5}]}
+  "tests": [
+    {
+      "case_id": "TC-TEST-STEP-001",
+      "case_name": "指定步数-合法正整数-前进5步",
+      "map_file": "map.json",
+      "preset": {
+        "users": [
+          "A",
+          "Q"
+        ],
+        "current_user": "A",
+        "phase": "COMMAND",
+        "game_status": "RUNNING",
+        "players": [
+          {
+            "id": "A",
+            "fund": 1000,
+            "credit": 0,
+            "position": 0,
+            "status": "NORMAL",
+            "items": {
+              "BLOCK": 0,
+              "ROBOT": 0
+            },
+            "god_of_wealth_rounds": 0
+          },
+          {
+            "id": "Q",
+            "fund": 1000,
+            "credit": 0,
+            "position": 20,
+            "status": "NORMAL",
+            "items": {
+              "BLOCK": 0,
+              "ROBOT": 0
+            },
+            "god_of_wealth_rounds": 0
+          }
+        ],
+        "properties": [],
+        "map_items": [],
+        "turn_number": 1,
+        "fortune": {
+          "position": null,
+          "spawned_after_turn": null,
+          "remaining_map_turns": 0,
+          "next_spawn_after_turn": null
+        }
+      },
+      "actions": [
+        {
+          "command": "STEP",
+          "params": {
+            "steps": 5
+          }
+        },
+        {
+          "command": "ANSWER",
+          "params": {
+            "value": "N"
+          }
+        }
+      ],
+      "expected": {
+        "current_user": "Q",
+        "phase": "COMMAND",
+        "players": [
+          {
+            "id": "A",
+            "position": 5
+          }
+        ]
+      }
+    }
+  ]
 }

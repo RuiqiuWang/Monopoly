@@ -1,21 +1,86 @@
 {
-  "schema_version": "1.0",
-  "case_id": "TC-POS-002",
-  "case_name": "玩家地图位置-重叠-当前玩家离开后显示数组最前者",
+  "schema_version": "2.0",
+  "suite": "TC-POS-002-v2",
   "map_file": "map.json",
-  "preset": {
-    "users": ["A", "Q"],
-    "current_user": "Q",
-    "phase": "COMMAND",
-    "game_status": "RUNNING",
-    "players": [
-      {"id": "A", "fund": 1000, "credit": 0, "position": 5, "status": "NORMAL", "remaining_rounds": 0, "items": {"BLOCK": 0, "BOMB": 0, "ROBOT": 0}, "god_of_wealth_rounds": 0},
-      {"id": "Q", "fund": 1000, "credit": 0, "position": 5, "status": "NORMAL", "remaining_rounds": 0, "items": {"BLOCK": 0, "BOMB": 0, "ROBOT": 0}, "god_of_wealth_rounds": 0}
-    ],
-    "properties": [],
-    "map_items": [],
-    "dice_sequence": []
-  },
-  "actions": [{"command": "STEP", "params": {"steps": 3}}],
-  "expected": {"players": [{"id": "A", "position": 5}, {"id": "Q", "position": 8}], "display_players": [{"position": 5, "visible_user": "A"}, {"position": 8, "visible_user": "Q"}]}
+  "tests": [
+    {
+      "case_id": "TC-POS-002",
+      "case_name": "玩家地图位置-重叠-当前玩家离开后显示数组最前者",
+      "map_file": "map.json",
+      "preset": {
+        "users": [
+          "A",
+          "Q"
+        ],
+        "current_user": "Q",
+        "phase": "COMMAND",
+        "game_status": "RUNNING",
+        "players": [
+          {
+            "id": "A",
+            "fund": 1000,
+            "credit": 0,
+            "position": 5,
+            "status": "NORMAL",
+            "items": {
+              "BLOCK": 0,
+              "ROBOT": 0
+            },
+            "god_of_wealth_rounds": 0
+          },
+          {
+            "id": "Q",
+            "fund": 1000,
+            "credit": 0,
+            "position": 5,
+            "status": "NORMAL",
+            "items": {
+              "BLOCK": 0,
+              "ROBOT": 0
+            },
+            "god_of_wealth_rounds": 0
+          }
+        ],
+        "properties": [],
+        "map_items": [],
+        "turn_number": 1,
+        "fortune": {
+          "position": null,
+          "spawned_after_turn": null,
+          "remaining_map_turns": 0,
+          "next_spawn_after_turn": null
+        }
+      },
+      "actions": [
+        {
+          "command": "STEP",
+          "params": {
+            "steps": 3
+          }
+        }
+      ],
+      "expected": {
+        "players": [
+          {
+            "id": "A",
+            "position": 5
+          },
+          {
+            "id": "Q",
+            "position": 8
+          }
+        ],
+        "display_players": [
+          {
+            "position": 5,
+            "visible_user": "A"
+          },
+          {
+            "position": 8,
+            "visible_user": "Q"
+          }
+        ]
+      }
+    }
+  ]
 }

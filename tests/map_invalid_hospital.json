@@ -1,0 +1,24 @@
+{
+  "schema_version": "2.0",
+  "size": 70,
+  "default_type": "LAND_1",
+  "blocks": [
+    { "position": 0, "type": "START" },
+    { "position": 14, "type": "HOSPITAL" },
+    { "position": 28, "type": "TOOL_SHOP" },
+    { "position": 35, "type": "GIFT_SHOP" },
+    { "position": 49, "type": "PARK" },
+    { "position": 63, "type": "PARK" },
+    { "position": 64, "type": "MINE" },
+    { "position": 65, "type": "MINE" },
+    { "position": 66, "type": "MINE" },
+    { "position": 67, "type": "MINE" },
+    { "position": 68, "type": "MINE" },
+    { "position": 69, "type": "MINE" }
+  ],
+  "land_costs": {
+    "LAND_1": { "purchase_price": 200, "upgrade_price": 200 },
+    "LAND_2": { "purchase_price": 500, "upgrade_price": 500 },
+    "LAND_3": { "purchase_price": 300, "upgrade_price": 300 }
+  }
+}

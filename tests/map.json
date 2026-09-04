@@ -1,5 +1,5 @@
 {
-  "schema_version": "1.0",
+  "schema_version": "2.0",
   "size": 70,
   "default_type": "LAND_1",
   "blocks": [
@@ -9,7 +9,7 @@
     },
     {
       "position": 14,
-      "type": "HOSPITAL"
+      "type": "PARK"
     },
     {
       "position": 28,
@@ -20,12 +20,16 @@
       "type": "GIFT_SHOP"
     },
     {
-      "position": 50,
-      "type": "JAIL"
+      "position": 49,
+      "type": "PARK"
+    },
+    {
+      "position": 63,
+      "type": "PARK"
     },
     {
       "position": 64,
-      "type": "MAGIC_HOUSE"
+      "type": "MINE"
     },
     {
       "position": 65,
