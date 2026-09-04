@@ -104,8 +104,7 @@ bool try_collect_toll(const Map *map, const Player *player, const Player *owner)
     }
     owner_id = map_get_property_owner(map, position);
     if (owner_id == MAP_PROPERTY_UNOWNED || owner_id == player->id ||
-        owner_id != owner->id || player->god_of_wealth_rounds > 0 ||
-        owner->status == PLAYER_HOSPITAL || owner->status == PLAYER_JAIL) {
+        owner_id != owner->id || player->god_of_wealth_rounds > 0) {
         return false;
     }
     return property_toll(map, player->position) > 0;

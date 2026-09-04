@@ -14,7 +14,7 @@ PlayerMoveResult Move_Player(Player *player, int step)
     if (player->position >= MAP_BLOCK_COUNT) {
         return PLAYER_MOVE_INVALID_POSITION;
     }
-    if (step <= 0) {
+    if (step < 0) {
         return PLAYER_MOVE_INVALID_STEP;
     }
 
@@ -48,10 +48,6 @@ StepParseResult Parse_Step(const char *input, int *step)
             return STEP_PARSE_OVERFLOW;
         }
         value = value * 10U + digit;
-    }
-
-    if (value == 0) {
-        return STEP_PARSE_INVALID_STEP;
     }
 
     *step = (int)value;

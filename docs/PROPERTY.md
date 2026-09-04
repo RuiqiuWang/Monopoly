@@ -1,19 +1,10 @@
 # Property
 
-The property module implements buying land, upgrading a property, collecting
-toll, and selling property. Player IDs remain 1-based and the map uses owner ID
-`MAP_PROPERTY_UNOWNED` (`0`) for unowned land.
+- 购买费用为地产基础价格。
+- 每次升级费用等于基础价格，最高 3 级。
+- 租金为 `price * (level + 1) / 2`。
+- 出售收入为 `price * (level + 1) * 2`。
+- 访客的 `god_of_wealth_rounds` 大于 0 时免交租金。
+- 地产主人失效、不是记录的所有者或玩家访问自己的地产时不收租。
 
-An owned empty lot has level 0. Buildings have levels 1 through 3.
-
-- Buying costs the land's base price.
-- Each upgrade costs the same base price.
-- Toll is half of total investment: `price * (level + 1) / 2`.
-- Sale proceeds are twice total investment: `price * (level + 1) * 2`.
-
-God of Wealth is represented by `god_of_wealth_rounds`, independently of
-`PlayerStatus`. Toll is waived while that counter is positive or while the
-property owner is in hospital, in jail, or inactive.
-
-The game engine prompts before buying or upgrading. Selling remains an explicit
-`sell <position>` command and does not end the current turn.
+公园、起点、道具屋、礼品屋和矿地均不可购买。

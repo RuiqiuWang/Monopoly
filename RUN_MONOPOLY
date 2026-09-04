@@ -115,11 +115,16 @@ run_build() {
                       character_select_cli character_select_cli.exe \
                       character_select_test character_select_test.exe \
                       map_test map_test.exe \
+                      item_usage_test item_usage_test.exe \
+                      item_effect_test item_effect_test.exe \
+                      fortune_test fortune_test.exe \
+                      gift_house_test gift_house_test.exe \
+                      help_query_test help_query_test.exe \
+                      property_test property_test.exe \
                       mine_test mine_test.exe \
                       tool_room_test tool_room_test.exe \
                       assets_test assets_test.exe \
-                      game_engine game_engine.exe \
-                      tests/json_runner tests/json_runner.exe
+                      game_engine game_engine.exe
                 ;;
             test_movement)
                 $CC_BIN $CPPFLAGS_VALUE $CFLAGS_VALUE movement.c tests/test_movement.c -o test_movement
@@ -131,7 +136,7 @@ run_build() {
                 $CC_BIN $CPPFLAGS_VALUE $CFLAGS_VALUE character_select.c input.c character_select_cli.c -o character_select_cli
                 ;;
             game_engine)
-                $CC_BIN $CPPFLAGS_VALUE $CFLAGS_VALUE game_engine.c command.c tutorial.c map.c tui.c movement.c mine.c tool_room.c assets.c player.c character_select.c input.c -o game_engine
+                $CC_BIN $CPPFLAGS_VALUE $CFLAGS_VALUE game_engine.c command.c tutorial.c map.c tui.c movement.c mine.c tool_room.c assets.c player.c character_select.c input.c item_usage.c item_effect.c fortune.c gift_house.c help_query.c property.c -o game_engine
                 ;;
             tutorial_test)
                 $CC_BIN $CPPFLAGS_VALUE $CFLAGS_VALUE tutorial.c input.c tui.c map.c movement.c tests/test_tutorial.c -o tutorial_test
@@ -154,8 +159,23 @@ run_build() {
             map_test)
                 $CC_BIN $CPPFLAGS_VALUE $CFLAGS_VALUE map.c tests/test_map.c -o map_test
                 ;;
-            tests/json_runner)
-                $CC_BIN $CPPFLAGS_VALUE $CFLAGS_VALUE movement.c tests/json_engine.c tests/json_runner.c -o tests/json_runner
+            item_usage_test)
+                $CC_BIN $CPPFLAGS_VALUE $CFLAGS_VALUE item_usage.c map.c tests/test_item_usage.c -o item_usage_test
+                ;;
+            item_effect_test)
+                $CC_BIN $CPPFLAGS_VALUE $CFLAGS_VALUE item_effect.c movement.c map.c tests/test_item_effect.c -o item_effect_test
+                ;;
+            fortune_test)
+                $CC_BIN $CPPFLAGS_VALUE $CFLAGS_VALUE fortune.c property.c map.c player.c tests/test_fortune.c -o fortune_test
+                ;;
+            gift_house_test)
+                $CC_BIN $CPPFLAGS_VALUE $CFLAGS_VALUE gift_house.c input.c tests/test_gift_house.c -o gift_house_test
+                ;;
+            help_query_test)
+                $CC_BIN $CPPFLAGS_VALUE $CFLAGS_VALUE help_query.c tests/test_help_query.c -o help_query_test
+                ;;
+            property_test)
+                $CC_BIN $CPPFLAGS_VALUE $CFLAGS_VALUE property.c map.c tests/test_property.c -o property_test
                 ;;
             *)
                 printf 'No fallback build rule for %s\n' "$target"
@@ -187,71 +207,16 @@ run_test_command() {
     fi
 }
 
-json_case_id() {
-    local case_file="$1"
-
-    "$PYTHON_BIN" - "$case_file" <<'PY'
-import json
-import sys
-from pathlib import Path
-
-case_file = Path(sys.argv[1])
-try:
-    with case_file.open(encoding="utf-8") as fp:
-        print(json.load(fp).get("case_id", case_file.stem))
-except Exception:
-    print(case_file.stem)
-PY
-}
-
-run_json_case() {
-    local current="$1"
-    local total="$2"
-    local case_file="$3"
-    local output_file
-    local case_id
-
-    output_file="$ROOT/tests/output/$(basename "$case_file")"
-    case_id="$(json_case_id "$case_file")"
-    mkdir -p "$ROOT/tests/output"
-
-    : > "$LOG_FILE"
-    printf '[%d/%d] Running Test %s using json_runner ... ' "$current" "$total" "$case_id"
-    if "$PYTHON_BIN" - "$ROOT" "$case_file" "$output_file" >"$LOG_FILE" 2>&1 <<'PY'; then
-import json
-import sys
-from pathlib import Path
-
-root = Path(sys.argv[1])
-case_file = Path(sys.argv[2])
-output_file = Path(sys.argv[3])
-sys.path.insert(0, str(root / "tests"))
-
-from run_json_tests import run_case_file
-
-report = run_case_file(case_file, output_file)
-if report.get("result") != "PASS":
-    print(json.dumps(report.get("errors", []), ensure_ascii=False))
-    raise SystemExit(1)
-PY
-        pass_line
-    else
-        fail_line
-        exit 1
-    fi
-}
-
-collect_json_cases() {
-    find "$ROOT/tests/input" -maxdepth 1 -type f -name '*.json' | sort
+run_json_suite() {
+    "$PYTHON_BIN" "$ROOT/tests/validate_json_testcases.py" &&
+        "$PYTHON_BIN" "$ROOT/tests/run_json_tests.py"
 }
 
 main() {
     local env_total=4
-    local build_total=13
+    local build_total=18
     local test_total
     local step=1
-    local cases=()
-    local case_file
 
     print_header
 
@@ -272,15 +237,16 @@ main() {
     run_build 9 "$build_total" "character_select_cli"
     run_build 10 "$build_total" "character_select_test"
     run_build 11 "$build_total" "map_test"
-    run_build 12 "$build_total" "game_engine"
-    run_build 13 "$build_total" "tests/json_runner"
+    run_build 12 "$build_total" "item_usage_test"
+    run_build 13 "$build_total" "item_effect_test"
+    run_build 14 "$build_total" "fortune_test"
+    run_build 15 "$build_total" "gift_house_test"
+    run_build 16 "$build_total" "help_query_test"
+    run_build 17 "$build_total" "property_test"
+    run_build 18 "$build_total" "game_engine"
     printf '\n'
 
-    while IFS= read -r case_file; do
-        cases+=("$case_file")
-    done < <(collect_json_cases)
-
-    test_total=$((9 + ${#cases[@]}))
+    test_total=16
     run_test_command "$step" "$test_total" "movement unit" "$ROOT/test_movement"
     step=$((step + 1))
     run_test_command "$step" "$test_total" "tutorial choice unit" "$ROOT/tutorial_test"
@@ -297,11 +263,21 @@ main() {
     step=$((step + 1))
     run_test_command "$step" "$test_total" "map property unit" "$ROOT/map_test"
     step=$((step + 1))
+    run_test_command "$step" "$test_total" "item usage unit" "$ROOT/item_usage_test"
+    step=$((step + 1))
+    run_test_command "$step" "$test_total" "item effect unit" "$ROOT/item_effect_test"
+    step=$((step + 1))
+    run_test_command "$step" "$test_total" "fortune unit" "$ROOT/fortune_test"
+    step=$((step + 1))
+    run_test_command "$step" "$test_total" "gift house unit" "$ROOT/gift_house_test"
+    step=$((step + 1))
+    run_test_command "$step" "$test_total" "help query unit" "$ROOT/help_query_test"
+    step=$((step + 1))
+    run_test_command "$step" "$test_total" "property unit" "$ROOT/property_test"
+    step=$((step + 1))
 
-    for case_file in "${cases[@]}"; do
-        run_json_case "$step" "$test_total" "$case_file"
-        step=$((step + 1))
-    done
+    run_test_command "$step" "$test_total" "JSON schema 2.0 suite" run_json_suite
+    step=$((step + 1))
 
     run_test_command "$step" "$test_total" "game engine end-to-end" "$PYTHON_BIN" "$ROOT/tests/e2e_game.py"
 

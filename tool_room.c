@@ -11,16 +11,14 @@ static int item_price(ToolRoomItem item)
 {
     switch (item) {
     case TOOL_ROOM_BLOCK: return 50;
-    case TOOL_ROOM_BOMB: return 30;
-    case TOOL_ROOM_ROBOT: return 50;
+    case TOOL_ROOM_ROBOT: return 30;
     default: return -1;
     }
 }
 
 static int item_count(const Player *player)
 {
-    return player->items[ITEM_BARRIER] + player->items[ITEM_ROBOT] +
-        player->items[ITEM_BOMB];
+    return player->items[ITEM_BARRIER] + player->items[ITEM_ROBOT];
 }
 
 ToolRoomBuyResult Tool_Room_Buy(Player *player, ToolRoomItem item)
@@ -70,17 +68,16 @@ void Enter_Tool_Room_With_Refresh(
         }
         puts("你已到达道具屋，可以用点数购买道具。每次输入一个编号后按回车确认：");
         puts("  1：路障（50点）——阻挡其他玩家移动一次");
-        puts("  2：炸弹（30点）——触发后将玩家送往医院");
-        puts("  3：机器娃娃（50点）——清除前方10格内的路障和炸弹");
-        puts("输入 1、2 或 3 购买；输入 F 后按回车离开道具屋。\n"
-             "(Tool room: 1=barrier(50), 2=bomb(30), 3=robot(50), F=exit)");
+        puts("  2：机器娃娃（30点）——清除前方10格内的路障");
+        puts("输入 1 或 2 购买；输入 F 后按回车离开道具屋。\n"
+             "(Tool room: 1=barrier(50), 2=robot(30), F=exit)");
         if (!input_read_line("道具屋> ", input, sizeof(input))) return;
         if ((input[0] == 'f' || input[0] == 'F') && input[1] == '\0') {
             puts("已退出道具屋。");
             return;
         }
-        if (input[1] != '\0' || input[0] < '1' || input[0] > '3') {
-            message = "输入无效（Invalid Input）：请输入1、2、3或F。";
+        if (input[1] != '\0' || input[0] < '1' || input[0] > '2') {
+            message = "输入无效（Invalid Input）：请输入1、2或F。";
             puts(message);
             continue;
         }

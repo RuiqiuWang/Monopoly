@@ -17,7 +17,7 @@ static int target_position(int position, int distance)
 
 static int block_has_item(BlockBits block)
 {
-    return block_has_any_flag(block, (BlockBits)(HAS_BOMB | HAS_OBSTACLE));
+    return block_has_any_flag(block, (BlockBits)(HAS_FORTUNE | HAS_OBSTACLE));
 }
 
 static ItemUseResult place_item(Player *player, Map *map, int distance,
@@ -44,11 +44,6 @@ ItemUseResult Use_Block(Player *player, Map *map, int relative_distance)
     return place_item(player, map, relative_distance, ITEM_BARRIER, HAS_OBSTACLE);
 }
 
-ItemUseResult Use_Bomb(Player *player, Map *map, int relative_distance)
-{
-    return place_item(player, map, relative_distance, ITEM_BOMB, HAS_BOMB);
-}
-
 ItemUseResult Use_Robot(Player *player, Map *map)
 {
     int distance;
@@ -56,7 +51,10 @@ ItemUseResult Use_Robot(Player *player, Map *map)
     if (!valid_player_position(player)) return ITEM_USE_INVALID_POSITION;
     if (player->items[ITEM_ROBOT] <= 0) return ITEM_USE_NOT_OWNED;
     for (distance = 1; distance <= ROBOT_SCAN_DISTANCE; ++distance) {
-        map_set_item(map, (size_t)target_position(player->position, distance), NO_ITEM);
+        size_t position = (size_t)target_position(player->position, distance);
+        if (block_has_flag(map_get_block(map, position), HAS_OBSTACLE)) {
+            map_set_item(map, position, NO_ITEM);
+        }
     }
     --player->items[ITEM_ROBOT];
     return ITEM_USE_OK;

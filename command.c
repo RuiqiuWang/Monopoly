@@ -81,7 +81,7 @@ CommandResult Parse_Command(const char *input, Command *command)
     word_length = (size_t)(cursor - word_start);
     if (word_length == 0) return COMMAND_UNKNOWN;
 
-    if (word_equals(word_start, word_length, "quit")) {
+    if (word_equals(word_start, word_length, "q")) {
         command->type = COMMAND_QUIT;
         return *skip_spaces(cursor) == '\0' ? COMMAND_OK : COMMAND_EXTRA_ARGUMENT;
     }
@@ -112,13 +112,13 @@ CommandResult Parse_Command(const char *input, Command *command)
     if (word_equals(word_start, word_length, "step")) {
         command->type = COMMAND_STEP;
         cursor = skip_spaces(cursor);
-        result = parse_integer(&cursor, &command->steps, 1);
+        result = parse_integer(&cursor, &command->steps, 0);
         if (result != COMMAND_OK) return result;
+        if (command->steps < 0) return COMMAND_OUT_OF_RANGE;
         return *skip_spaces(cursor) == '\0' ? COMMAND_OK : COMMAND_EXTRA_ARGUMENT;
     }
     if (word_equals(word_start, word_length, "sell")) command->type = COMMAND_SELL;
     else if (word_equals(word_start, word_length, "block")) command->type = COMMAND_BLOCK;
-    else if (word_equals(word_start, word_length, "bomb")) command->type = COMMAND_BOMB;
     else return COMMAND_UNKNOWN;
 
     return parse_one_argument(&cursor, &command->argument);
@@ -145,11 +145,10 @@ const char *Command_Type_Name(CommandType type)
     case COMMAND_QUERY: return "query";
     case COMMAND_SELL: return "sell";
     case COMMAND_BLOCK: return "block";
-    case COMMAND_BOMB: return "bomb";
     case COMMAND_ROBOT: return "robot";
     case COMMAND_RESET: return "reset";
     case COMMAND_HELP: return "help";
-    case COMMAND_QUIT: return "quit";
+    case COMMAND_QUIT: return "q";
     default: return "invalid";
     }
 }

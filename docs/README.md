@@ -1,32 +1,17 @@
-# Monopoly
-# 开发人员请以/function_name/details开分支，后续统一merge
-# 测试人员请以issue的形式提交测试的结果
+# Monopoly Developer Notes
 
-## Integrated startup flow
+主程序启动流程：设置初始资金、选择 2～4 名角色、按需显示首次教程，然后进入地图和命令循环。
 
-The main executable now uses this sequence:
+当前命令包括 `roll`、`step`、`query`、`sell`、`block`、`robot`、`reset`、`help` 和 `q`。`quit`、`bomb` 已删除。
 
-1. Set initial money from 1000 to 50000 (press Enter for 10000).
-2. Select 2-4 characters (`1=Q`, `2=A`, `3=S`, `4=J`).
-3. On the first run, optionally open the tutorial.
-4. Enter the game TUI and command loop.
+当前地图将原魔法屋、医院和监狱统一为无事件公园 `P`。财神由 `fortune.c` 管理，在第 10 回合后出现，地图寿命为 5 回合，领取后立即提供 5 个玩家行动回合的免租效果。
 
-An empty command line rolls for the current player. Existing commands such as
-`step`, `query`, `sell`, `block`, `bomb`, `robot`, `reset`, `help`, and `quit` remain
-available.
+## 模块文档
 
-`step <steps>` moves only the current player. `reset` clears the persisted play
-record so the tutorial is offered again on the next launch; it does not reset
-the current match.
-
-All interactive runtime modules use the shared interface declared in
-`include/input.h`. The TUI remains responsible for rendering the board,
-current player, focused property, bankruptcy, and winner state.
-
-## Gameplay module references
-
-- [Item usage](ITEM_USAGE.md)
-- [Item movement effects and hospital turns](ITEM_EFFECT.md)
-- [Movement](MOVE_PLAYER.md)
-- [Step command](COMMAND_STEP.md)
-- [Tutorial](TUTORIAL.md)
+- [移动](MOVE_PLAYER.md)
+- [`step` 命令](COMMAND_STEP.md)
+- [道具使用](ITEM_USAGE.md)
+- [移动道具效果](ITEM_EFFECT.md)
+- [财神](FORTUNE.md)
+- [地产](PROPERTY.md)
+- [教程](TUTORIAL.md)

@@ -20,10 +20,10 @@ typedef enum {
     STEP_PARSE_OVERFLOW = -4
 } StepParseResult;
 
-/* Move a player forward and wrap around the circular 70-block map. */
+/* Move a player forward and wrap around the circular 70-block map. Zero is valid. */
 PlayerMoveResult Move_Player(Player *player, int step);
 
-/* Accept only a non-zero, decimal digit string that fits int. */
+/* Accept a non-negative decimal digit string that fits int. */
 StepParseResult Parse_Step(const char *input, int *step);
 
 #endif

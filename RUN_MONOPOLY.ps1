@@ -79,14 +79,6 @@ function Assert-Exists {
     }
 }
 
-function Get-CaseId {
-    param([string]$CaseFile)
-    & $python -c "import json,sys;from pathlib import Path;case_file=Path(sys.argv[1]);print(json.loads(case_file.read_text(encoding='utf-8')).get('case_id', case_file.stem) if case_file.exists() else case_file.stem)" $CaseFile
-    if ($LASTEXITCODE -ne 0) {
-        return [IO.Path]::GetFileNameWithoutExtension($CaseFile)
-    }
-}
-
 function Resolve-Executable {
     param([string]$BasePath)
     if (Test-Path $BasePath) {
@@ -166,13 +158,10 @@ function Build-Target {
                 "map_test.exe",
                 "item_usage_test.exe",
                 "item_effect_test.exe",
+                "fortune_test.exe",
                 "gift_house_test.exe",
                 "help_query_test.exe",
-                "jail_test.exe",
-                "jail_item_effect_test.exe",
-                "property_test.exe",
-                "tests\json_runner",
-                "tests\json_runner.exe"
+                "property_test.exe"
             )
         }
         "test_movement" {
@@ -185,7 +174,7 @@ function Build-Target {
             Invoke-Compiler ($commonFlags + @("character_select.c", "input.c", "character_select_cli.c", "-o", "character_select_cli.exe"))
         }
         "game_engine" {
-            Invoke-Compiler ($commonFlags + @("game_engine.c", "command.c", "tutorial.c", "map.c", "tui.c", "movement.c", "mine.c", "tool_room.c", "assets.c", "player.c", "character_select.c", "input.c", "item_usage.c", "item_effect.c", "gift_house.c", "help_query.c", "jail.c", "property.c", "-o", "game_engine.exe"))
+            Invoke-Compiler ($commonFlags + @("game_engine.c", "command.c", "tutorial.c", "map.c", "tui.c", "movement.c", "mine.c", "tool_room.c", "assets.c", "player.c", "character_select.c", "input.c", "item_usage.c", "item_effect.c", "fortune.c", "gift_house.c", "help_query.c", "property.c", "-o", "game_engine.exe"))
         }
         "tutorial_test" {
             Invoke-Compiler ($commonFlags + @("tutorial.c", "input.c", "tui.c", "map.c", "movement.c", "tests\test_tutorial.c", "-o", "tutorial_test.exe"))
@@ -214,53 +203,21 @@ function Build-Target {
         "item_effect_test" {
             Invoke-Compiler ($commonFlags + @("item_effect.c", "movement.c", "map.c", "tests\test_item_effect.c", "-o", "item_effect_test.exe"))
         }
+        "fortune_test" {
+            Invoke-Compiler ($commonFlags + @("fortune.c", "property.c", "map.c", "player.c", "tests\test_fortune.c", "-o", "fortune_test.exe"))
+        }
         "gift_house_test" {
             Invoke-Compiler ($commonFlags + @("gift_house.c", "input.c", "tests\test_gift_house.c", "-o", "gift_house_test.exe"))
         }
         "help_query_test" {
             Invoke-Compiler ($commonFlags + @("help_query.c", "tests\test_help_query.c", "-o", "help_query_test.exe"))
         }
-        "jail_test" {
-            Invoke-Compiler ($commonFlags + @("jail.c", "movement.c", "map.c", "tests\test_jail.c", "-o", "jail_test.exe"))
-        }
-        "jail_item_effect_test" {
-            Invoke-Compiler ($commonFlags + @("jail.c", "item_effect.c", "movement.c", "map.c", "tests\test_jail_item_effect_integration.c", "-o", "jail_item_effect_test.exe"))
-        }
         "property_test" {
             Invoke-Compiler ($commonFlags + @("property.c", "map.c", "tests\test_property.c", "-o", "property_test.exe"))
-        }
-        "tests/json_runner" {
-            Invoke-Compiler ($commonFlags + @("movement.c", "tests\json_engine.c", "tests\json_runner.c", "-o", "tests\json_runner.exe"))
         }
         default {
             throw "No fallback build rule for $Target"
         }
-    }
-}
-
-function Run-JsonCase {
-    param(
-        [int]$Index,
-        [int]$Total,
-        [string]$CaseFile
-    )
-
-    $outputFile = Join-Path $root ("tests\output\" + [IO.Path]::GetFileName($CaseFile))
-    $outputDir = Split-Path -Parent $outputFile
-    if (-not (Test-Path $outputDir)) {
-        New-Item -ItemType Directory -Path $outputDir | Out-Null
-    }
-    $caseId = Get-CaseId -CaseFile $CaseFile
-    Write-Step -Index $Index -Total $Total -Label $caseId -Verb "Running Test"
-
-    try {
-        & $python (Join-Path $root "tests\run_json_case.py") $root $CaseFile $outputFile
-        if ($LASTEXITCODE -ne 0) {
-            throw "json test failed"
-        }
-        Write-Pass
-    } catch {
-        Write-Fail $_.Exception.Message
     }
 }
 
@@ -307,13 +264,11 @@ $buildSteps = @(
     "map_test",
     "item_usage_test",
     "item_effect_test",
+    "fortune_test",
     "gift_house_test",
     "help_query_test",
-    "jail_test",
-    "jail_item_effect_test",
     "property_test",
-    "game_engine",
-    "tests/json_runner"
+    "game_engine"
 )
 for ($i = 0; $i -lt $buildSteps.Count; $i++) {
     $target = $buildSteps[$i]
@@ -329,8 +284,6 @@ for ($i = 0; $i -lt $buildSteps.Count; $i++) {
 
 Write-Host ""
 
-$cases = Get-ChildItem (Join-Path $root "tests\input") -Filter *.json | Sort-Object Name | ForEach-Object { $_.FullName }
-
 $unitTests = @(
     @{ Name = "movement unit"; Path = "test_movement" },
     @{ Name = "tutorial choice unit"; Path = "tutorial_test" },
@@ -342,15 +295,15 @@ $unitTests = @(
     @{ Name = "map property unit"; Path = "map_test" },
     @{ Name = "item usage unit"; Path = "item_usage_test" },
     @{ Name = "item effect unit"; Path = "item_effect_test" },
+    @{ Name = "fortune unit"; Path = "fortune_test" },
     @{ Name = "gift house unit"; Path = "gift_house_test" },
     @{ Name = "help query unit"; Path = "help_query_test" },
-    @{ Name = "jail unit"; Path = "jail_test" },
-    @{ Name = "jail item integration"; Path = "jail_item_effect_test" },
     @{ Name = "property unit"; Path = "property_test" }
 )
+$testTotal = $unitTests.Count + 2
 for ($i = 0; $i -lt $unitTests.Count; $i++) {
     $unitExe = Resolve-Executable (Join-Path $root $unitTests[$i].Path)
-    Write-Step -Index ($i + 1) -Total ($unitTests.Count + $cases.Count) -Label $unitTests[$i].Name -Verb "Running Test"
+    Write-Step -Index ($i + 1) -Total $testTotal -Label $unitTests[$i].Name -Verb "Running Test"
     try {
         & $unitExe | Out-Null
         if ($LASTEXITCODE -ne 0) { throw "$($unitTests[$i].Name) failed" }
@@ -358,13 +311,19 @@ for ($i = 0; $i -lt $unitTests.Count; $i++) {
     } catch { Write-Fail $_.Exception.Message }
 }
 $testIndex = $unitTests.Count + 1
-$testTotal = $unitTests.Count + $cases.Count
-foreach ($case in $cases) {
-    Run-JsonCase -Index $testIndex -Total $testTotal -CaseFile $case
-    $testIndex++
+Write-Step -Index $testIndex -Total $testTotal -Label "JSON schema 2.0 suite" -Verb "Running Test"
+try {
+    & $python (Join-Path $root "tests\validate_json_testcases.py") | Out-Null
+    if ($LASTEXITCODE -ne 0) { throw "JSON schema validation failed" }
+    & $python (Join-Path $root "tests\run_json_tests.py") | Out-Null
+    if ($LASTEXITCODE -ne 0) { throw "JSON schema 2.0 suite failed" }
+    Write-Pass
+} catch {
+    Write-Fail $_.Exception.Message
 }
+$testIndex++
 
-Write-Step -Index ($testIndex) -Total ($testTotal + 1) -Label "game engine end-to-end" -Verb "Running Test"
+Write-Step -Index $testIndex -Total $testTotal -Label "game engine end-to-end" -Verb "Running Test"
 try {
     & $python (Join-Path $root "tests\e2e_game.py")
     if ($LASTEXITCODE -ne 0) { throw "game engine end-to-end failed" }
@@ -372,4 +331,4 @@ try {
 } catch { Write-Fail $_.Exception.Message }
 
 Write-Host ""
-Write-Host "All checks passed: $($buildSteps.Count) build steps, $($testTotal + 1) tests."
+Write-Host "All checks passed: $($buildSteps.Count) build steps, $testTotal tests."

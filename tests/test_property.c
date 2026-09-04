@@ -124,11 +124,6 @@ static void test_collect_toll(void)
     visitor.god_of_wealth_rounds = 1;
     assert(!try_collect_toll(&map, &visitor, &owner));
     visitor.god_of_wealth_rounds = 0;
-    owner.status = PLAYER_HOSPITAL;
-    assert(!try_collect_toll(&map, &visitor, &owner));
-    owner.status = PLAYER_JAIL;
-    assert(!try_collect_toll(&map, &visitor, &owner));
-    owner.status = PLAYER_NORMAL;
     owner.active = 0;
     assert(!try_collect_toll(&map, &visitor, &owner));
     owner.active = 1;

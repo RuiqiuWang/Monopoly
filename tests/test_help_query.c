@@ -9,9 +9,11 @@ int main(void)
     assert(text != NULL);
     assert(strstr(text, "step <steps>") != NULL);
     assert(strstr(text, "gift house") != NULL);
-    assert(strstr(text, "hospital for three turns") != NULL);
+    assert(strstr(text, "step 0") != NULL);
     assert(strstr(text, "70 blocks (0-69)") != NULL);
     assert(strstr(text, "rent is half the total investment") != NULL);
-    assert(strstr(text, "prison skips the player's next two turns") != NULL);
+    assert(strstr(text, "Parks have no effect") != NULL);
+    assert(strstr(text, "bomb") == NULL);
+    assert(strstr(text, "quit") == NULL);
     return 0;
 }

@@ -25,8 +25,9 @@ GiftHouseResult Gift_House_Apply(Player *player, GiftHouseChoice choice)
     }
 }
 
-bool Gift_House_Prompt_With_Refresh(
-    Player *player, InputRefreshCallback refresh, void *context)
+bool Gift_House_Prompt_With_Choice(
+    Player *player, InputRefreshCallback refresh, void *context,
+    GiftHouseChoice *applied_choice)
 {
     char input[32];
     if (player == NULL) return false;
@@ -47,7 +48,16 @@ bool Gift_House_Prompt_With_Refresh(
         puts("礼品选择无效，本次机会已放弃。（Invalid gift. This opportunity was skipped.）");
         return false;
     }
-    return Gift_House_Apply(player, (GiftHouseChoice)(input[0] - '0')) == GIFT_HOUSE_OK;
+    GiftHouseChoice choice = (GiftHouseChoice)(input[0] - '0');
+    bool applied = Gift_House_Apply(player, choice) == GIFT_HOUSE_OK;
+    if (applied && applied_choice != NULL) *applied_choice = choice;
+    return applied;
+}
+
+bool Gift_House_Prompt_With_Refresh(
+    Player *player, InputRefreshCallback refresh, void *context)
+{
+    return Gift_House_Prompt_With_Choice(player, refresh, context, NULL);
 }
 
 bool Gift_House_Prompt(Player *player)

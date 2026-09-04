@@ -3,7 +3,7 @@
 static const BlockBits kDefaultBlocks[MAP_BLOCK_COUNT] = {
     IS_START,
 
-    /* top: S + 13 zero + H + 13 zero + T */
+    /* top: S + 13 zero + park + 13 zero + T */
     IS_PURCHASABLE | IS_PLOT_ONE | IS_POOR,
     IS_PURCHASABLE | IS_PLOT_ONE | IS_POOR,
     IS_PURCHASABLE | IS_PLOT_ONE | IS_POOR,
@@ -17,7 +17,7 @@ static const BlockBits kDefaultBlocks[MAP_BLOCK_COUNT] = {
     IS_PURCHASABLE | IS_PLOT_ONE | IS_POOR,
     IS_PURCHASABLE | IS_PLOT_ONE | IS_POOR,
     IS_PURCHASABLE | IS_PLOT_ONE | IS_POOR,
-    IS_HOSPITAL,
+    IS_PARK,
     IS_PURCHASABLE | IS_PLOT_ONE | IS_POOR,
     IS_PURCHASABLE | IS_PLOT_ONE | IS_POOR,
     IS_PURCHASABLE | IS_PLOT_ONE | IS_POOR,
@@ -41,7 +41,7 @@ static const BlockBits kDefaultBlocks[MAP_BLOCK_COUNT] = {
     IS_PURCHASABLE | IS_PLOT_TWO | IS_MIDDLE,
     IS_PURCHASABLE | IS_PLOT_TWO | IS_MIDDLE,
 
-    /* bottom: G + 13 zero + P + 13 zero + M */
+    /* bottom: G + 13 zero + park + 13 zero + park */
     IS_GIFT_ROOM,
     IS_PURCHASABLE | IS_PLOT_THREE | IS_RICH,
     IS_PURCHASABLE | IS_PLOT_THREE | IS_RICH,
@@ -56,7 +56,7 @@ static const BlockBits kDefaultBlocks[MAP_BLOCK_COUNT] = {
     IS_PURCHASABLE | IS_PLOT_THREE | IS_RICH,
     IS_PURCHASABLE | IS_PLOT_THREE | IS_RICH,
     IS_PURCHASABLE | IS_PLOT_THREE | IS_RICH,
-    IS_JAIL,
+    IS_PARK,
     IS_PURCHASABLE | IS_PLOT_THREE | IS_RICH,
     IS_PURCHASABLE | IS_PLOT_THREE | IS_RICH,
     IS_PURCHASABLE | IS_PLOT_THREE | IS_RICH,
@@ -70,7 +70,7 @@ static const BlockBits kDefaultBlocks[MAP_BLOCK_COUNT] = {
     IS_PURCHASABLE | IS_PLOT_THREE | IS_RICH,
     IS_PURCHASABLE | IS_PLOT_THREE | IS_RICH,
     IS_PURCHASABLE | IS_PLOT_THREE | IS_RICH,
-    IS_MAGIC_ROOM,
+    IS_PARK,
 
     /* left: 6 mine */
     IS_MINE,
@@ -81,33 +81,17 @@ static const BlockBits kDefaultBlocks[MAP_BLOCK_COUNT] = {
     IS_MINE
 };
 
-static const double kDefaultCosts[MAP_BLOCK_COUNT] = {
-    0.0,
-
-    /* top land */
-    200.0, 200.0, 200.0, 200.0, 200.0, 200.0, 200.0, 200.0, 200.0, 200.0,
-    200.0, 200.0, 200.0, 200.0, 200.0, 200.0, 200.0, 200.0, 200.0, 200.0,
-    200.0, 200.0, 200.0, 200.0, 200.0, 200.0,
-
-    0.0,
-
-    /* right land */
-    500.0, 500.0, 500.0, 500.0, 500.0, 500.0,
-
-    0.0,
-
-    /* bottom land */
-    300.0, 300.0, 300.0, 300.0, 300.0, 300.0, 300.0, 300.0, 300.0, 300.0,
-    300.0, 300.0, 300.0, 300.0, 300.0, 300.0, 300.0, 300.0, 300.0, 300.0,
-    300.0, 300.0, 300.0, 300.0, 300.0, 300.0,
-
-    0.0,
-    0.0,
-    0.0,
-
-    /* mine */
-    0.0, 0.0, 0.0, 0.0, 0.0, 0.0
-};
+static double default_cost(size_t index)
+{
+    if ((index >= 1 && index <= 13) || (index >= 15 && index <= 27)) {
+        return 200.0;
+    }
+    if (index >= 29 && index <= 34) return 500.0;
+    if ((index >= 36 && index <= 48) || (index >= 50 && index <= 62)) {
+        return 300.0;
+    }
+    return 0.0;
+}
 
 void map_init(Map *map)
 {
@@ -117,7 +101,7 @@ void map_init(Map *map)
 
     for (size_t i = 0; i < MAP_BLOCK_COUNT; ++i) {
         map->blocks[i] = kDefaultBlocks[i];
-        map->cost[i] = kDefaultCosts[i];
+        map->cost[i] = default_cost(i);
         map->property_owner[i] = MAP_PROPERTY_UNOWNED;
         map->property_level[i] = 0;
     }
@@ -205,24 +189,14 @@ bool map_block_is_gift_room(BlockBits block)
     return block_has_flag(block, IS_GIFT_ROOM);
 }
 
-bool map_block_is_magic_room(BlockBits block)
+bool map_block_is_park(BlockBits block)
 {
-    return block_has_flag(block, IS_MAGIC_ROOM);
+    return block_has_flag(block, IS_PARK);
 }
 
 bool map_block_is_mine(BlockBits block)
 {
     return block_has_flag(block, IS_MINE);
-}
-
-bool map_block_is_hospital(BlockBits block)
-{
-    return block_has_flag(block, IS_HOSPITAL);
-}
-
-bool map_block_is_jail(BlockBits block)
-{
-    return block_has_flag(block, IS_JAIL);
 }
 
 bool map_block_is_purchasable(BlockBits block)

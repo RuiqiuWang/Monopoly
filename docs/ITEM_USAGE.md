@@ -1,40 +1,15 @@
 # Item Usage
 
-The item usage module implements the active use of the three purchasable items.
-
-## Public API
+主动道具接口：
 
 ```c
 ItemUseResult Use_Block(Player *player, Map *map, int relative_distance);
-ItemUseResult Use_Bomb(Player *player, Map *map, int relative_distance);
 ItemUseResult Use_Robot(Player *player, Map *map);
 ```
 
-The shared inventory indexes are defined in `include/player.h`:
+库存仅包含 `ITEM_BARRIER` 和 `ITEM_ROBOT`。
 
-```text
-ITEM_BARRIER = 0
-ITEM_BOMB    = 1
-ITEM_ROBOT   = 2
-```
-
-Do not introduce a second item-slot mapping in a caller or test adapter.
-
-## Placement Rules
-
-- Barrier and bomb offsets are inclusive from `-10` through `10`.
-- The board wraps across all 70 positions.
-- Offset zero and special map blocks are valid targets.
-- A target that already contains a barrier or bomb is rejected.
-- Failed operations do not consume inventory or change the map.
-- A placed item does not trigger immediately when a player already occupies its block.
-
-## Robot Rules
-
-- The robot clears positions one through ten ahead of the player.
-- The player's current position is not cleared.
-- The scan wraps around the board and clears barriers and bombs.
-- A robot is consumed even when no item is found.
-
-Command parsing and user messages remain in `command.c` and `game_engine.c`.
-Movement-triggered behavior is implemented by the item effect module.
+- 路障可放置在相对距离 `-10～10`，地图位置自动环绕。
+- 已有路障或财神的位置不能再放置路障；失败不会消耗库存。
+- 机器娃娃清除玩家前方 1～10 格内的路障，不清除当前位置，也不清除财神。
+- 即使没有清除任何路障，机器娃娃仍会被消耗。

@@ -14,7 +14,6 @@ typedef enum {
 } ItemUseResult;
 
 ItemUseResult Use_Block(Player *player, Map *map, int relative_distance);
-ItemUseResult Use_Bomb(Player *player, Map *map, int relative_distance);
 ItemUseResult Use_Robot(Player *player, Map *map);
 
 #endif

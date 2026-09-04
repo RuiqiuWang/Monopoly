@@ -2,12 +2,11 @@
 #define MONOPOLY_PLAYER_H
 
 #define NAME_LEN 5
-#define ITEM_COUNT 8
+#define ITEM_COUNT 2
 
 enum {
     ITEM_BARRIER = 0,
-    ITEM_BOMB = 1,
-    ITEM_ROBOT = 2
+    ITEM_ROBOT = 1
 };
 
 typedef enum {
@@ -18,10 +17,7 @@ typedef enum {
 } PlayerColor;
 
 typedef enum {
-    PLAYER_NORMAL,
-    PLAYER_HOSPITAL,
-    PLAYER_JAIL,
-    PLAYER_GOD
+    PLAYER_NORMAL
 } PlayerStatus;
 
 typedef struct {
@@ -33,7 +29,6 @@ typedef struct {
     int points;
     int items[ITEM_COUNT];
     PlayerStatus status;
-    int status_rounds;
     int god_of_wealth_rounds;
     int active;
     int is_winner;

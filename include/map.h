@@ -11,11 +11,9 @@ typedef enum {
     IS_START       = (1u << 0),
     IS_TOOL_ROOM   = (1u << 1),
     IS_GIFT_ROOM   = (1u << 2),
-    IS_MAGIC_ROOM  = (1u << 3),
+    IS_PARK        = (1u << 3),
     IS_MINE        = (1u << 4),
-    IS_PURCHASABLE = (1u << 5),
-    IS_HOSPITAL    = (1u << 12),
-    IS_JAIL        = (1u << 13)
+    IS_PURCHASABLE = (1u << 5)
 } Block_Type;
 
 typedef enum {
@@ -34,8 +32,8 @@ typedef enum {
 
 typedef enum {
     NO_ITEM       = (0u << 10) | (0u << 11),
-    HAS_BOMB      = (1u << 10) | (0u << 11),
-    HAS_OBSTACLE  = (0u << 10) | (1u << 11),
+    HAS_OBSTACLE  = (1u << 10) | (0u << 11),
+    HAS_FORTUNE   = (0u << 10) | (1u << 11),
     ITEM_RESERVED = (1u << 10) | (1u << 11)
 } Item_Type;
 
@@ -62,10 +60,8 @@ bool map_clear_property(Map *map, size_t index);
 bool map_block_is_start(BlockBits block);
 bool map_block_is_tool_room(BlockBits block);
 bool map_block_is_gift_room(BlockBits block);
-bool map_block_is_magic_room(BlockBits block);
+bool map_block_is_park(BlockBits block);
 bool map_block_is_mine(BlockBits block);
-bool map_block_is_hospital(BlockBits block);
-bool map_block_is_jail(BlockBits block);
 bool map_block_is_purchasable(BlockBits block);
 bool map_block_is_plot(BlockBits block, Plot_Type plot);
 

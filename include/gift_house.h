@@ -21,5 +21,8 @@ GiftHouseResult Gift_House_Apply(Player *player, GiftHouseChoice choice);
 bool Gift_House_Prompt(Player *player);
 bool Gift_House_Prompt_With_Refresh(
     Player *player, InputRefreshCallback refresh, void *context);
+bool Gift_House_Prompt_With_Choice(
+    Player *player, InputRefreshCallback refresh, void *context,
+    GiftHouseChoice *applied_choice);
 
 #endif

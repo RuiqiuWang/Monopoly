@@ -13,12 +13,12 @@
 #include "assets.h"
 #include "character_select.h"
 #include "command.h"
+#include "fortune.h"
 #include "gift_house.h"
 #include "help_query.h"
 #include "input.h"
 #include "item_effect.h"
 #include "item_usage.h"
-#include "jail.h"
 #include "map.h"
 #include "mine.h"
 #include "movement.h"
@@ -279,10 +279,6 @@ static void resolve_property(
             if (player->god_of_wealth_rounds > 0) {
                 snprintf(detail, sizeof(detail),
                          "财神效果生效，本次免向%s支付租金。", players[owner].name);
-            } else if (players[owner].status == PLAYER_HOSPITAL ||
-                       players[owner].status == PLAYER_JAIL) {
-                snprintf(detail, sizeof(detail),
-                         "由于%s当前无法行动，本次免收租金。", players[owner].name);
             } else if (collect_toll(map, player, &players[owner])) {
                 int rent = property_toll(map, player->position);
                 snprintf(detail, sizeof(detail),
@@ -330,9 +326,7 @@ static const char *movement_result_message(ItemEffectMoveResult result)
     case ITEM_EFFECT_MOVE_INVALID_POSITION:
         return "移动失败：玩家位置无效。";
     case ITEM_EFFECT_MOVE_INVALID_STEP:
-        return "输入无效（Invalid Input）：步数必须是正数。";
-    case ITEM_EFFECT_MOVE_HOSPITAL_NOT_FOUND:
-        return "移动失败：找不到医院。";
+        return "输入无效（Invalid Input）：步数不能为负数。";
     case ITEM_EFFECT_MOVE_FAILED:
     default:
         return "移动失败：无法完成移动。";
@@ -363,6 +357,7 @@ int main(void)
     Player players[MAX_PLAYERS];
     CharacterSelection selection;
     TutorialState tutorial_state;
+    FortuneState fortune;
     unsigned long arrivals[MAX_PLAYERS] = {1, 2, 3, 4};
     unsigned long arrival_counter = 4;
     int player_count;
@@ -374,6 +369,7 @@ int main(void)
     configure_console_encoding();
     srand((unsigned int)time(NULL));
     map_init(&map);
+    Fortune_Init(&fortune);
     initial_money = prompt_initial_money();
     if (!CharacterSelect_Prompt(&selection)) return 1;
     player_count = initialize_players(players, &selection, initial_money);
@@ -398,43 +394,10 @@ int main(void)
         CommandResult result;
         int action_index;
         int steps;
-        int god_rounds_at_turn_start;
+        int start_position;
+        bool fortune_acquired_this_turn = false;
         ItemEffectReport movement_report;
         ItemEffectMoveResult movement_result;
-
-        if (Process_Hospital_Turn(&players[current_index]) ==
-            ITEM_EFFECT_TURN_SKIPPED) {
-            int skipped = current_index;
-            int next;
-            snprintf(message, sizeof(message),
-                         "玩家%s在医院跳过本回合（剩余%d回合）。 (Player %s skips this turn in hospital (%d remaining).)",
-                     players[skipped].name, players[skipped].status_rounds,
-                     players[skipped].name, players[skipped].status_rounds);
-            focus_index = skipped;
-            next = next_active_player(players, player_count, skipped);
-            if (next < 0) break;
-            if (next <= skipped) ++round;
-            current_index = next;
-            render_game_state(&map, players, player_count, arrivals, current_index,
-                              focus_index, round, message);
-            continue;
-        }
-        if (Process_Jail_Turn(&players[current_index]) == JAIL_TURN_SKIPPED) {
-            int skipped = current_index;
-            int next;
-            snprintf(message, sizeof(message),
-                     "玩家%s在监狱跳过本回合（剩余%d回合）。 (Player %s skips this turn in jail (%d remaining).)",
-                     players[skipped].name, players[skipped].status_rounds,
-                     players[skipped].name, players[skipped].status_rounds);
-            focus_index = skipped;
-            next = next_active_player(players, player_count, skipped);
-            if (next < 0) break;
-            if (next <= skipped) ++round;
-            current_index = next;
-            render_game_state(&map, players, player_count, arrivals, current_index,
-                              focus_index, round, message);
-            continue;
-        }
 
         if (!input_read_line("命令（回车=掷骰）：", input, sizeof(input))) break;
         remember_command(input);
@@ -475,17 +438,16 @@ int main(void)
             }
             continue;
         }
-        if (command.type == COMMAND_BLOCK || command.type == COMMAND_BOMB) {
-            ItemUseResult item_result = command.type == COMMAND_BLOCK
-                ? Use_Block(&players[current_index], &map, command.argument)
-                : Use_Bomb(&players[current_index], &map, command.argument);
+        if (command.type == COMMAND_BLOCK) {
+            ItemUseResult item_result =
+                Use_Block(&players[current_index], &map, command.argument);
             int target = (players[current_index].position + command.argument) %
                 MAP_BLOCK_COUNT;
             if (target < 0) target += MAP_BLOCK_COUNT;
             if (item_result == ITEM_USE_OK) {
-                snprintf(message, sizeof(message), "%s已放置在%d号位置。 (%s placed at %d.)",
-                         command.type == COMMAND_BLOCK ? "路障" : "炸弹", target,
-                         command.type == COMMAND_BLOCK ? "Barrier" : "Bomb", target);
+                snprintf(message, sizeof(message),
+                         "路障已放置在%d号位置。 (Barrier placed at %d.)",
+                         target, target);
             } else {
                 describe_item_result(item_result, "", message, sizeof(message));
             }
@@ -495,7 +457,7 @@ int main(void)
         }
         if (command.type == COMMAND_ROBOT) {
             describe_item_result(Use_Robot(&players[current_index], &map),
-                "机器娃娃已清除前方10格内的道具。", message, sizeof(message));
+                "机器娃娃已清除前方10格内的路障。", message, sizeof(message));
             render_game_state(&map, players, player_count, arrivals, current_index,
                               current_index, round, message);
             continue;
@@ -510,19 +472,18 @@ int main(void)
 
         action_index = current_index;
         steps = command.type == COMMAND_ROLL ? Get_Random_Step() : command.steps;
-        god_rounds_at_turn_start = players[action_index].god_of_wealth_rounds;
         if (action_index < 0 || !players[action_index].active) {
             render_game_state(&map, players, player_count, arrivals, current_index,
                               focus_index, round, "操作失败：玩家不存在或已退出游戏。");
             continue;
         }
-        if (command.type == COMMAND_STEP &&
-            (steps < 1 || steps > MAP_BLOCK_COUNT)) {
+        if (command.type == COMMAND_STEP && steps < 0) {
             render_game_state(&map, players, player_count, arrivals, current_index,
                               focus_index, round,
-                              "输入无效（Invalid Input）：步数必须在1到70之间。");
+                              "输入无效（Invalid Input）：步数不能为负数。");
             continue;
         }
+        start_position = players[action_index].position;
         movement_result = Move_Player_With_Item_Effects(
             &players[action_index], &map, steps, &movement_report);
         if (movement_result < ITEM_EFFECT_MOVE_OK) {
@@ -531,15 +492,22 @@ int main(void)
                               movement_result_message(movement_result));
             continue;
         }
-        arrivals[action_index] = ++arrival_counter;
+        if (movement_report.travelled_steps > 0) {
+            arrivals[action_index] = ++arrival_counter;
+        }
         snprintf(message, sizeof(message), "玩家%s移动了%d/%d步，到达%d号位置。 (Player %s moved %d of %d steps to %d.)",
                  players[action_index].name, movement_report.travelled_steps,
                  steps, players[action_index].position, players[action_index].name,
                  movement_report.travelled_steps, steps, players[action_index].position);
         if (movement_result == ITEM_EFFECT_MOVE_STOPPED_BY_BARRIER) {
             append_message(message, sizeof(message), "遇到路障，移动停止。 Stopped by a barrier.");
-        } else if (movement_result == ITEM_EFFECT_MOVE_SENT_TO_HOSPITAL) {
-            append_message(message, sizeof(message), "触发炸弹，已被送往医院。 Hit a bomb and was sent to hospital.");
+        }
+        fortune_acquired_this_turn = Fortune_Collect_On_Path(
+            &fortune, &map, &players[action_index], start_position,
+            movement_report.travelled_steps, round);
+        if (fortune_acquired_this_turn) {
+            append_message(message, sizeof(message),
+                           " 路过财神并成功领取，本回合起免交租金。 (Fortune collected.)");
         }
         if (!movement_report.skip_landing_event) {
             BlockBits landing = map_get_block(
@@ -548,10 +516,6 @@ int main(void)
                 &map, players, player_count, arrivals,
                 action_index, action_index, round
             };
-            if (Check_Player_in_Jail(&players[action_index], &map) == JAIL_CHECK_ENTERED) {
-                append_message(message, sizeof(message),
-                               "已进入监狱，接下来两回合无法行动。 Sent to jail for the next two turns.");
-            }
             Check_Player_in_Mine(&players[action_index], &map);
             /* Draw the moved state before entering a landing prompt.  Retry
              * callbacks redraw this same game page with the latest message. */
@@ -562,16 +526,19 @@ int main(void)
                                              refresh_game_view, &view);
             }
             if (map_block_is_gift_room(landing)) {
-                Gift_House_Prompt_With_Refresh(&players[action_index],
-                                               refresh_game_view, &view);
+                GiftHouseChoice gift_choice = (GiftHouseChoice)0;
+                if (Gift_House_Prompt_With_Choice(
+                        &players[action_index], refresh_game_view, &view,
+                        &gift_choice) &&
+                    gift_choice == GIFT_HOUSE_GOD_OF_WEALTH) {
+                    fortune_acquired_this_turn = true;
+                }
             }
             resolve_property(&map, players, player_count, &players[action_index],
                              message, sizeof(message), refresh_game_view, &view);
         }
-        if (god_rounds_at_turn_start > 0 &&
-            players[action_index].god_of_wealth_rounds > 0) {
-            --players[action_index].god_of_wealth_rounds;
-        }
+        Fortune_End_Player_Turn(
+            &players[action_index], fortune_acquired_this_turn);
         update_bankruptcy(&map, &players[action_index], message, sizeof(message));
         focus_index = action_index;
 
@@ -590,8 +557,21 @@ int main(void)
 
         {
             int next = next_active_player(players, player_count, action_index);
+            FortuneTurnResult fortune_result;
             if (next < 0) break;
-            if (next <= action_index) ++round;
+            fortune_result = Fortune_Advance_Turn(
+                &fortune, &map, players, (size_t)player_count, round);
+            ++round;
+            if (fortune_result == FORTUNE_TURN_SPAWNED) {
+                char detail[96];
+                snprintf(detail, sizeof(detail),
+                         " 财神已随机出现在%d号位置。 (Fortune appeared at %d.)",
+                         fortune.position, fortune.position);
+                append_message(message, sizeof(message), detail);
+            } else if (fortune_result == FORTUNE_TURN_EXPIRED) {
+                append_message(message, sizeof(message),
+                               " 财神已消失，将在未来10回合内随机再次出现。");
+            }
             current_index = next;
         }
         render_game_state(&map, players, player_count, arrivals, current_index,
